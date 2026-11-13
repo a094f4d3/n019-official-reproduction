@@ -17,3 +17,6 @@ __pycache__/
 .scnet-browser-profiles/
 build/
 dist/
+artifacts/
+.pytest_cache/
+.pytest-tmp/
