@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d5",
+      "source_path": "/public/home/a094f4d5/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+      "sha256": "d6b9be4ebbf37175a05e02f55b2adcf41f0b761c3af8ca1c4f7f4b74f3676053",
+      "local_name": "manifests/librispeech_train_clean_360.jsonl"
+    },
+    {
+      "source_host": "scnet-a094f4d5",
+      "source_path": "/public/home/a094f4d5/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+      "sha256": "d6b9be4ebbf37175a05e02f55b2adcf41f0b761c3af8ca1c4f7f4b74f3676053",
+      "local_name": "manifests/librispeech_train_clean_360.jsonl"
+    }
+  ]
+}

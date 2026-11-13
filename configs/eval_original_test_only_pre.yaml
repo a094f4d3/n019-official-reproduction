@@ -1,0 +1,43 @@
+data_dir: data
+exp_dir: exp
+
+# Symlinks point every suffixed path back to original speech for this
+# baseline. The official result summary filters and reports the OO row.
+anon_data_suffix: _n019
+results_summary_path: !ref <exp_dir>/results_summary/eval_orig<anon_data_suffix>/results_orig.txt
+
+datasets:
+  - name: libri_test
+    data: libri_test
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
+
+eval_steps:
+  privacy:
+    - asv
+  utility:
+    - asr
+
+privacy:
+  asv:
+    dataset_name: [libri_test]
+    model_name: asv_orig
+    model_type: ecapa
+    evaluation:
+      model_dir: !ref <exp_dir>/<privacy[asv][model_name]>
+      results_dir: !ref <exp_dir>/<privacy[asv][model_name]>
+      distance: cosine
+      plda:
+        model_dir: null
+        train_data_dir: null
+        anon: null
+
+utility:
+  asr:
+    dataset_name: [libri_test]
+    model_name: asr
+    evaluation:
+      model_type: EncoderASR
+      model_dir: !ref <exp_dir>/<utility[asr][model_name]>
+      eval_batchsize: 8
+      results_dir: !ref <exp_dir>/<utility[asr][model_name]>

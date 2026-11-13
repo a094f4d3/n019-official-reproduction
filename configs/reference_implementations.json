@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "purpose": "Public implementations consulted to recover details omitted by N019",
+  "repositories": {
+    "dissc": {
+      "url": "https://github.com/gallilmaimon/DISSC",
+      "commit": "4b6160bd3c1733ef01527bf2edaf575788ca60f8",
+      "used_for": [
+        "N019 reference [17] speaker-conditioned length predictor",
+        "seven 128-channel convolution layers",
+        "32-dimensional unit and speaker embeddings",
+        "non-overlapping four-unit duration loss",
+        "training-time unit embedding masking"
+      ]
+    },
+    "speech_resynthesis": {
+      "url": "https://github.com/facebookresearch/speech-resynthesis",
+      "commit": "dbb92c8ddeb081e711adbe9a75714027cd447532",
+      "used_for": [
+        "HuBERT unit HiFi-GAN generator and discriminators",
+        "320-sample unit frame",
+        "8,960-sample training segments",
+        "45x log-mel L1 and feature-matching losses",
+        "AdamW and exponential learning-rate decay"
+      ]
+    },
+    "ssl_sas": {
+      "url": "https://github.com/nii-yamagishilab/SSL-SAS",
+      "commit": "07e51d369f2b8e592fb9b02949d59592cf08222a",
+      "used_for": [
+        "HuBERT output_layer=6",
+        "K=200 k-means unit vocabulary"
+      ]
+    },
+    "private_knnvc": {
+      "url": "https://github.com/carlosfranzreb/private_knnvc",
+      "commit": "39e7570834534ab7ee3e30a15047ee6ba67a9e9e",
+      "used_for": [
+        "cross-check of duration prediction and identity leakage assumptions only"
+      ]
+    }
+  }
+}

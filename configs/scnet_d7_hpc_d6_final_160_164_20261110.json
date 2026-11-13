@@ -1,0 +1,58 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_d6final160164_20261110_2153",
+  "job_id": "1085907",
+  "state": "completed_rejected",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 0.3,
+    "worst": 2.0
+  },
+  "baseline": {
+    "id": "soup2_quad_w40_30_20_10_plus_shrink0.1",
+    "checkpoint": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_quad_w40_30_20_10.pt",
+    "checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "utmos": 3.512772388458252,
+    "whisqa": 3.4313990980386735,
+    "wer_percent": 6.121516674280493
+  },
+  "candidates": {
+    "step_160000": {
+      "sha256": "700eaeb2d46c40ff2d94a33cee33e4e80c89ac98d064746b564e7cacd0af945c",
+      "utmos": 3.238767430782318,
+      "delta_utmos": -0.2740049576759338
+    },
+    "step_162000": {
+      "sha256": "388ac611ad75ab87c7774ab0818a6df6da69bf79b5e605dd4758f98d67407892",
+      "utmos": 3.3362299036979675,
+      "delta_utmos": -0.17654248476028434
+    },
+    "step_164000": {
+      "sha256": "3a6cceca9de8fe7c3992bbe60a88e16242b7509338016c14199adfe520dbbb1a",
+      "utmos": 3.2473053121566773,
+      "whisqa": 3.3189123019576074,
+      "wer_percent": 6.669712197350388,
+      "delta_utmos": -0.2654670763015745,
+      "delta_whisqa": -0.11248679608106604,
+      "delta_wer_percent": 0.5481955230698947
+    }
+  },
+  "followup_job": {
+    "job_id": "1088937",
+    "state": "COMPLETED",
+    "resources": "1 DCU, 16 CPU / 60 GB, 40 min",
+    "actual_wall_seconds": 100,
+    "candidate_json_sha256": "890e8711a3e5b1d2f2ab481ce0b1de0d06a9c8bf250acb6333a60365495ca6af",
+    "selection_json_sha256": "f6043028387b28c437195f200683ac29c304ba0baf2300de7bb625f8f532afa4"
+  },
+  "selected_id": "soup2_quad_w40_30_20_10_plus_shrink0.1",
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_selection_d6_final_160_164_20261110",
+  "submit": false
+}

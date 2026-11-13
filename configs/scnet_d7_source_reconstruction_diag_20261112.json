@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "name": "n019_source_reconstruction_diag_20261112",
+  "purpose": "Diagnostic only: determine whether residual source-speaker information in the Unit HiFi-GAN/units causes the E-VPC S gap. This is not a proposed anonymisation method and cannot replace DU-pred-nt.",
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "jobs": {
+    "speaker_embedding_extraction": {
+      "job_id": "1101189",
+      "name": "n019_source_nt_diag",
+      "state": "failed_after_test_embeddings_d7_missing_ls360_audio",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 1.0,
+      "input": [
+        "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/libri_test.jsonl",
+        "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+        "/public/home/a094f4d7/voice_projects/models/n019_official/wpro"
+      ],
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/source_reconstruction_diag_20261112/embeddings/test",
+      "method": "Source-speaker W-PRO means using at most 32 utterances per speaker.",
+      "stop_condition": "Stop after verified 250-D finite unit-norm test and LS360 speaker embeddings, or fail on missing data/DCU error/non-finite embeddings.",
+      "elapsed": "00:02:45",
+      "actual_card_hours": 0.0458,
+      "failure": "The d7 home does not contain the original LibriSpeech train-clean-360 FLAC corpus. Test embeddings for 40 speakers completed before the failure."
+    },
+    "full_s_diagnostic": {
+      "job_id": "1101644",
+      "name": "n019_source_s_diag",
+      "state": "running",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.2,
+      "worst_card_hours": 4.0,
+      "excluded_nodes": [
+        "f11r1n01",
+        "f11r2n13"
+      ],
+      "input": [
+        "source-reconstruction target maps for 1,934 test utterances and 104,014 LS360 utterances",
+        "source-speaker W-PRO means",
+        "soup2 checkpoint SHA256 ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+        "duration_pred_paperfix/best.pt"
+      ],
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/source_reconstruction_diag_20261112/s_eval",
+      "protocol": "Same official VPC2024 post-evaluation S path, duration mode pred, UTMOS/WhiSQA/WER unchanged.",
+      "stop_condition": "Stop after a verified six-row results_anon.txt and s_metrics.json, or on shm/OOM/node failure, or at the four-hour wall limit.",
+      "start": "2026-11-12T17:57:21",
+      "node": "f11r3n11",
+      "slurm": "hpc/n019_source_reconstruction_s_pipeline_hpc.slurm",
+      "slurm_sha256": "98ffb7c73a5f952db64de8f7d446a7c4ce97ba79bbc9122b231fd14ce741a685",
+      "test_embedding_sha256": "902abc3fb8c8b12d13d54380d597777ec1d3311972fe8856c86acb15f5ec76d6",
+      "ls360_embedding_sha256": "fdd6d6837dacd40c520d60fa18a1957943a6ab6341a812051828dbbf0793e660"
+    },
+    "ls360_embedding_extraction_d5_ai": {
+      "job_id": "2120806846710960129",
+      "name": "n019_source_nt_ls360_20261112_171202",
+      "account": "a094f4d5",
+      "mode": "\u4eba\u5de5\u667a\u80fd/\u6a21\u578b\u8bad\u7ec3",
+      "state": "failed_fast_missing_watchdog",
+      "submitted_at": "2026-11-12T17:12:02+08:00",
+      "resources": {
+        "dcu": 1,
+        "cpus": 15,
+        "memory_gb": 59,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 1.0,
+      "balance_before_card_hours": 4.216111111,
+      "input": [
+        "/public/home/a094f4d5/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+        "/public/home/a094f4d5/voice_projects/models/n019_official/wpro"
+      ],
+      "output": "/public/home/a094f4d5/voice_projects/runs/n019_official/source_reconstruction_diag_20261112/embeddings/ls360/nt_speaker_embeddings.npz",
+      "stop_condition": "Stop after 921 finite unit-norm 250-D speaker means and a verified SHA256, or fail on source/W-PRO/DCU error, or at the one-hour outer limit.",
+      "actual_card_hours": 0.0,
+      "failure": "The d5 code tree lacked scripts/gpu_tiny_matmul_watchdog.sh; the job exited before watchdog/model/audio work."
+    },
+    "ls360_embedding_extraction_d7": {
+      "job_id": "1101373",
+      "name": "n019_source_nt_ls360",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "state": "completed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 1.0,
+      "excluded_nodes": [
+        "f11r1n01",
+        "f11r2n13"
+      ],
+      "input": [
+        "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d5read_20261111.jsonl",
+        "/public/home/a094f4d7/voice_projects/models/n019_official/wpro"
+      ],
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/source_reconstruction_diag_20261112/embeddings/ls360/nt_speaker_embeddings.npz",
+      "reason": "d7 can read d5 raw FLAC, so extraction stays on d7 HPC without cross-account AI container complications.",
+      "stop_condition": "Stop after 921 finite unit-norm 250-D speaker means and a verified SHA256, or fail on source/W-PRO/DCU error, or at the one-hour wall limit.",
+      "start": "2026-11-12T17:22:32",
+      "end": "2026-11-12T17:51:02",
+      "elapsed": "00:28:30",
+      "card_hours": 0.475,
+      "exit_code": "0:0",
+      "node": "f11r3n09",
+      "sha256": "fdd6d6837dacd40c520d60fa18a1957943a6ab6341a812051828dbbf0793e660",
+      "verification": "921 keys, 250-D, finite, unit norm, exact map-key match"
+    }
+  },
+  "zero_card_target_maps": {
+    "test_rows": 1934,
+    "test_speakers": 40,
+    "test_sha256": "7cde8b3eb7f6a894d47a519f5dc283a233699aebebecbc3350acfe8ecc4f1cd7",
+    "ls360_rows": 104014,
+    "ls360_speakers": 921,
+    "ls360_sha256": "98519aa3d632706cc604d54796799b0c18160a3a4c5f57d5752ef52ad96f8f35"
+  },
+  "submit": false,
+  "interpretation_gate": {
+    "if_source_s_remains_near_31": "The residual gap is in the vocoder/unit training recipe rather than target sampling or target pooling.",
+    "if_source_s_falls_materially_below_31": "Random target conditioning is removing a large source-speaker component; audit target embedding representation and conditioning strength.",
+    "formal_use": "Never report this diagnostic as a paper method or use it as a formal DU-pred-nt result."
+  }
+}

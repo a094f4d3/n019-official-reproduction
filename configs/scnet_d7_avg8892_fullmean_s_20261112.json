@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "submit": false,
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "job_id": "1102767",
+  "job_name": "n019_avg8892_fullmean_s",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "walltime_hours": 4.0,
+    "expected_card_hours": 3.2,
+    "worst_card_hours": 4.0
+  },
+  "balance_check": {
+    "quota_assumption_hours": 50.0,
+    "estimated_used_hours_before_submit": 43.840556,
+    "estimated_remaining_hours_before_submit": 6.159444,
+    "source": "sacct ElapsedRaw x gres/dcu over 91 jobs"
+  },
+  "inputs": {
+    "vocoder": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_avg_88_92_effnorm.pt",
+    "vocoder_sha256": "fafe5982588bea492dd761f1c2d51cc925474503a4f158cf1680667b2286ded8",
+    "target_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean1160_20261112/nt_speaker_embeddings.npz",
+    "target_embeddings_sha256": "576e72f72d536f8e24ce4add26abe46da6c426c121d9fa83bb0d7a7645c4bcb4",
+    "libri_test_target_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean1160_20261112/test_941.npz",
+    "libri_test_target_embeddings_sha256": "983f9d85f08783842d31755b2a0189904c06ea0e1159b388cafcd3f53dbdb14e",
+    "libri_test_target_map": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/full_other500_1160_seed20261102/libri_test_target_map.jsonl",
+    "libri_test_target_map_sha256": "0215470094e36b98d6dd4b082f1e0edbf839711f236b2d9ee84c5c35dd2a96f3",
+    "ls360_target_map": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/full_other500_1160_seed20261102/librispeech_train_clean_360_target_map.jsonl",
+    "ls360_target_map_sha256": "53058fdbede1bd46ee1fe8013e46c535af58787e5c90182cfa355f351198e6b8",
+    "duration_mode": "pred"
+  },
+  "outputs": {
+    "run_root": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/avg8892_fullmean_s_20261112",
+    "metrics": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/avg8892_fullmean_s_20261112/s_eval/s_metrics.json"
+  },
+  "stop_conditions": [
+    "104014 LS360 rows and VPC export verified; s_metrics.json written",
+    "data, SHM, OOM, non-finite loss, or node failure",
+    "walltime reaches 4 hours"
+  ],
+  "submitted_at": "2026-11-12T21:36:00+08:00",
+  "supersedes_failed_job": "1102715",
+  "status": "COMPLETED",
+  "node": "f11r4n01",
+  "started_at": "2026-11-12T21:37:06+08:00",
+  "ended_at": "2026-11-13T00:39:36+08:00",
+  "actual_card_hours": 3.0416666667,
+  "result": {
+    "e_vpc_s_female_percent": 28.823,
+    "e_vpc_s_male_percent": 30.568,
+    "e_vpc_s_mean_percent": 29.6955,
+    "s_metrics_sha256": "7165b66520da6780922a53032c0f67c726feaf8572a0399db83144c54060917c",
+    "decision": "reject; worse than formal and soup2 fullmean"
+  }
+}

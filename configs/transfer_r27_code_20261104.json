@@ -1,0 +1,36 @@
+{
+  "files": [
+    {
+      "source_host": "local",
+      "source_path": "artifacts/n019_code_20261104_r27.tar.gz",
+      "target_host": "scnet-a094f4d4",
+      "target_path": "/public/home/a094f4d4/voice_projects/code/n019_code_20261104_r27.tar.gz",
+      "sha256": "74a6ee2fc02b63db9a1b1783ced4076566a784f11b2305188d5aee2ef15dfee2",
+      "local_name": "n019_code_20261104_r27.tar.gz"
+    },
+    {
+      "source_host": "local",
+      "source_path": "artifacts/n019_code_20261104_r27.tar.gz",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/code/n019_code_20261104_r27.tar.gz",
+      "sha256": "74a6ee2fc02b63db9a1b1783ced4076566a784f11b2305188d5aee2ef15dfee2",
+      "local_name": "n019_code_20261104_r27.tar.gz"
+    },
+    {
+      "source_host": "local",
+      "source_path": "artifacts/n019_code_20261104_r27.tar.gz",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/code/n019_code_20261104_r27.tar.gz",
+      "sha256": "74a6ee2fc02b63db9a1b1783ced4076566a784f11b2305188d5aee2ef15dfee2",
+      "local_name": "n019_code_20261104_r27.tar.gz"
+    },
+    {
+      "source_host": "local",
+      "source_path": "artifacts/n019_code_20261104_r27.tar.gz",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/code/n019_code_20261104_r27.tar.gz",
+      "sha256": "74a6ee2fc02b63db9a1b1783ced4076566a784f11b2305188d5aee2ef15dfee2",
+      "local_name": "n019_code_20261104_r27.tar.gz"
+    }
+  ]
+}

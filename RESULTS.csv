@@ -1,0 +1,18 @@
+category,experiment,metric,paper,reproduced,absolute_difference,relative_difference_percent,count,status,notes
+formal,DU-pred-nt,E-VPC I,47.2,48.0285,0.8285,1.7552966102,,outside_internal_tolerance,Higher is better
+formal,DU-pred-nt,E-VPC L,47.9,47.754,-0.146,-0.3048016701,,within_internal_tolerance,Higher is better
+formal,DU-pred-nt,E-VPC S,34.8,29.7425,-5.0575,-14.5330459770,,outside_internal_tolerance,Main remaining privacy gap
+formal,DU-pred-nt,W-NT I,39.9,39.1678579152,-0.7321420848,-1.8349425685,,outside_internal_tolerance,Higher is better
+formal,DU-pred-nt,W-NT L,42.3,39.7293478251,-2.5706521749,-6.0771919030,,outside_internal_tolerance,Second remaining privacy gap
+formal,DU-pred-nt,W-NT S,24.6,24.5238568634,-0.0761431366,-0.3095249456,,within_internal_tolerance,Higher is better
+formal,DU-pred-nt,WER,7.41,6.2239598196,-1.1860401804,-16.0059403557,1496,outside_internal_tolerance,Lower is better; reproduced WER beats paper
+formal,DU-pred-nt,UTMOS,3.63,3.5253666541,-0.1046333459,-2.8824613204,1934,outside_internal_tolerance,Higher is better
+formal,DU-pred-nt,WhiSQA,3.69,3.49575891,-0.19424109,-5.2639861777,1934,outside_internal_tolerance,Higher is better
+experiment,fullmean1160_no_shrink,E-VPC S,,31.2,,,,diagnostic,Target embedding ablation
+experiment,fullmean1160_s_adj20_lr1e3,E-VPC S,,31.0,,,,diagnostic,Attack-training ablation
+experiment,avg8892_fullmean,E-VPC S,,29.6955,,,,diagnostic,Checkpoint ablation
+experiment,speaker_sampled_mean32,E-VPC S,,30.642,,,,diagnostic,Sampling-policy audit
+experiment,utterance_target,E-VPC S,,30.9685,,,,diagnostic,Target representation audit
+experiment,du_nt_nt_random_target,E-VPC S,,30.039,,,,diagnostic,Duration-conditioning audit
+experiment,source_reconstruction,E-VPC S,,0.0,,,,diagnostic,Leakage diagnostic; not a formal method
+experiment,opposite_gender_target,E-VPC S,,42.0405,,,,diagnostic_only,Not the paper target-sampling method

@@ -1,0 +1,36 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/targets/libri_test_target_map_paperfix.jsonl",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/libri_test_target_map_paperfix.jsonl",
+      "sha256": "c497769b4de43824d3a5840d3b497ecd71156222828a69e352140cebc9f4c383",
+      "local_name": "targets/libri_test_target_map_paperfix.jsonl"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/targets/libri_test_target_manifest_paperfix.jsonl",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/libri_test_target_manifest_paperfix.jsonl",
+      "sha256": "1a7ae129f4423005c0f883139e73af0bbb4c3af63f20199f313fc58becec0cc8",
+      "local_name": "targets/libri_test_target_manifest_paperfix.jsonl"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/embeddings/libri_test_target_nt_utterance_paperfix/nt_utterance_embeddings.npz",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/libri_test_target_nt_utterance_paperfix/nt_utterance_embeddings.npz",
+      "sha256": "0c2a747220bac2a231cbde981a9d5dfca621750348f87f7ce18fab84994a58b7",
+      "local_name": "embeddings/nt_utterance_embeddings.npz"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/embeddings/libri_test_target_nt_utterance_paperfix/metadata.json",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/libri_test_target_nt_utterance_paperfix/metadata.json",
+      "sha256": "25d07294da0d2343b0f5154727a4ba9b5eb14e0fa7ceb7adab3776a6a192d20f",
+      "local_name": "embeddings/metadata.json"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_tmean315_d7_20261110",
+  "job_id": "1086390",
+  "state": "completed",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 0.5
+  },
+  "card_hours": {
+    "expected": 0.2,
+    "worst": 0.5
+  },
+  "balance_before": 0.654444444,
+  "manifest": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/target_speaker_mean32_missing315_combined.jsonl",
+  "manifest_rows": 8436,
+  "manifest_speakers": 315,
+  "output": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_missing315_hpc_20261110",
+  "actual_wall_seconds": 455,
+  "actual_card_hours": 0.1263888889,
+  "result_sha256": "ddf7c365f3c34dd7a58c616ab73264504d2e7ae65f03f825182039a423943168",
+  "merged_1158_npz": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_all1158_shrink01_20261110.npz",
+  "merged_1158_sha256": "28ffbaec9516cd8f5abbc752b40315b9fe958f7d37dc6b6f4a58bcd28c2540a7",
+  "merged_validation": {
+    "keys": 1158,
+    "dimension": 250,
+    "finite": true,
+    "unit_norm": true,
+    "existing_843_max_abs_difference": 0.0
+  },
+  "scope": "W-PRO mean over up to 32 target utterances for 315 speakers missing from the current 843-key shrink embedding",
+  "stop_conditions": [
+    "300-second tiny-matmul watchdog failure",
+    "manifest row or speaker count mismatch",
+    "non-finite or wrong-dimensional embedding",
+    "outer wall time reached"
+  ],
+  "file_sha256": {
+    "hpc/n019_target_speaker_mean_hpc.slurm": "767175243ac06f57ac4bc377ee469801b416a6b0207e3c3bb217102eaf307066",
+    "scripts/merge_target_speaker_means.py": "a5d3eee361b2d20ed7b289fd3a575db8aae2ecbada2588d5876fc2879c7afc76"
+  }
+}

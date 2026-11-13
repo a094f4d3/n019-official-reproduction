@@ -1,0 +1,52 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_soup12_20261110_1847",
+  "job_id": "1084433",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 0.75,
+    "worst": 2.0
+  },
+  "dev": "correct 40-speaker / 100-utterance / 96-target speaker-disjoint set",
+  "mode_name": "target_anonymisation",
+  "baseline": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_avg_88_92_effnorm.pt",
+    "sha256": "fafe5982588bea492dd761f1c2d51cc925474503a4f158cf1680667b2286ded8"
+  },
+  "candidate_glob": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_candidates_20261110/generator_avg_soup_*.pt",
+  "candidates": {
+    "interp_88w40_92w60": "4132bd940645ceec0379ea3ef2e316f6232ff1ba60958fc8fa0230e54510bdf1",
+    "interp_88w60_92w40": "82e0fc67a61e5437cf713dc0a74069a8474ced3e2b78cd634b5219d4d4d74618",
+    "triple_84_88_92": "a02049e6c592069e8d96a9ca7d9e6a3511ca89f526ab58fd1760ca6d85a6129a",
+    "triple_86_88_92": "216f7c1e6497273e63b74551add56974bc74c95a26438b4e0fe71b57f4b2c8bd",
+    "triple_88_90_92": "1207fa643b442416a5cb0dd6cf821be32dc002648f0b9a6bfe12ff285ca79cde",
+    "triple_88_92_94": "cb6ab3011dbd671dd75b126db0b16d948e70366465a380ea5b0c2f0e905f3488",
+    "quad_84_88_92_96": "dee2622fb9c273f207211915c01d52e216c1f5f4fb21cd223b729081314f6bab",
+    "quad_88_90_92_94": "82622e0d18f796010a8e3992d8fee0e31d06f502c9c929689dffe945c627c992",
+    "cross_equal_d5d6_88_92": "626e41682679695953e8ba1fbc6fc3b36bbda8405f76df212b9bd4c020929608",
+    "cross_d5_2_d6_1_88_92": "7ceb0cd0859f87d23d47cdf3afba9ef6249703a3322a25391648d5286424e857",
+    "cross_d5_3_d6_1_88_92": "bff7f23fda9f31bc53f3cb27990f3549f29d379983fe733605cb4e7e3d45faee",
+    "raw_88_92": "dd5038100041ed077078b02d668b44780adabf012345b5288ff6f0dc3e16cb99"
+  },
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_selection_soup12_20261110",
+  "gate": {
+    "min_utmos_gain": 0.05,
+    "min_whisqa_gain": 0.05,
+    "max_wer_regression_percent": 0.25
+  },
+  "stop_conditions": [
+    "checkpoint recipe or architecture mismatch",
+    "incorrect dev set or target map",
+    "projected UTMOS gain below threshold after 100 utterances",
+    "missing or non-finite WhiSQA/WER for a passing candidate",
+    "DCU watchdog, OOM, no progress, or 2-hour outer wall clock"
+  ],
+  "submit": false
+}

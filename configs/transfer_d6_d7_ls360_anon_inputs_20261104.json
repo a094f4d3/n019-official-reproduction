@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/tmp/n019_ls360_anon_inputs_20261104.tar.zst",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/tmp/n019_ls360_anon_inputs_20261104.tar.zst",
+      "sha256": "e5610ec554978e0ae97168f20a2bbe5f6c0ab3b868540fd6be6298b1197b6ea0",
+      "local_name": "anon_inputs/n019_ls360_anon_inputs_20261104.tar.zst"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/tmp/n019_ls360_anon_inputs_20261104.tar.zst",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/tmp/n019_ls360_anon_inputs_20261104.tar.zst",
+      "sha256": "e5610ec554978e0ae97168f20a2bbe5f6c0ab3b868540fd6be6298b1197b6ea0",
+      "local_name": "anon_inputs/n019_ls360_anon_inputs_20261104.tar.zst"
+    }
+  ]
+}

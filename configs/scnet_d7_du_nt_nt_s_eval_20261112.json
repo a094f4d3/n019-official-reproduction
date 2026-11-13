@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "name": "n019_du_nt_nt_s_eval_20261112",
+  "purpose": "Official E-VPC S rescoring for the completed DU-nt-nt anonymisation without regenerating audio.",
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_id": "1097898",
+  "submit": false,
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0
+  },
+  "expected_card_hours": 1.5,
+  "worst_card_hours": 3.0,
+  "balance_before_submit_card_hours": 0.429444444,
+  "balance_note": "AI-console balance is separate from HPC mode allocation; d7 HPC accepted the job.",
+  "job_history": [
+    {
+      "job_id": "1097896",
+      "state": "failed_fast_permission",
+      "elapsed": "00:01:12",
+      "note": "The VPC checker could list neither the shared data root nor the d7 ACL target; d6 granted d7 read-execute access and the failed attempt produced no metrics."
+    }
+  ],
+  "result": {
+    "state": "COMPLETED",
+    "elapsed": "01:32:59",
+    "card_hours": 1.5497222222,
+    "female_eer_percent": 29.563,
+    "male_eer_percent": 30.515,
+    "mean_eer_percent": 30.039,
+    "delta_vs_formal_percent": 0.2965,
+    "delta_vs_paper_percent": -4.761,
+    "s_metrics_sha256": "2d6daa038fa2471ed1932c59ff276951ef430303d5b23f742a8c4a77e1668673",
+    "results_anon_sha256": "5ec05e2e01cfe4952d46979b022c31d969ed3795edb334cb2c3735a988760366"
+  },
+  "inputs": {
+    "vpc_data": "/public/home/a094f4d6/voice_projects/data/n019_official/vpc/data",
+    "data_suffix": "_n019_du_nt_nt_20261111",
+    "test_anonymised": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111/anonymised/libri_test",
+    "ls360_anonymised": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111/anonymised/ls360"
+  },
+  "output": {
+    "root": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111/s_eval",
+    "metrics": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111/s_eval/s_metrics.json",
+    "slurm_log": "/public/home/a094f4d7/voice_projects/logs/n019_official/n019_s_eval_1097896.out"
+  },
+  "decision_rule": {
+    "target_evpc_s_percent": 34.0,
+    "require_full_quality_and_wer_before_replacement": true
+  },
+  "stop_conditions": [
+    "missing or unreadable VPC input",
+    "DCU tiny-matmul watchdog failure at 300 seconds",
+    "official 10-epoch ECAPA retraining failure",
+    "three-hour wall-clock timeout"
+  ]
+}

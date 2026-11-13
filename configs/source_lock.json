@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "title": "Joint Timbral and Non-Timbral Speaker Anonymisation",
+    "doi": "10.21437/Odyssey.2026-16",
+    "pages": "106-113"
+  },
+  "vpc": {
+    "repository": "https://github.com/Voice-Privacy-Challenge/Voice-Privacy-Challenge-2024",
+    "tag": "v2",
+    "commit": "7c80e86d3a4d58b81a2f3bdc01a3508c37018be4",
+    "evaluation_plan": "VoicePrivacy 2024 Evaluation Plan v2.0",
+    "table1_dataset": "libri_test",
+    "test_trials": {
+      "female": 11744,
+      "male": 9906
+    }
+  },
+  "assets": {
+    "data.zip": {
+      "size": 10119867,
+      "sha256": "60C71B3F2F8FF8D7A35237CDA7D92FB2F6F5F1F2CB5C89CB91FC511A699860F7"
+    },
+    "data_test_tools.zip": {
+      "size": 120506,
+      "sha256": "6270EBA200A8986EEE96B7E4CA9828BE3000678073985C15273A5B34B3D4F304"
+    },
+    "asv_orig.zip": {
+      "size": 70464879,
+      "sha256": "F0ABF60E569CB60A6F945A1A0A48E1A7D1AABE973F956DC3A872A3E686A7BF5E"
+    },
+    "asr.zip": {
+      "size": 752987942,
+      "sha256": "28e9a67cb7319fedc61080f2d56e9bdf00f653d7ec665fc07c0db40ae66de106"
+    }
+  },
+  "registered_corpora": {
+    "libri_dev.tar.gz": {
+      "status": "requires VPC registration"
+    },
+    "libri_test.tar.gz": {
+      "status": "requires VPC registration"
+    }
+  },
+  "openslr": {
+    "librispeech_dev_clean": {
+      "url": "https://www.openslr.org/resources/12/dev-clean.tar.gz",
+      "size": 337926286,
+      "md5": "42e2234ba48799c1f50f24a7926300a1"
+    },
+    "librispeech_test_clean": {
+      "url": "https://www.openslr.org/resources/12/test-clean.tar.gz",
+      "size": 346663984,
+      "md5": "32fa31d27d2e1cad72775fee3f4849a9"
+    },
+    "librispeech_train_clean_100": {
+      "url": "https://www.openslr.org/resources/12/train-clean-100.tar.gz",
+      "md5": "2a93770f6d5c6c964bc36631d331a522"
+    },
+    "librispeech_train_clean_360": {
+      "url": "https://www.openslr.org/resources/12/train-clean-360.tar.gz",
+      "md5": "c0e676e450a7ff2f54aeade5171606fa"
+    },
+    "libritts_train_clean_100": {
+      "url": "https://www.openslr.org/resources/60/train-clean-100.tar.gz",
+      "md5": "4a8c202b78fe1bc0c47916a98f3a2ea8"
+    },
+    "libritts_train_other_500": {
+      "url": "https://www.openslr.org/resources/60/train-other-500.tar.gz",
+      "md5": "7b181dd5ace343a5f38427999684aa6f"
+    }
+  },
+  "models": {
+    "asr_hf_metadata": {
+      "repo": "facebook/wav2vec2-large-960h-lv60-self",
+      "revision": "54074b1c16f4de6a5ad59affb4caa8f2ea03a119",
+      "config_sha256": "bcb82b508db66c6772b34a978bcc6a411f9ea99c33cd9dee337119b5f6ddb797",
+      "preprocessor_config_sha256": "c403ce09975b90dff0dd8302c42d422e9de1f166cd7772df23490069893cb0cf"
+    },
+    "hubert": {
+      "repo": "facebook/hubert-base-ls960",
+      "revision": "dba3bb02fda4248b6e082697eee756de8fe8aa8a",
+      "paper_layer": null,
+      "local_layer_choice": 6
+    },
+    "wnt": {
+      "repo": "Orange/Speaker-wavLM-pro",
+      "revision": "8451deb7b5019b9a99b1ed6a528dc75ba6b62b08",
+      "weight_size": 1266588504,
+      "weight_sha256": "ad40a04ae6f0b46dbe6c7a6db71ff46f99775c59a0dccf61eb91f29216fbb2d4",
+      "embedding_dim": 250
+    },
+    "utmos": {
+      "repo": "sarulab-speech/UTMOS22",
+      "revision": "2d6d612cdf5bc610fde1a1b913c2d6c6fac8e063",
+      "checkpoint_revision": null
+    },
+    "whisqa": {
+      "repo": "leto19/WhiSQA",
+      "revision": "0ad007e97093aa54c0c8cdac1af3e6ad6305af3f",
+      "single_head_size": 364031990,
+      "single_head_lfs_sha256": "2da43d59294c358bdd3f450d0aef5ce57ad20bed3beb34657ef3a795a4766810"
+    }
+  },
+  "evaluation": {
+    "eer_subsets": [
+      "libri_test_trials_f",
+      "libri_test_trials_m"
+    ],
+    "eer_aggregation": "arithmetic mean of female and male EER; verify against raw scores before final reporting",
+    "wer_dataset": "libri_test",
+    "attacks": {
+      "I": ["original_enrollment", "anon_trial"],
+      "L": ["anon_enrollment", "anon_trial"],
+      "S": ["anon_enrollment", "anon_trial", "retrained_asv"]
+    }
+  },
+  "known_paper_gaps": [
+    "HuBERT layer number",
+    "k-means fitting corpus, sample count, iteration count, and seed",
+    "duration predictor width, depth, masking, and optimizer details",
+    "unit embedding and speaker projection dimensions",
+    "vocoder width, optimizer, and training steps",
+    "target embedding pooling rule and target sampling seed",
+    "UTMOS checkpoint revision",
+    "WhiSQA single-head versus multi-head choice"
+  ]
+}

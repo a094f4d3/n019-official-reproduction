@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d7",
+      "source_path": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/libri_test.jsonl",
+      "target_host": "scnet-a094f4d4",
+      "target_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/manifests/libri_test_paperfix.jsonl",
+      "sha256": "d97cafa5790e69c41c14bda6d130148dc982933c22d2fccbdd421b0723e1c432",
+      "local_name": "manifests/libri_test_paperfix.jsonl"
+    }
+  ]
+}

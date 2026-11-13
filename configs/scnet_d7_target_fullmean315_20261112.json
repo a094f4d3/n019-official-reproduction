@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "name": "n019_target_fullmean315_20261112",
+  "purpose": "Complete exact full-utterance LibriTTS train-other-500 speaker means for the 315 target speakers absent from the existing 843-speaker full-mean archive. This removes the remaining mean32 speaker-pooling approximation before a paper-aligned speaker-sampled target S evaluation.",
+  "paper_alignment": {
+    "target_pool": "original LibriTTS train-other-500",
+    "target_sampling": "uniform over target speakers",
+    "embedding": "speaker mean over all target utterances, then L2 normalization",
+    "no_gender_constraint": true,
+    "no_shrink": true
+  },
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_tspkfull315_20261112",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "expected_card_hours": 0.6,
+  "worst_card_hours": 2.0,
+  "watchdog": "300-second SIGKILL tiny-matmul check before extraction",
+  "job_id": "1098620",
+  "submitted_under_d5": false,
+  "submission_note": "d5/d6 rejected the partition/account combination as allocation-unavailable; d7 passed sbatch --test-only and was used instead. The input manifest was built during a zero-card audit and remains on d5; d7 has read access.",
+  "submit": false,
+  "inputs": {
+    "all_other500_manifest": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/manifests/libritts_train_other_500.jsonl",
+    "all_other500_sha256": "c482d1e37b9fabe64006fc97dc1c108d3f866d746e94e97af383275c8396c437",
+    "existing_fullmean_npz": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_full168023_mean843_20261110/nt_speaker_embeddings.npz",
+    "existing_fullmean_sha256": "704c80a0f8b081956ff5a16a51f77493ad6514135b421154b0ffffaabee04017",
+    "missing_manifest": "/public/home/a094f4d5/voice_projects/runs/n019_official/target_fullmean_audit_20261112/missing_speakers_other500.jsonl",
+    "missing_manifest_sha256": "eeb097cfdcd99a2f7e4f9676dcb851392d01b23b48519f8ff7a8837583793438",
+    "missing_rows": 37015,
+    "missing_speakers": 315,
+    "target_map_test_sha256": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+    "target_map_ls360_sha256": "e57788b434df2d11ff288d7b0280918c592b7cea32932a9c7b60c74da5ab0b08"
+  },
+  "full_pool_target_maps": {
+    "test": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/full_other500_1160_seed20261102/libri_test_target_map.jsonl",
+    "test_sha256": "0215470094e36b98d6dd4b082f1e0edbf839711f236b2d9ee84c5c35dd2a96f3",
+    "test_target_speakers": 941,
+    "ls360": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/full_other500_1160_seed20261102/librispeech_train_clean_360_target_map.jsonl",
+    "ls360_sha256": "53058fdbede1bd46ee1fe8013e46c535af58787e5c90182cfa355f351198e6b8",
+    "ls360_target_speakers": 1160
+  },
+  "output": {
+    "root": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean315_hpc_20261112",
+    "npz": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean315_hpc_20261112/nt_speaker_embeddings.npz"
+  },
+  "stop_conditions": [
+    "missing input manifest or W-PRO model",
+    "manifest count or group-size mismatch",
+    "DCU tiny-matmul watchdog failure at 300 seconds",
+    "non-finite or non-250-D speaker embedding",
+    "two-hour wall-clock timeout"
+  ],
+  "next_step": "Merge with the existing 843-key archive into a 1158-key full speaker mean, verify all keys, then compare paper-aligned speaker-sampled no-shrink target conditioning on official test quality and full LS360 E-VPC S."
+}

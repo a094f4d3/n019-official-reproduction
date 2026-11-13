@@ -1,0 +1,66 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "suffix": "_n019_soup2_w40_shrink01_20261110",
+  "reason": "The previous full-WavLM AAM run collapsed W-PRO embeddings and had zero classification accuracy. Freeze WavLM, train only W-PRO top layers plus the AAM head, use global batch 16 and lr 1e-3.",
+  "smoke": {
+    "job_id": "1088364",
+    "state": "completed",
+    "wall_seconds": 903,
+    "steps": 6500,
+    "epoch_loss": 12.562311869401197,
+    "epoch_accuracy": 0.00017307692307692307,
+    "embedding_off_diagonal_cosine": {
+      "min": -0.502459704875946,
+      "mean": 0.13306252658367157,
+      "max": 0.44310620427131653
+    },
+    "last_pt_sha256": "ad76730a3efa9649ba70d7dec9b1aa81c8a05ec1f92e818a92f02473becbb8e5",
+    "model_safetensors_sha256": "0b21af62edcf2a81a54995f5b883ff6093009a3a075a51bb94d384887ea51312"
+  },
+  "jobs": {
+    "train": {
+      "job_id": "1088459",
+      "name": "n019_wnt_s",
+      "state": "running_from_20261111_035328",
+      "resources": "1 DCU, 16 CPU / 60 GB",
+      "wall_hours": 5.0,
+      "expected_card_hours": 3.6,
+      "worst_card_hours": 5.0,
+      "epochs": 20,
+      "internal_max_hours": 4.5,
+      "batch": 16,
+      "learning_rate": 0.001,
+      "head_learning_rate": 0.001,
+      "freeze_wavlm": true,
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_soup2_w40_shrink01_freeze_r2"
+    },
+    "eval": {
+      "job_id": "1088460",
+      "name": "n019_wnt_s_eval",
+      "state": "afterok:1088459",
+      "resources": "1 DCU, 16 CPU / 60 GB",
+      "wall_hours": 1.0,
+      "expected_card_hours": 0.2,
+      "worst_card_hours": 1.0,
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_soup2_w40_shrink01_freeze_r2/s_eval/wnt"
+    }
+  },
+  "inputs": {
+    "train_data": "/public/home/a094f4d6/voice_projects/data/n019_official/vpc/data/train-clean-360_n019_soup2_w40_shrink01_20261110",
+    "base_model": "/public/home/a094f4d6/voice_projects/models/n019_official/wpro",
+    "wav_scp_sha256": "c7cd48a34a543c5deb196b4246a1f8c14b35db68d0b0fa7b76a7bb23fd4c1efd",
+    "utt2spk_sha256": "00b4a3a9a51ddcbc02c887d3a1ea6f120e71091eba2a70e484960fbf869c7b05",
+    "base_model_sha256": "ad40a04ae6f0b46dbe6c7a6db71ff46f99775c59a0dccf61eb91f29216fbb2d4"
+  },
+  "stop_conditions": [
+    "non-finite loss",
+    "missing exported model files",
+    "DCU watchdog failure or OOM",
+    "no log progress for 10 minutes",
+    "4.5 hour internal limit",
+    "5 hour scheduler limit"
+  ],
+  "failed_retry": "r1 job 1088443 SIGSEGV at 1m29s on f11r1n20; r2 excludes that node"
+}

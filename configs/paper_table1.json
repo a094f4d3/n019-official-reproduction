@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "doi": "10.21437/Odyssey.2026-16",
+    "table": 1
+  },
+  "metric_units": {
+    "E-VPC I": "percent",
+    "E-VPC L": "percent",
+    "E-VPC S": "percent",
+    "W-NT I": "percent",
+    "W-NT L": "percent",
+    "W-NT S": "percent",
+    "WER": "percent",
+    "UTMOS": "mos",
+    "WhiSQA": "mos"
+  },
+  "default_tolerances": {
+    "E-VPC I": 0.5,
+    "E-VPC L": 0.5,
+    "E-VPC S": 0.5,
+    "W-NT I": 0.5,
+    "W-NT L": 0.5,
+    "W-NT S": 0.5,
+    "WER": 0.5,
+    "UTMOS": 0.05,
+    "WhiSQA": 0.05
+  },
+  "tolerance_note": "Reporting tolerances chosen for this reproduction; the paper does not define them.",
+  "systems": {
+    "Original": {
+      "E-VPC I": null,
+      "E-VPC L": null,
+      "E-VPC S": 4.6,
+      "W-NT I": null,
+      "W-NT L": null,
+      "W-NT S": 7.8,
+      "WER": 1.8,
+      "UTMOS": 4.11,
+      "WhiSQA": 4.08
+    },
+    "B4": {
+      "E-VPC I": 47.8,
+      "E-VPC L": 49.5,
+      "E-VPC S": 27.3,
+      "W-NT I": 38.2,
+      "W-NT L": 34.7,
+      "W-NT S": 17.4,
+      "WER": 5.9,
+      "UTMOS": 3.42,
+      "WhiSQA": 3.87
+    },
+    "B5": {
+      "E-VPC I": 49.1,
+      "E-VPC L": 48.7,
+      "E-VPC S": 34.3,
+      "W-NT I": 42.5,
+      "W-NT L": 42.0,
+      "W-NT S": 23.2,
+      "WER": 4.37,
+      "UTMOS": 3.31,
+      "WhiSQA": 3.65
+    },
+    "kNN-VC": {
+      "E-VPC I": 42.1,
+      "E-VPC L": 43.8,
+      "E-VPC S": 11.0,
+      "W-NT I": 19.0,
+      "W-NT L": 17.6,
+      "W-NT S": 5.9,
+      "WER": 2.77,
+      "UTMOS": 3.8,
+      "WhiSQA": 4.05
+    },
+    "Private kNN-VC": {
+      "E-VPC I": 47.4,
+      "E-VPC L": 49.7,
+      "E-VPC S": 27.9,
+      "W-NT I": 41.6,
+      "W-NT L": 43.9,
+      "W-NT S": 18.6,
+      "WER": 5.63,
+      "UTMOS": 2.62,
+      "WhiSQA": 2.92
+    },
+    "DU-orig-nt": {
+      "E-VPC I": 47.6,
+      "E-VPC L": 47.2,
+      "E-VPC S": 35.9,
+      "W-NT I": 33.1,
+      "W-NT L": 33.6,
+      "W-NT S": 22.6,
+      "WER": 4.48,
+      "UTMOS": 3.59,
+      "WhiSQA": 3.7
+    },
+    "DU-orig-ecapa": {
+      "E-VPC I": 47.3,
+      "E-VPC L": 46.6,
+      "E-VPC S": 24.3,
+      "W-NT I": 34.0,
+      "W-NT L": 33.9,
+      "W-NT S": 11.5,
+      "WER": 4.66,
+      "UTMOS": 3.3,
+      "WhiSQA": 3.17
+    },
+    "DU-pred-nt": {
+      "E-VPC I": 47.2,
+      "E-VPC L": 47.9,
+      "E-VPC S": 34.8,
+      "W-NT I": 39.9,
+      "W-NT L": 42.3,
+      "W-NT S": 24.6,
+      "WER": 7.41,
+      "UTMOS": 3.63,
+      "WhiSQA": 3.69
+    },
+    "DU-pred-ecapa": {
+      "E-VPC I": 47.1,
+      "E-VPC L": 47.6,
+      "E-VPC S": 31.6,
+      "W-NT I": 39.9,
+      "W-NT L": 42.4,
+      "W-NT S": 20.5,
+      "WER": 8.1,
+      "UTMOS": 3.32,
+      "WhiSQA": 3.18
+    },
+    "DU-nt-nt": {
+      "E-VPC I": 48.2,
+      "E-VPC L": 48.1,
+      "E-VPC S": 34.1,
+      "W-NT I": 40.5,
+      "W-NT L": 42.5,
+      "W-NT S": 23.7,
+      "WER": 7.73,
+      "UTMOS": 3.63,
+      "WhiSQA": 3.69
+    },
+    "DU-ecapa-ecapa": {
+      "E-VPC I": 46.9,
+      "E-VPC L": 48.9,
+      "E-VPC S": 41.1,
+      "W-NT I": 40.4,
+      "W-NT L": 40.7,
+      "W-NT S": 22.2,
+      "WER": 7.63,
+      "UTMOS": 3.27,
+      "WhiSQA": 3.19
+    },
+    "DU-ecapa-nt": {
+      "E-VPC I": 47.6,
+      "E-VPC L": 47.9,
+      "E-VPC S": 36.6,
+      "W-NT I": 40.3,
+      "W-NT L": 43.0,
+      "W-NT S": 24.1,
+      "WER": 7.59,
+      "UTMOS": 3.6,
+      "WhiSQA": 3.7
+    },
+    "DU-nt-ecapa": {
+      "E-VPC I": 47.1,
+      "E-VPC L": 47.6,
+      "E-VPC S": 35.1,
+      "W-NT I": 40.1,
+      "W-NT L": 42.4,
+      "W-NT S": 22.9,
+      "WER": 7.55,
+      "UTMOS": 3.32,
+      "WhiSQA": 3.16
+    }
+  },
+  "notes": [
+    "The B4 row in the paper mixes values attributed to B4 and B3 in the cited work; values are preserved verbatim.",
+    "The paper body gives DU-pred-nt W-NT L as 42.4 in one place and Table 1 gives 42.3; Table 1 is authoritative here.",
+    "Null cells are not missing reproduction numbers to be filled by another protocol; the paper does not report them."
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "balance_before_card_hours": 4.9927777776,
+  "balance_checked_at": "2026-11-11T10:42:02+08:00",
+  "scope": [
+    "E-VPC S root-cause diagnostic with the previous utterance-target path",
+    "W-NT L target-embedding interpolation sweep",
+    "W-NT L fixed-target-per-source-speaker diagnostic"
+  ],
+  "jobs": [
+    {
+      "job_id": "1090683",
+      "job_name": "n019_paperfix_s_eval_r1",
+      "state_at_submission": "cancelled_after_speaker_sampling_mismatch_found",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 2.0
+      },
+      "expected_card_hours": 1.5,
+      "worst_card_hours": 2.0,
+      "inputs": [
+        "/public/home/a094f4d6/voice_projects/data/n019_official/vpc/eval_view_s_paperfix",
+        "/public/home/a094f4d6/voice_projects/data/n019_official/vpc/data/train-clean-360_n019_paperfix",
+        "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data/libri_test_enrolls_n019_paperfix",
+        "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data/libri_test_trials_f_n019_paperfix",
+        "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data/libri_test_trials_m_n019_paperfix"
+      ],
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_paperfix_s_eval_retry1_20261111",
+      "stop_conditions": [
+        "missing official VPC metadata or anonymised data",
+        "DCU watchdog failure",
+        "non-finite loss",
+        "outer two-hour limit",
+        "incorrect result count or parse failure"
+      ]
+    },
+    {
+      "job_id": "1090831",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1090683",
+      "state_at_submission": "cancelled_while_pending_reordered",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "utterance_weights": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "inputs": {
+        "checkpoint": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_quad_w40_30_20_10.pt",
+        "checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+        "speaker_embeddings": "/public/home/a094f4d6/voice_projects/tmp/n019_mean32_shrink_ab_20261110/nt_speaker_embeddings_shrink01.npz",
+        "speaker_embeddings_sha256": "f51ea75edaa75c629d3634a8c60ff6a6b97f66197f8de34a419e18e0054efad5",
+        "utterance_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/libri_test_target_nt_utterance_paperfix/nt_utterance_embeddings.npz",
+        "utterance_embeddings_sha256": "0c2a747220bac2a231cbde981a9d5dfca621750348f87f7ce18fab84994a58b7"
+      },
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111",
+      "stop_conditions": [
+        "checkpoint or embedding SHA256 mismatch",
+        "official source/unit/target-map count mismatch",
+        "DCU watchdog failure",
+        "non-finite or non-unit target embedding",
+        "incorrect VPC split counts",
+        "outer one-hour limit"
+      ]
+    },
+    {
+      "job_id": "1090842",
+      "job_name": "n019_fixedspk_wntl",
+      "dependency": "afterok:1090831",
+      "state_at_submission": "cancelled_while_pending_direction_rejected",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "One deterministic unique target speaker and target utterance per source speaker, while retaining all 1,934 source utterances",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/fixed_speaker_wntl_20261111",
+      "stop_conditions": [
+        "source-speaker/target consistency check failure",
+        "checkpoint or embedding SHA256 mismatch",
+        "DCU watchdog failure",
+        "non-finite or non-unit target embedding",
+        "incorrect VPC split counts",
+        "outer forty-five-minute limit"
+      ]
+    },
+    {
+      "job_id": "1090872",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1090831",
+      "state_at_submission": "cancelled_while_pending_prioritized_speaker_sampling",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 1.0,
+      "design": "Full 168,023-utterance speaker-mean embedding as a paper-aligned pooling diagnostic",
+      "speaker_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_full168023_mean843_20261110/nt_speaker_embeddings.npz",
+      "speaker_embeddings_sha256": "704c80a0f8b081956ff5a16a51f77493ad6514135b421154b0ffffaabee04017",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/fullmean_wntl_20261111",
+      "stop_conditions": [
+        "checkpoint or embedding SHA256 mismatch",
+        "official source/unit/target-map count mismatch",
+        "DCU watchdog failure",
+        "non-finite or non-unit target embedding",
+        "incorrect VPC split counts",
+        "outer one-hour limit"
+      ]
+    },
+    {
+      "job_id": "1091143",
+      "job_name": "n019_spksample_wntl",
+      "dependency": "afterok:1090831",
+      "state_at_submission": "cancelled_while_pending_reordered",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "Uniform target-speaker sampling instead of uniform target-utterance sampling; 954 target speakers selected for 1,934 utterances",
+      "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/target_sampling_diag_20261111/libri_test_target_map_speaker_available_seed20261102.jsonl",
+      "target_map_sha256": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+      "speaker_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_all1158_shrink01_20261110.npz",
+      "speaker_embeddings_sha256": "28ffbaec9516cd8f5abbc752b40315b9fe958f7d37dc6b6f4a58bcd28c2540a7",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111",
+      "stop_conditions": [
+        "missing target-speaker mean for a selected target",
+        "official source/unit counts not 1,934",
+        "checkpoint or embedding SHA256 mismatch",
+        "DCU watchdog failure",
+        "incorrect VPC split counts",
+        "outer forty-five-minute limit"
+      ]
+    },
+    {
+      "job_id": "1091152",
+      "job_name": "n019_spksample_wntl",
+      "dependency": "afterok:1090683",
+      "state_at_submission": "cancelled_while_pending_reordered",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "Uniform target-speaker sampling; first W-NT L screen after the old S diagnostic",
+      "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/target_sampling_diag_20261111/libri_test_target_map_speaker_available_seed20261102.jsonl",
+      "target_map_sha256": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111"
+    },
+    {
+      "job_id": "1091154",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1091152",
+      "state_at_submission": "cancelled_while_pending_reordered",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "utterance_weights": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111"
+    },
+    {
+      "job_id": "1091163",
+      "job_name": "n019_spksample_wntl",
+      "dependency": null,
+      "state_at_submission": "failed_missing_anonymize_script",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "Uniform target-speaker sampling; first W-NT L screen",
+      "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/target_sampling_diag_20261111/libri_test_target_map_speaker_available_seed20261102.jsonl",
+      "target_map_sha256": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111"
+    },
+    {
+      "job_id": "1091165",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1091163",
+      "state_at_submission": "cancelled_dependency_failed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "utterance_weights": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111"
+    },
+    {
+      "job_id": "1091191",
+      "job_name": "n019_spksample_wntl",
+      "dependency": null,
+      "state_at_submission": "failed_missing_vpc_test_meta",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "Uniform target-speaker sampling; W-NT L screen",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111"
+    },
+    {
+      "job_id": "1091193",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1091191",
+      "state_at_submission": "cancelled_dependency_failed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111"
+    },
+    {
+      "job_id": "1091201",
+      "job_name": "n019_spksample_wntl",
+      "dependency": null,
+      "state_at_submission": "failed_unsupported_embedding_mode",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "design": "Uniform target-speaker sampling; first W-NT L screen after minimal path fixes",
+      "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/target_sampling_diag_20261111/libri_test_target_map_speaker_available_seed20261102.jsonl",
+      "target_map_sha256": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111"
+    },
+    {
+      "job_id": "1091202",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1091201",
+      "state_at_submission": "cancelled_dependency_failed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "utterance_weights": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111"
+    },
+    {
+      "job_id": "1091211",
+      "job_name": "n019_spksample_wntl",
+      "dependency": null,
+      "state_at_submission": "failed_vpc_symlink_skipped",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75
+    },
+    {
+      "job_id": "1091212",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": "afterok:1091211",
+      "state_at_submission": "cancelled_dependency_failed"
+    },
+    {
+      "job_id": "1091233",
+      "job_name": "n019_spksample_wntl",
+      "dependency": null,
+      "state_at_submission": "completed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 0.75
+      },
+      "expected_card_hours": 0.3,
+      "worst_card_hours": 0.75,
+      "actual_seconds": 200,
+      "result": {
+        "speaker_sampled_mean32_wnt_l_eer_percent": 40.35858139395714,
+        "utterance_sampled_baseline_wnt_l_eer_percent": 39.7293478251,
+        "delta_percentage_points": 0.62923356885714
+      },
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/speaker_sampling_wntl_20261111"
+    },
+    {
+      "job_id": "1091281",
+      "job_name": "n019_target_mix_wntl",
+      "dependency": null,
+      "state_at_submission": "running_or_pending",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/target_mix_wntl_20261111"
+    },
+    {
+      "job_id": "1091285",
+      "job_name": "n019_ls360_spks_s",
+      "dependency": "afterok:1091281",
+      "state_at_submission": "pending dependency",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "design": "Speaker-sampled LS360 anonymisation followed by official VPC ECAPA S retraining and AA evaluation",
+      "data_suffix": "_n019_spksamplediag_20261111",
+      "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/target_sampling_diag_20261111/librispeech_train_clean_360_target_map_speaker_available_seed20261102.jsonl",
+      "target_map_sha256": "e57788b434df2d11ff288d7b0280918c592b7cea32932a9c7b60c74da5ab0b08",
+      "speaker_embeddings_sha256": "28ffbaec9516cd8f5abbc752b40315b9fe958f7d37dc6b6f4a58bcd28c2540a7",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spksamplediag_s_eval_20261111",
+      "stop_conditions": [
+        "DCU watchdog failure",
+        "missing source, unit, target-map, speaker embeddings, or official VPC metadata",
+        "non-finite ASV loss",
+        "incorrect 104014/1934/438/734/762 counts",
+        "outer four-hour wall clock",
+        "result parse failure"
+      ]
+    }
+  ],
+  "temporary_failure": {
+    "job_id": "1090626",
+    "reason": "eval_view_s_paperfix lacked unsuffixed official trial directories",
+    "corrective_action": "symlinked unsuffixed metadata from vpc/original_meta before resubmitting 1090683"
+  }
+}

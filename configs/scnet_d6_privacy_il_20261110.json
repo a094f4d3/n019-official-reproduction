@@ -1,0 +1,49 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_privacy_il_d6_20261110",
+  "job_id": "1086445",
+  "evpc_retry_job_id": "1086575",
+  "retry_history": [
+    "1086292: slurm spool path resolution",
+    "1086354: unreadable d7 original VPC metadata",
+    "1086422: relative VPC paths lacked data-root symlink",
+    "1086542: dependency guard still ran before pyloudnorm was available"
+  ],
+  "state": "submitted",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "card_hours": {
+    "expected": 0.5,
+    "worst": 1.0
+  },
+  "balance_before": 5.0483333332,
+  "data_suffix": "_n019_soup2_w40_shrink01_20261110",
+  "vpc_data": "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data",
+  "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_20261110_il_r3",
+  "scope": [
+    "E-VPC I",
+    "E-VPC L",
+    "W-NT I",
+    "W-NT L"
+  ],
+  "stop_conditions": [
+    "300-second tiny-matmul watchdog failure",
+    "missing VPC or model asset",
+    "non-finite or wrong-dimensional speaker embedding",
+    "outer wall time reached",
+    "inconsistent official trial or output counts"
+  ],
+  "file_sha256": {
+    "scripts/evaluate_evpc_pre_remote.sh": "2d29cc7442073ebfd5f6aa03146db6e0abbe08347658ac49f462d11550f7d097",
+    "scripts/evaluate_wnt_remote.sh": "fa4df7f79f59e260e139ed981e972989cb28caa9e9ecfb1fe971f6b4cf16c6af",
+    "scripts/run_du_pred_nt_privacy_il_remote.sh": "fe6b1ad9252155d6cdfe0d8a26cb56029aa4f8f0dfc68a9946d54c919ec0c957",
+    "configs/eval_paper_test_only_privacy.yaml": "0ff1a1a6120d4f3ebdae2371b539cad982e33e5816b5d862f72d01cf2cac5cff",
+    "hpc/n019_privacy_il_hpc.slurm": "a6d197fe27bd6de566c00fd879bf747e4cbbded510975b2d15f00ec2d88fc954"
+  }
+}

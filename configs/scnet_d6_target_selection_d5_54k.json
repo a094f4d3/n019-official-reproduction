@@ -1,0 +1,155 @@
+{
+  "browser": {
+    "channel": "msedge",
+    "headless": true,
+    "slow_mo_ms": 80,
+    "profile_root": "~/.scnet-browser-profiles",
+    "persist_session_state": true,
+    "session_state_filename": "n019_browser_state.json",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "base_url": "https://www.scnet.cn/ui/console/index.html",
+    "model_training_url": "https://www.scnet.cn/ui/console/index.html#/model-training/add-train",
+    "task_list_page_url": "https://www.scnet.cn/ui/console/index.html#/model-training",
+    "timeout_ms": 180000,
+    "password_prompt": true,
+    "manual_login_timeout_seconds": 120,
+    "password_env_prefix": "SCNET_PASSWORD_",
+    "shared_password_env": "SCNET_PASSWORD",
+    "ui": {
+      "login_ready_selector": "#instanceName, #username",
+      "username_selector": "#username",
+      "password_selector": "#password",
+      "captcha_selector": "#captcha",
+      "login_button_name": "登录",
+      "login_url_fragment": "/sso/login",
+      "task_name_selector": "#instanceName",
+      "form_item_xpath": "xpath=ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' el-form-item ')][1]",
+      "refresh_button_name": "刷新",
+      "resource_row_selector": "tr",
+      "task_row_selector": "tr",
+      "cards_label": "每实例加速卡数量",
+      "instances_label": "实例数",
+      "auto_fault_label": "自动容错",
+      "visible_popper_selector": ".el-popper:visible",
+      "cascader_node_selector": ".el-cascader-node:not(.is-disabled)",
+      "image_placeholder": "请选择基础镜像",
+      "image_value_separator": " / ",
+      "startup_editor_selector": ".CodeMirror",
+      "terms_label": "我已阅读并同意",
+      "create_button_name": "创建",
+      "task_list_url": "**/#/model-training",
+      "task_id_regex": "ID\\s*[：:]?\\s*(\\d{10,})",
+      "status_regex": "状态\\s*[：:]?\\s*([^\\s]+)"
+    }
+  },
+  "output_root": "runs/scnet_browser_submissions",
+  "dry_run": false,
+  "max_tasks_per_run": 1,
+  "inspection": {
+    "accounts": [
+      "a094f4d6"
+    ],
+    "balance_label": "机时余量",
+    "balance_value_selector": ".el-descriptions-item__content",
+    "balance_regex": "([0-9]+(?:\\.[0-9]+)?)\\s*卡\\s*\\*?\\s*时"
+  },
+  "defaults": {
+    "region": "华中一区【A区】",
+    "accelerator": "异构加速卡BW",
+    "resource_group": "113 组",
+    "cards": 1,
+    "instances": 1,
+    "auto_fault": false,
+    "auto_fault_retry_limit": 3,
+    "accept_terms": true,
+    "cpu_per_card": 15,
+    "memory_gb_per_card": 59,
+    "expected_resource_text": [
+      "异构加速卡BW",
+      "内存59GB",
+      "CPU型号：15核",
+      "DTK 26.04"
+    ],
+    "allowed_start_prefixes": [
+      "bash ",
+      "python ",
+      "torchrun ",
+      "timeout "
+    ],
+    "image": {
+      "framework": "PyTorch",
+      "version": "2.9.0",
+      "python": "py3.11-Ubuntu22.04",
+      "dtk": "dtk26.04"
+    },
+    "wall_hours": 18,
+    "expected_card_hours": 14.12,
+    "input_paths": [],
+    "output_paths": [],
+    "stop_conditions": [
+      "达到墙钟上限",
+      "非有限 embedding",
+      "10 分钟无进度",
+      "DCU 或 GroupNorm 初始化失败",
+      "manifest 与音频 ID 不一致",
+      "存储不足"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "d6-target-selection-d5-54k",
+      "enabled": true,
+      "status": "completed_20261110_0159_selected_54k",
+      "submit": false,
+      "submitted_task_id": "2119843882860302338",
+      "name": "n019_selsel54k_{timestamp}",
+      "account": "a094f4d6",
+      "cards": 1,
+      "wall_hours": 1.5,
+      "expected_card_hours": 0.65,
+      "worst_card_hours": 1.5,
+      "input_paths": [
+        "/public/home/{account}/voice_projects/data/n019_official/processed/selection_dev100_2x24k_20261108_d6copy/manifest.jsonl",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/selection_dev100_2x24k_20261108_d6copy/audio",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/selection_dev100_2x24k_20261108_d6copy/unit_records.jsonl",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/targets/libri_dev100_target_map_paperfix_seed20261102.jsonl",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_hpc_20261109/nt_speaker_embeddings.npz",
+        "/public/home/{account}/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_ft14k_long_20261109/snapshots/generator_step00006000.pt",
+        "/public/home/{account}/voice_projects/tmp/n019_d5_snapshots_20261110/generator_step00054000.pt",
+        "/public/home/{account}/voice_projects/models/n019_official/mos/UTMOS22-mirror/model.ckpt",
+        "/public/home/{account}/voice_projects/models/n019_official/mos/WhiSQA_single_head.pt",
+        "/public/home/{account}/voice_projects/models/n019_official/vpc/exp/asr_n019_local"
+      ],
+      "output_paths": [
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_target_selection_d5_54k_{timestamp}"
+      ],
+      "stop_conditions": [
+        "target map 不是 100 行或 baseline/54k 任一 checkpoint SHA 不符",
+        "mean32 embedding 不是 843 keys、250-D、finite 或 unit norm",
+        "任一 candidate 不是 100 句或 UTMOS/WhiSQA/WER 计数不一致",
+        "指标非有限、evaluator 非零、DCU tiny matmul、内存/存储错误或达到 1.5 小时墙钟"
+      ],
+      "startup_script": "timeout --signal=KILL 5100 env N019_SELECTION_OUT=/public/home/{account}/voice_projects/runs/n019_official/vocoder_target_selection_d5_54k_{timestamp} N019_SELECTION_MODE=target_anonymisation N019_SELECTION_LIMIT=100 N019_SELECTION_SNAPSHOT_GLOB=generator_step00054000.pt N019_SELECTION_SOURCE_MANIFEST=/public/home/{account}/voice_projects/data/n019_official/processed/selection_dev100_2x24k_20261108_d6copy/manifest.jsonl N019_SELECTION_UNIT_RECORDS=/public/home/{account}/voice_projects/data/n019_official/processed/selection_dev100_2x24k_20261108_d6copy/unit_records.jsonl N019_SELECTION_TARGET_MAP=/public/home/{account}/voice_projects/data/n019_official/processed/targets/libri_dev100_target_map_paperfix_seed20261102.jsonl N019_SELECTION_VOCODER_EMBEDDINGS=/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_hpc_20261109/nt_speaker_embeddings.npz N019_SELECTION_TARGET_EMBEDDING_KEY=target_speaker N019_SELECTION_TARGET_EMBEDDING_MODE=speaker_mean_l2 N019_SELECTION_VOCODER_TYPE=nt N019_SELECTION_DURATION_MODEL=/public/home/{account}/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt N019_SELECTION_SNAPSHOT_DIR=/public/home/{account}/voice_projects/tmp/n019_d5_snapshots_20261110 N019_SELECTION_BASELINE_CHECKPOINT=/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_ft14k_long_20261109/snapshots/generator_step00006000.pt bash -x /public/home/{account}/voice_projects/code/n019_official/scripts/run_vocoder_snapshot_selection_ai.sh > /public/home/{account}/voice_projects/code/n019_official/audit/d5_target_selection_54k_{timestamp}.log 2>&1",
+      "submitted_name": "n019_selsel54k_20261110_012534",
+      "result": {
+        "baseline": {
+          "UTMOS": 3.049982579946518,
+          "WhiSQA": 2.9502999886870382,
+          "WER_percent": 20.541958041958043
+        },
+        "generator_step00054000": {
+          "UTMOS": 3.200828708410263,
+          "WhiSQA": 3.1699211433529855,
+          "WER_percent": 20.498251748251747
+        },
+        "selected_id": "generator_step00054000",
+        "eligible": true,
+        "selection_json_sha256": "59b14277630b76346ce4a87dffc16ecd848a3bbb6fecdbad10a7c58d1bc26b6d"
+      }
+    }
+  ]
+}

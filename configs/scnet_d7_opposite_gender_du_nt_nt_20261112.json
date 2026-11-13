@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "name": "n019_opposite_gender_du_nt_nt_20261112",
+  "purpose": "Zero-training E-VPC S privacy diagnostic using opposite-gender target speakers sampled from the original LibriTTS train-other-500 pool.",
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_id": "1098241",
+  "submit": false,
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "expected_card_hours": 0.4,
+  "worst_card_hours": 1.0,
+  "inputs": {
+    "source_manifest": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/manifests/libri_test.jsonl",
+    "unit_records": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/units/libri_test_paperfix/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/opposite_gender_20261112/libri_test_target_map_opposite_gender_seed20261102.jsonl",
+    "target_map_sha256": "96c3bb8f9042db0409d5db2b1b050e34ca8abca3e80311307fcfdc56c205f493",
+    "target_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/opposite_gender_20261112/test_emb_opposite_keys.npz",
+    "target_embeddings_sha256": "bb66923848380f47851ae5249a837119121adf789c067263d49e6e75b7711002",
+    "vocoder": "/public/home/a094f4d7/voice_projects/tmp/n019_privacy_fix_20261111/generator_soup2.pt",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model": "/public/home/a094f4d7/voice_projects/runs/n019_official/duration_nt_main/best.pt",
+    "duration_model_sha256": "5fb1383660f738051f77b5dd6b4dd2fd52444be96803912d25ec8f5247c53be7",
+    "duration_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/targets/opposite_gender_20261112/test_emb_opposite_keys.npz"
+  },
+  "conditioning": {
+    "duration_mode": "nt",
+    "duration_embedding_key": "target_speaker",
+    "target_embedding_key": "target_speaker",
+    "target_embedding_mode": "speaker_mean_l2_shrink0.1",
+    "target_sampling": "opposite gender, uniform over target speakers"
+  },
+  "output": {
+    "anon_dir": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/opposite_gender_du_nt_nt_20261112/anonymised/libri_test",
+    "vpc_suffix": "_n019_opposite_gender_du_nt_nt_20261112",
+    "eval_dir": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/opposite_gender_du_nt_nt_20261112/eval"
+  },
+  "stage": "full_1934_test_quality_wer_and_wnt_l_completed",
+  "quality_result": {
+    "job_id": "1098238",
+    "state": "COMPLETED",
+    "WER_percent": 6.292449061126648,
+    "UTMOS": 3.4588553642906104,
+    "WhiSQA": 3.4914957126361754,
+    "quality_metrics_sha256": "dff3c7aa5d6ade93f3e865f19a7a1211244b5083c7fe65dbe60c42e8705974ee"
+  },
+  "wnt_l_result": {
+    "job_id": "1098241",
+    "state": "COMPLETED",
+    "female_eer_percent": 41.42443239688873,
+    "male_eer_percent": 40.78149497509003,
+    "mean_eer_percent": 41.10296368598938,
+    "summary_sha256": "0f2aa85332de2ac320255147f7a10bd9fde36e3a21c3d090928c59cd862ad5cf"
+  },
+  "job_history": [
+    {
+      "job_id": "1098216",
+      "state": "failed_fast_key_mismatch",
+      "elapsed": "00:00:33",
+      "note": "The opposite-gender map exercised 814 of the 954 available target speakers, while the preflight requires an exact key set. A deterministic 814-key subset was written and verified before resubmission."
+    },
+    {
+      "job_id": "1098220",
+      "state": "failed_fast_output_permission",
+      "elapsed": "00:02:02",
+      "note": "The inherited anonymised-data parent is not writable by d7. No audio was generated; resubmitted with the run-owned privacy output directory."
+    },
+    {
+      "job_id": "1098226",
+      "state": "failed_after_complete_audio_on_eval_permission",
+      "elapsed": "00:05:12",
+      "note": "All 1,934 WAV and VPC entries were generated and verified. Only the root-owned eval parent was not writable; the completed audio is reused."
+    }
+  ],
+  "stop_conditions": [
+    "target map or embedding hash mismatch",
+    "missing source or unit input",
+    "DCU tiny-matmul watchdog failure",
+    "non-finite synthesis output",
+    "one-hour wall-clock timeout"
+  ]
+}

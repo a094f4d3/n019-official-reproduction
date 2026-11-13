@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "n019-official"
+version = "0.3.0"
+description = "Paper-structured implementation for N019 speaker anonymisation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+automation = ["playwright>=1.50,<2"]
+
+[project.scripts]
+n019-prepare-data = "n019.prepare_data:main"
+n019-units = "n019.units:main"
+n019-extract-speakers = "n019.extract_speakers:main"
+n019-duration = "n019.duration:main"
+n019-vocoder = "n019.vocoder:main"
+n019-anonymize = "n019.anonymize:main"
+n019-prepare-vpc = "n019.prepare_vpc_manifest:main"
+n019-export-vpc = "n019.export_vpc_anon:main"
+n019-eval-mos = "n019.eval_mos:main"
+n019-prepare-train360 = "n019.prepare_train360:main"
+n019-parse-vpc-results = "n019.parse_vpc_results:main"
+n019-wnt-attack = "n019.wnt_attack:main"
+n019-compare-paper = "n019.compare_paper:main"
+n019-assemble-paper-metrics = "n019.assemble_paper_metrics:main"
+n019-manifest-stats = "n019.manifest_stats:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

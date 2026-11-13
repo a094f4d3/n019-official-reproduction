@@ -1,0 +1,165 @@
+{
+  "browser": {
+    "channel": "msedge",
+    "headless": true,
+    "slow_mo_ms": 80,
+    "profile_root": "~/.scnet-browser-profiles",
+    "persist_session_state": true,
+    "session_state_filename": "n019_browser_state.json",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "base_url": "https://www.scnet.cn/ui/console/index.html",
+    "model_training_url": "https://www.scnet.cn/ui/console/index.html#/model-training/add-train",
+    "task_list_page_url": "https://www.scnet.cn/ui/console/index.html#/model-training",
+    "timeout_ms": 180000,
+    "password_prompt": true,
+    "manual_login_timeout_seconds": 120,
+    "password_env_prefix": "SCNET_PASSWORD_",
+    "shared_password_env": "SCNET_PASSWORD",
+    "ui": {
+      "login_ready_selector": "#instanceName, #username",
+      "username_selector": "#username",
+      "password_selector": "#password",
+      "captcha_selector": "#captcha",
+      "login_button_name": "登录",
+      "login_url_fragment": "/sso/login",
+      "task_name_selector": "#instanceName",
+      "form_item_xpath": "xpath=ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' el-form-item ')][1]",
+      "refresh_button_name": "刷新",
+      "resource_row_selector": "tr",
+      "task_row_selector": "tr",
+      "cards_label": "每实例加速卡数量",
+      "instances_label": "实例数",
+      "auto_fault_label": "自动容错",
+      "visible_popper_selector": ".el-popper:visible",
+      "cascader_node_selector": ".el-cascader-node:not(.is-disabled)",
+      "image_placeholder": "请选择基础镜像",
+      "image_value_separator": " / ",
+      "startup_editor_selector": ".CodeMirror",
+      "terms_label": "我已阅读并同意",
+      "create_button_name": "创建",
+      "task_list_url": "**/#/model-training",
+      "task_id_regex": "ID\\s*[：:]?\\s*(\\d{10,})",
+      "status_regex": "状态\\s*[：:]?\\s*([^\\s]+)"
+    }
+  },
+  "output_root": "runs/scnet_browser_submissions",
+  "dry_run": false,
+  "max_tasks_per_run": 1,
+  "inspection": {
+    "accounts": [
+      "a094f4d6"
+    ],
+    "balance_label": "机时余量",
+    "balance_value_selector": ".el-descriptions-item__content",
+    "balance_regex": "([0-9]+(?:\\.[0-9]+)?)\\s*卡\\s*\\*?\\s*时"
+  },
+  "defaults": {
+    "region": "华中一区【A区】",
+    "accelerator": "异构加速卡BW",
+    "resource_group": "113 组",
+    "cards": 1,
+    "instances": 1,
+    "auto_fault": false,
+    "auto_fault_retry_limit": 3,
+    "accept_terms": true,
+    "cpu_per_card": 15,
+    "memory_gb_per_card": 59,
+    "expected_resource_text": [
+      "异构加速卡BW",
+      "内存59GB",
+      "CPU型号：15核",
+      "DTK 26.04"
+    ],
+    "allowed_start_prefixes": [
+      "bash ",
+      "python ",
+      "torchrun ",
+      "timeout "
+    ],
+    "image": {
+      "framework": "PyTorch",
+      "version": "2.9.0",
+      "python": "py3.11-Ubuntu22.04",
+      "dtk": "dtk26.04"
+    },
+    "wall_hours": 18,
+    "expected_card_hours": 14.12,
+    "input_paths": [],
+    "output_paths": [],
+    "stop_conditions": [
+      "达到墙钟上限",
+      "非有限 embedding",
+      "10 分钟无进度",
+      "DCU 或 GroupNorm 初始化失败",
+      "manifest 与音频 ID 不一致",
+      "存储不足"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "d6-vocoder-fp32-from62k",
+      "enabled": false,
+      "submit": false,
+      "name": "n019_fp32_d6_62k_{timestamp}",
+      "account": "a094f4d6",
+      "cards": 1,
+      "wall_hours": 6,
+      "expected_card_hours": 5.5,
+      "worst_card_hours": 6.0,
+      "input_paths": [
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110/last.pt",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz",
+        "/public/home/{account}/voice_projects/logs/n019_official/d6_training_data_ready.json"
+      ],
+      "output_paths": [
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110"
+      ],
+      "stop_conditions": [
+        "resume SHA256 or step 62000 mismatch",
+        "training data marker or 33236 rows mismatch",
+        "recipe, DCU, OOM, or non-finite loss failure",
+        "10-15 minutes without progress",
+        "5.5 hour internal or 6 hour external wall clock"
+      ],
+      "startup_script": "timeout --signal=KILL 21600 env N019_OFFICIAL_ROOT=/public/home/{account}/voice_projects/code/n019_official N019_NPROC=1 N019_VOCODER_TOTAL_BATCH=16 N019_VOCODER_WORKERS=4 N019_VOCODER_TYPE=nt N019_VOCODER_RUN_NAME=vocoder_nt_hpc_d6_fp32_from62k_20261110 N019_VOCODER_OUT=/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110 N019_VOCODER_RECORDS=/public/home/{account}/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl N019_VOCODER_EMBEDDINGS=/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz N019_VOCODER_STEPS=400000 N019_VOCODER_MAX_HOURS=5.5 N019_VOCODER_CHECKPOINT_INTERVAL=2000 N019_VOCODER_GENERATOR_SNAPSHOT_INTERVAL=2000 N019_VOCODER_KEEP_INTERVAL=50000 N019_VOCODER_VALIDATION_INTERVAL=2000 N019_VOCODER_VALIDATION_LIMIT=64 N019_VOCODER_SELECTION_POLICY=mos_offline N019_VOCODER_EARLY_STOP_PATIENCE=0 N019_VOCODER_LR=2e-4 N019_VOCODER_GRAD_CLIP_NORM=0 N019_VOCODER_BF16=0 N019_VOCODER_RESUME_SHA256=a928093e2c603feaf9501c9056f7b4210ebbc1a9e744be3ea4cedeb46a064c8e N019_SKIP_PATH_VERIFY=1 N019_TRAINING_DATA_MARKER=/public/home/{account}/voice_projects/logs/n019_official/d6_training_data_ready.json N019_TRAINING_EXPECTED_ROWS=33236 N019_STAGE_TRACE=1 bash -x /public/home/{account}/voice_projects/code/n019_official/scripts/run_vocoder_ddp.sh > /public/home/{account}/voice_projects/code/n019_official/audit/vocoder_nt_d6_fp32_from62k_{timestamp}.log 2>&1",
+      "status": "failed_20261110_024720_missing_verify_training_data_marker",
+      "submitted_task_id": "2119864403803394050",
+      "submitted_name": "n019_fp32_d6_62k_20261110_024707"
+    },
+    {
+      "id": "d6-vocoder-fp32-from62k-r1",
+      "enabled": true,
+      "submit": false,
+      "name": "n019_fp32_d6_62k_r1_{timestamp}",
+      "account": "a094f4d6",
+      "cards": 1,
+      "wall_hours": 6,
+      "expected_card_hours": 5.5,
+      "worst_card_hours": 6.0,
+      "input_paths": [
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110/last.pt",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+        "/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz",
+        "/public/home/{account}/voice_projects/logs/n019_official/d6_training_data_ready.json"
+      ],
+      "output_paths": [
+        "/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110"
+      ],
+      "stop_conditions": [
+        "resume SHA256 or step 62000 mismatch",
+        "training data marker or 33236 rows mismatch",
+        "recipe, DCU, OOM, or non-finite loss failure",
+        "10-15 minutes without progress",
+        "5.5 hour internal or 6 hour external wall clock"
+      ],
+      "startup_script": "timeout --signal=KILL 21600 env N019_OFFICIAL_ROOT=/public/home/{account}/voice_projects/code/n019_official N019_NPROC=1 N019_VOCODER_TOTAL_BATCH=16 N019_VOCODER_WORKERS=4 N019_VOCODER_TYPE=nt N019_VOCODER_RUN_NAME=vocoder_nt_hpc_d6_fp32_from62k_20261110 N019_VOCODER_OUT=/public/home/{account}/voice_projects/runs/n019_official/vocoder_nt_hpc_d6_fp32_from62k_20261110 N019_VOCODER_RECORDS=/public/home/{account}/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl N019_VOCODER_EMBEDDINGS=/public/home/{account}/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz N019_VOCODER_STEPS=400000 N019_VOCODER_MAX_HOURS=5.5 N019_VOCODER_CHECKPOINT_INTERVAL=2000 N019_VOCODER_GENERATOR_SNAPSHOT_INTERVAL=2000 N019_VOCODER_KEEP_INTERVAL=50000 N019_VOCODER_VALIDATION_INTERVAL=2000 N019_VOCODER_VALIDATION_LIMIT=64 N019_VOCODER_SELECTION_POLICY=mos_offline N019_VOCODER_EARLY_STOP_PATIENCE=0 N019_VOCODER_LR=2e-4 N019_VOCODER_GRAD_CLIP_NORM=0 N019_VOCODER_BF16=0 N019_VOCODER_RESUME_SHA256=a928093e2c603feaf9501c9056f7b4210ebbc1a9e744be3ea4cedeb46a064c8e N019_SKIP_PATH_VERIFY=1 N019_TRAINING_DATA_MARKER=/public/home/{account}/voice_projects/logs/n019_official/d6_training_data_ready.json N019_TRAINING_EXPECTED_ROWS=33236 N019_STAGE_TRACE=1 bash -x /public/home/{account}/voice_projects/code/n019_official/scripts/run_vocoder_ddp.sh > /public/home/{account}/voice_projects/code/n019_official/audit/vocoder_nt_d6_fp32_from62k_{timestamp}.log 2>&1",
+      "status": "rejected_utmos70k_20261110_0602",
+      "submitted_task_id": "2119864730527092738",
+      "submitted_name": "n019_fp32_d6_62k_r1_20261110_024825"
+    }
+  ]
+}

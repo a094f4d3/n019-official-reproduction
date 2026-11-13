@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/nt_utterance_embeddings.npz",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/nt_utterance_embeddings.npz",
+      "sha256": "274dd8012a59ff02a7bcc11921b1be2b731b2c4fcba50603428c7d5c2a047f1a",
+      "local_name": "embeddings/nt_utterance_embeddings.npz"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/nt_utterance_manifest.jsonl",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/nt_utterance_manifest.jsonl",
+      "sha256": "f6986086fbf79e0555629ad31fe7acb5893b90db03cef44f60b27fa9e5cea76b",
+      "local_name": "embeddings/nt_utterance_manifest.jsonl"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/metadata.json",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/metadata.json",
+      "sha256": "15730f7d25eca9c6a71aded962360d83d7868e0bcee795c0a288f2569c9d6a28",
+      "local_name": "embeddings/metadata.json"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/runs/n019_official/duration_nt_main/best.pt",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/runs/n019_official/duration_nt_main/best.pt",
+      "sha256": "5fb1383660f738051f77b5dd6b4dd2fd52444be96803912d25ec8f5247c53be7",
+      "local_name": "duration_nt/best.pt"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/runs/n019_official/duration_nt_main/meta.json",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/runs/n019_official/duration_nt_main/meta.json",
+      "sha256": "1f6ab9e6c4dd648346394ca49b613fd9d0cc65691d7485d3d50902e8a901087c",
+      "local_name": "duration_nt/meta.json"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/runs/n019_official/duration_pred_main/best.pt",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/runs/n019_official/duration_pred_main/best.pt",
+      "sha256": "903f75ad44f2b48ac9f181d63b057e19c049efa1d6b94dfeee29c4c6768d42be",
+      "local_name": "duration_pred/best.pt"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/runs/n019_official/duration_pred_main/meta.json",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/runs/n019_official/duration_pred_main/meta.json",
+      "sha256": "14ca9ed50fe4fed3846672368a1ad953dd73ed0d3ed02efedf68afd0e97e1e37",
+      "local_name": "duration_pred/meta.json"
+    }
+  ]
+}

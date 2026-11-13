@@ -1,0 +1,75 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_eval_soup2_w40_shrink01_20261110",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 0.75,
+    "worst": 2.0
+  },
+  "label": "soup2_w40_shrink01_20261110",
+  "checkpoint": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_quad_w40_30_20_10.pt",
+    "sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "steps": 96000
+  },
+  "target_embeddings": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_mean32_shrink_ab_20261110/nt_speaker_embeddings_shrink01.npz",
+    "key": "target_speaker",
+    "mode": "speaker_mean_l2_shrink0.1"
+  },
+  "dev_metrics": {
+    "utmos": 3.512773952484131,
+    "whisqa": 3.4313993632793425,
+    "wer_percent": 6.121516674280493,
+    "delta_vs_formal_mean32_baseline": {
+      "utmos": 0.1205473351527614,
+      "whisqa": 0.0764533620331995,
+      "wer_percent": 0.0
+    }
+  },
+  "expected_counts": {
+    "anonymised": 1934,
+    "vpc_split": 1934,
+    "enrolls": 438,
+    "trials_female": 734,
+    "trials_male": 762,
+    "wer": 1496,
+    "utmos": 1934,
+    "whisqa": 1934
+  },
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/eval_user/du_pred_nt_soup2_w40_shrink01_20261110",
+  "stop_conditions": [
+    "checkpoint or input SHA256 mismatch",
+    "incorrect VPC counts",
+    "DCU watchdog or OOM",
+    "non-finite metric",
+    "no progress",
+    "2-hour outer wall clock"
+  ],
+  "job_id": "1085663",
+  "failed_retry_ids": [
+    "1085482",
+    "1085520",
+    "1085586"
+  ],
+  "submitted": true,
+  "results": {
+    "WER_percent": 6.223959819644997,
+    "UTMOS": 3.525366654070605,
+    "WhiSQA": 3.4957589100441493,
+    "counts": {
+      "WER": 1496,
+      "UTMOS": 1934,
+      "WhiSQA": 1934
+    },
+    "quality_metrics_sha256": "542cd9fc44e1c03237150078cb67ddb4e7edfe41775f53c77acb7896040d9f5a"
+  },
+  "submit": false
+}

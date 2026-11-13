@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "source_host": "local",
+      "source_path": "C:/Users/lihaopeng/Desktop/文件/水课/大三上/语音识别_N019_official/scripts/prepare_libri_test_targets_paperfix_d4.sh",
+      "target_host": "scnet-a094f4d4",
+      "target_path": "/public/home/a094f4d4/voice_projects/code/n019_official/scripts/prepare_libri_test_targets_paperfix_d4.sh",
+      "sha256": "690f6670861db3af87a4a39f4b372a0bb37dc09527cd89457106c997a1790514",
+      "local_name": "scripts/prepare_libri_test_targets_paperfix_d4.sh"
+    },
+    {
+      "source_host": "local",
+      "source_path": "C:/Users/lihaopeng/Desktop/文件/水课/大三上/语音识别_N019_official/scripts/run_libri_test_target_embedding_paperfix_ai.sh",
+      "target_host": "scnet-a094f4d4",
+      "target_path": "/public/home/a094f4d4/voice_projects/code/n019_official/scripts/run_libri_test_target_embedding_paperfix_ai.sh",
+      "sha256": "7b04a6f31e19c1f5485fb5d8c43b7ebfc8eda6c5611c1254dca2dcdc8156e79d",
+      "local_name": "scripts/run_libri_test_target_embedding_paperfix_ai.sh"
+    }
+  ]
+}

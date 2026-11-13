@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "release": "v0.3.0",
+  "paper": {
+    "title": "Joint Timbral and Non-Timbral Speaker Anonymisation",
+    "doi": "10.21437/Odyssey.2026-16"
+  },
+  "formal": {
+    "system": "DU-pred-nt",
+    "description": "84/88/92/96k effective-weight-norm soup (40:30:20:10) with mean32 + shrink0.1 target embedding",
+    "checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "quality_metrics_sha256": "542cd9fc44e1c03237150078cb67ddb4e7edfe41775f53c77acb7896040d9f5a",
+    "counts": {
+      "WER": 1496,
+      "UTMOS": 1934,
+      "WhiSQA": 1934
+    },
+    "metrics": {
+      "E-VPC I": {
+        "paper": 47.2,
+        "reproduced": 48.0285,
+        "absolute_difference": 0.8285,
+        "relative_difference_percent": 1.7552966102,
+        "higher_is_better": true
+      },
+      "E-VPC L": {
+        "paper": 47.9,
+        "reproduced": 47.754,
+        "absolute_difference": -0.146,
+        "relative_difference_percent": -0.3048016701,
+        "higher_is_better": true
+      },
+      "E-VPC S": {
+        "paper": 34.8,
+        "reproduced": 29.7425,
+        "absolute_difference": -5.0575,
+        "relative_difference_percent": -14.533045977,
+        "higher_is_better": true
+      },
+      "W-NT I": {
+        "paper": 39.9,
+        "reproduced": 39.1678579152,
+        "absolute_difference": -0.7321420848,
+        "relative_difference_percent": -1.8349425685,
+        "higher_is_better": true
+      },
+      "W-NT L": {
+        "paper": 42.3,
+        "reproduced": 39.7293478251,
+        "absolute_difference": -2.5706521749,
+        "relative_difference_percent": -6.077191903,
+        "higher_is_better": true
+      },
+      "W-NT S": {
+        "paper": 24.6,
+        "reproduced": 24.5238568634,
+        "absolute_difference": -0.0761431366,
+        "relative_difference_percent": -0.3095249456,
+        "higher_is_better": true
+      },
+      "WER": {
+        "paper": 7.41,
+        "reproduced": 6.2239598196,
+        "absolute_difference": -1.1860401804,
+        "relative_difference_percent": -16.0059403557,
+        "higher_is_better": false
+      },
+      "UTMOS": {
+        "paper": 3.63,
+        "reproduced": 3.5253666541,
+        "absolute_difference": -0.1046333459,
+        "relative_difference_percent": -2.8824613204,
+        "higher_is_better": true
+      },
+      "WhiSQA": {
+        "paper": 3.69,
+        "reproduced": 3.49575891,
+        "absolute_difference": -0.19424109,
+        "relative_difference_percent": -5.2639861777,
+        "higher_is_better": true
+      }
+    }
+  },
+  "experiments": [
+    {
+      "name": "fullmean1160_no_shrink",
+      "role": "diagnostic",
+      "E-VPC S": 31.2,
+      "conclusion": "Improves S but regresses both MOS metrics"
+    },
+    {
+      "name": "fullmean1160_s_adj20_lr1e3",
+      "role": "diagnostic",
+      "E-VPC S": 31.0,
+      "conclusion": "Attack convergence is not the main gap"
+    },
+    {
+      "name": "avg8892_fullmean",
+      "role": "diagnostic",
+      "E-VPC S": 29.6955,
+      "conclusion": "Checkpoint choice is not the remaining S driver"
+    },
+    {
+      "name": "speaker_sampled_mean32",
+      "role": "diagnostic",
+      "E-VPC S": 30.642,
+      "conclusion": "Sampling policy contributes but does not explain the full gap"
+    },
+    {
+      "name": "utterance_target",
+      "role": "diagnostic",
+      "E-VPC S": 30.9685,
+      "conclusion": "Target pooling is not the main remaining gap"
+    },
+    {
+      "name": "du_nt_nt_random_target",
+      "role": "diagnostic",
+      "E-VPC S": 30.039,
+      "conclusion": "Target-conditioned duration does not explain the gap"
+    },
+    {
+      "name": "source_reconstruction",
+      "role": "diagnostic",
+      "E-VPC S": 0.0,
+      "conclusion": "The vocoder retains source identity when explicitly conditioned on it"
+    },
+    {
+      "name": "opposite_gender_target",
+      "role": "diagnostic_only",
+      "E-VPC S": 42.0405,
+      "conclusion": "Privacy-enhanced diagnostic, not the paper target-sampling method"
+    }
+  ],
+  "remote_result_paths": {
+    "formal_eer_and_assembly": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_final_r2_20261111",
+    "wer_utmos_whisqa": "/public/home/a094f4d7/voice_projects/runs/n019_official/eval_user/du_pred_nt_soup2_w40_shrink01_20261110"
+  }
+}

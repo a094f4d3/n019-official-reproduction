@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "source_host": "local",
+      "source_path": "scripts/run_ls360_anon_pilot_ai.sh",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/code/n019_official/scripts/run_ls360_anon_pilot_ai.sh",
+      "sha256": "facc7ba0dbe82fa697ed7438ce96df8960c3b8a60814f767b2593e64d61f9b2c",
+      "local_name": "run_ls360_anon_pilot_ai.sh"
+    }
+  ]
+}

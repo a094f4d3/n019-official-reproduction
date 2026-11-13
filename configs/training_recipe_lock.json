@@ -1,0 +1,9 @@
+{
+  "feature_matching_probe": 4.0,
+  "feature_matching_scale": 2.0,
+  "source_sha256": {
+    "src/n019/hifigan.py": "ce1cdb2eecd65ecaf4d4c3ecea5bc7c3041692159c515a8911039411937ec830",
+    "src/n019/training_recipe.py": "083c2363b560122fccbcd974c02bfeb0bffb355638d99e2c1feef818fee134cd"
+  },
+  "version": "n019-unit-hifigan-reference-v2"
+}

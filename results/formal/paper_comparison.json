@@ -1,0 +1,85 @@
+{
+  "all_reported_metrics_complete": true,
+  "completed_metrics": 9,
+  "metrics": {
+    "E-VPC I": {
+      "absolute_difference": 0.8284999999999982,
+      "paper": 47.2,
+      "relative_difference_percent": 1.7552966101694878,
+      "reproduced": 48.0285,
+      "status": "outside_tolerance",
+      "tolerance": 0.5
+    },
+    "E-VPC L": {
+      "absolute_difference": -0.1460000000000008,
+      "paper": 47.9,
+      "relative_difference_percent": -0.30480167014613946,
+      "reproduced": 47.754,
+      "status": "within_tolerance",
+      "tolerance": 0.5
+    },
+    "E-VPC S": {
+      "absolute_difference": -5.057499999999997,
+      "paper": 34.8,
+      "relative_difference_percent": -14.533045977011488,
+      "reproduced": 29.7425,
+      "status": "outside_tolerance",
+      "tolerance": 0.5
+    },
+    "UTMOS": {
+      "absolute_difference": -0.1046333459293951,
+      "paper": 3.63,
+      "relative_difference_percent": -2.882461320369011,
+      "reproduced": 3.525366654070605,
+      "status": "outside_tolerance",
+      "tolerance": 0.05
+    },
+    "W-NT I": {
+      "absolute_difference": -0.7321420848369584,
+      "paper": 39.9,
+      "relative_difference_percent": -1.8349425685136802,
+      "reproduced": 39.16785791516304,
+      "status": "outside_tolerance",
+      "tolerance": 0.5
+    },
+    "W-NT L": {
+      "absolute_difference": -2.570652174949643,
+      "paper": 42.3,
+      "relative_difference_percent": -6.077191902954239,
+      "reproduced": 39.729347825050354,
+      "status": "outside_tolerance",
+      "tolerance": 0.5
+    },
+    "W-NT S": {
+      "absolute_difference": -0.07614313662052297,
+      "paper": 24.6,
+      "relative_difference_percent": -0.309524945611882,
+      "reproduced": 24.52385686337948,
+      "status": "within_tolerance",
+      "tolerance": 0.5
+    },
+    "WER": {
+      "absolute_difference": -1.1860401803550031,
+      "paper": 7.41,
+      "relative_difference_percent": -16.00594035566806,
+      "reproduced": 6.223959819644997,
+      "status": "outside_tolerance",
+      "tolerance": 0.5
+    },
+    "WhiSQA": {
+      "absolute_difference": -0.19424108995585065,
+      "paper": 3.69,
+      "relative_difference_percent": -5.26398617766533,
+      "reproduced": 3.4957589100441493,
+      "status": "outside_tolerance",
+      "tolerance": 0.05
+    }
+  },
+  "outside_tolerance": 7,
+  "paper_doi": "10.21437/Odyssey.2026-16",
+  "pending": 0,
+  "system": "DU-pred-nt",
+  "table": 1,
+  "tolerance_note": "Reporting tolerances chosen for this reproduction; the paper does not define them.",
+  "within_tolerance": 2
+}

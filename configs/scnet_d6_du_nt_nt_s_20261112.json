@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "name": "n019_du_nt_nt_full_s_20261112",
+  "paper_system": "DU-nt-nt",
+  "hypothesis": "Using the NT speaker embedding for both duration prediction and vocoder conditioning will reduce the E-VPC S residual without long model training.",
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_id": "1097354",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 5.0
+  },
+  "expected_card_hours": 3.2,
+  "worst_card_hours": 5.0,
+  "submit": false,
+  "job_history": [
+    {
+      "job_id": "1097145",
+      "account": "a094f4d7",
+      "purpose": "4-utterance GPU smoke",
+      "state": "COMPLETED",
+      "elapsed": "00:00:54"
+    },
+    {
+      "job_id": "1097191",
+      "account": "a094f4d7",
+      "purpose": "first full submission",
+      "state": "cancelled_before_effective_run",
+      "note": "Queue priority would delay the run; no effective card time."
+    },
+    {
+      "job_id": "1097330",
+      "account": "a094f4d6",
+      "purpose": "first d6 full submission",
+      "state": "failed_fast_filename_mismatch",
+      "elapsed": "00:00:01",
+      "note": "The staged target maps used short names; no audio was generated."
+    },
+    {
+      "job_id": "1097336",
+      "account": "a094f4d6",
+      "purpose": "second d6 full submission",
+      "state": "failed_fast_embedding_key_mismatch",
+      "elapsed": "00:00:31",
+      "note": "The test map uses 954 target speakers while the full archive has 1,158 keys; no audio was generated."
+    },
+    {
+      "job_id": "1097349",
+      "account": "a094f4d6",
+      "purpose": "submission using stale remote script",
+      "state": "cancelled_before_preflight",
+      "elapsed": "00:00:10",
+      "note": "Cancelled immediately after the script transfer failed; no audio was generated."
+    }
+  ],
+  "inputs": {
+    "ls360_source_manifest": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360.jsonl",
+    "ls360_unit_records": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/librispeech_train_clean_360/unit_records.jsonl",
+    "ls360_target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/du_nt_nt_20261111/librispeech_train_clean_360_target_map_speaker_available_seed20261102.jsonl",
+    "test_target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/du_nt_nt_20261111/libri_test_target_map_speaker_available_seed20261102.jsonl",
+    "ls360_target_speaker_embeddings": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/du_nt_nt_20261111/target_speaker_mean32_all1158_shrink01.npz",
+    "test_target_speaker_embeddings": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/du_nt_nt_20261111/test_target_speaker_mean32_954_shrink01.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_nt_main/best.pt",
+    "vocoder": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/generator_soup2.pt"
+  },
+  "sha256": {
+    "ls360_source_manifest": "d6b9be4ebbf37175a05e02f55b2adcf41f0b761c3af8ca1c4f7f4b74f3676053",
+    "ls360_unit_records": "db4e72bdb91116ee2c9313590b4f772d2892173001b0f16c4f8ffde3bcc8ab45",
+    "ls360_target_map": "e57788b434df2d11ff288d7b0280918c592b7cea32932a9c7b60c74da5ab0b08",
+    "test_target_map": "d88027cd85a9ef30b7926a6fe870e199b4095247212065109a7b563645174324",
+    "ls360_target_speaker_embeddings": "28ffbaec9516cd8f5abbc752b40315b9fe958f7d37dc6b6f4a58bcd28c2540a7",
+    "test_target_speaker_embeddings": "75f445857cbb02c245937ba5b2f4a355e43b4715486a42fc10e0f470df5f8f52",
+    "vocoder": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6"
+  },
+  "conditioning": {
+    "duration_mode": "nt",
+    "duration_embedding_key": "target_speaker",
+    "target_embedding_key": "target_speaker",
+    "target_embedding_mode": "speaker_mean_l2_shrink0.1",
+    "target_sampling": "uniform target speaker"
+  },
+  "output": {
+    "root": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111",
+    "test_suffix": "_n019_du_nt_nt_20261111",
+    "s_metrics": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_nt_nt_s_20261111/s_eval/s_metrics.json"
+  },
+  "smoke": {
+    "job_id": "1097145",
+    "state": "COMPLETED",
+    "elapsed": "00:00:54",
+    "outputs": 4
+  },
+  "test_stage": {
+    "state": "completed_inside_full_job",
+    "utterances": 1934,
+    "elapsed_seconds": 99.7,
+    "anon_jsonl_sha256": "f8f10024298fe5731d7b83b736e3db7b716aab23cf11c192ff8118002eb9688d",
+    "verify_sha256": "78d363246789c9e4ea926a7183340a3aaadd76ad5ede8f5bdb5d341f27876976",
+    "vpc_counts": {
+      "libri_test": 1934,
+      "libri_test_enrolls": 438,
+      "libri_test_trials_f": 734,
+      "libri_test_trials_m": 762
+    }
+  },
+  "decision_rule": {
+    "target_evpc_s_percent": 34.0,
+    "minimum_meaningful_gain_vs_formal_percent": 3.0,
+    "require_full_1934_quality_before_replacement": true
+  },
+  "stop_conditions": [
+    "missing or hash-mismatched input",
+    "DCU tiny-matmul watchdog failure",
+    "fewer than 104,014 LS360 outputs or fewer than 1,934 test outputs",
+    "non-finite duration predictions or synthesis failure",
+    "official ECAPA retraining failure",
+    "incorrect VPC trial counts",
+    "five-hour wall-clock timeout"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "missing": [],
+  "sources": {
+    "evpc": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_20261110_il_r3/evpc/evpc_metrics.json",
+    "s_eval": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_s_eval/s_metrics.json",
+    "utmos": "/public/home/a094f4d7/voice_projects/runs/n019_official/eval_user/du_pred_nt_soup2_w40_shrink01_20261110/mos/UTMOS.json",
+    "wer_condition": "anon",
+    "wer_json": "/public/home/a094f4d7/voice_projects/runs/n019_official/eval_user/du_pred_nt_soup2_w40_shrink01_20261110/WER.json",
+    "whisqa": "/public/home/a094f4d7/voice_projects/runs/n019_official/eval_user/du_pred_nt_soup2_w40_shrink01_20261110/mos/WhiSQA.json",
+    "wnt_summary": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_final_r2_20261111/wnt_summary_ils.json"
+  },
+  "system": "DU-pred-nt",
+  "values": {
+    "E-VPC I": 48.0285,
+    "E-VPC L": 47.754,
+    "E-VPC S": 29.7425,
+    "UTMOS": 3.525366654070605,
+    "W-NT I": 39.16785791516304,
+    "W-NT L": 39.729347825050354,
+    "W-NT S": 24.52385686337948,
+    "WER": 6.223959819644997,
+    "WhiSQA": 3.4957589100441493
+  }
+}

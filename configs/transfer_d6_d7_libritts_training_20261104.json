@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/tmp/n019_libritts_clean100_training_20261104.tar.zst",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/tmp/n019_libritts_clean100_training_20261104.tar.zst",
+      "sha256": "059cca69fc5fc78c530b4dbd01d8f0ff04023d1f42c201d587d0932ecc214034",
+      "local_name": "training/n019_libritts_clean100_training_20261104.tar.zst"
+    },
+    {
+      "source_host": "scnet-a094f4d4",
+      "source_path": "/public/home/a094f4d4/voice_projects/tmp/n019_libritts_clean100_training_20261104.tar.zst",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/tmp/n019_libritts_clean100_training_20261104.tar.zst",
+      "sha256": "059cca69fc5fc78c530b4dbd01d8f0ff04023d1f42c201d587d0932ecc214034",
+      "local_name": "training/n019_libritts_clean100_training_20261104.tar.zst"
+    }
+  ]
+}

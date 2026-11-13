@@ -1,0 +1,26 @@
+{
+  "attacks": {
+    "I": {
+      "female_eer_percent": 37.62823939323425,
+      "male_eer_percent": 40.70747643709183,
+      "mean_eer_percent": 39.16785791516304
+    },
+    "L": {
+      "female_eer_percent": 37.808798253536224,
+      "male_eer_percent": 41.649897396564484,
+      "mean_eer_percent": 39.729347825050354
+    },
+    "S": {
+      "female_eer_percent": 23.88092204928398,
+      "male_eer_percent": 25.166791677474976,
+      "mean_eer_percent": 24.52385686337948
+    }
+  },
+  "sources": [
+    "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_20261110_il_r3/wnt/summary.json",
+    "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_stable_smoke_20261111/wnt_s_eval/summary.json"
+  ],
+  "suffixes": [
+    "_n019_soup2_w40_shrink01_20261110"
+  ]
+}

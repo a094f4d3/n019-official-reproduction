@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d5",
+      "source_path": "/public/home/a094f4d5/voice_projects/tmp/n019_ls360_units_20261104.tar.zst",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/tmp/n019_ls360_units_20261104.tar.zst",
+      "sha256": "c7a31759e195a16ad09ecf35a1228b0fbbd1c61f5bb18e28eda89354c299ccf0",
+      "local_name": "units/n019_ls360_units_20261104.tar.zst"
+    },
+    {
+      "source_host": "scnet-a094f4d5",
+      "source_path": "/public/home/a094f4d5/voice_projects/tmp/n019_ls360_units_20261104.tar.zst",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/tmp/n019_ls360_units_20261104.tar.zst",
+      "sha256": "c7a31759e195a16ad09ecf35a1228b0fbbd1c61f5bb18e28eda89354c299ccf0",
+      "local_name": "units/n019_ls360_units_20261104.tar.zst"
+    }
+  ]
+}

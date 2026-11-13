@@ -1,0 +1,30 @@
+{
+  "comparison": {
+    "UTMOS": {
+      "absolute_difference": -0.1046333459293951,
+      "paper": 3.63,
+      "relative_difference_percent": -2.882461320369011,
+      "reproduced": 3.525366654070605
+    },
+    "WER": {
+      "absolute_difference": -1.1860401803550031,
+      "paper": 7.41,
+      "relative_difference_percent": -16.00594035566806,
+      "reproduced": 6.223959819644997
+    },
+    "WhiSQA": {
+      "absolute_difference": -0.19424108995585065,
+      "paper": 3.69,
+      "relative_difference_percent": -5.26398617766533,
+      "reproduced": 3.4957589100441493
+    }
+  },
+  "system": "DU-pred-nt-soup2_w40_shrink01_20261110",
+  "values": {
+    "UTMOS": 3.525366654070605,
+    "WER": 6.223959819644997,
+    "WhiSQA": 3.4957589100441493
+  },
+  "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+  "vocoder_steps": 96000
+}

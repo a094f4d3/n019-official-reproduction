@@ -1,0 +1,12 @@
+{
+  "systems": [
+    {"name": "DU-orig-nt", "duration": "orig", "vocoder": "nt"},
+    {"name": "DU-orig-ecapa", "duration": "orig", "vocoder": "ecapa"},
+    {"name": "DU-pred-nt", "duration": "pred", "vocoder": "nt"},
+    {"name": "DU-pred-ecapa", "duration": "pred", "vocoder": "ecapa"},
+    {"name": "DU-nt-nt", "duration": "nt", "vocoder": "nt"},
+    {"name": "DU-ecapa-ecapa", "duration": "ecapa", "vocoder": "ecapa"},
+    {"name": "DU-ecapa-nt", "duration": "ecapa", "vocoder": "nt"},
+    {"name": "DU-nt-ecapa", "duration": "nt", "vocoder": "ecapa"}
+  ]
+}

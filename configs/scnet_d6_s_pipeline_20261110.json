@@ -1,0 +1,91 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "suffix": "_n019_soup2_w40_shrink01_20261110",
+  "jobs": {
+    "shard_0": {
+      "job_id": "1086660",
+      "state": "completed",
+      "rows": 26054,
+      "wall_seconds": 1225
+    },
+    "shard_1": {
+      "job_id": "1086675",
+      "state": "completed",
+      "rows": 25979,
+      "wall_seconds": 1238
+    },
+    "shard_2": {
+      "job_id": "1086676",
+      "state": "completed",
+      "rows": 26052,
+      "wall_seconds": 1232,
+      "anon_jsonl_sha256": "55e187d6d6af0fdfeca4bbb0d311f92d458190f24176c3f46697df16cb3ba61b",
+      "run_meta_sha256": "c5c562a63713cbf2f9ce80714fe722a18c3abb0c782cfa89ef01e2ec7c3aa6e6"
+    },
+    "shard_3": {
+      "job_id": "1086677",
+      "state": "completed",
+      "rows": 25929,
+      "wall_seconds": 1224,
+      "anon_jsonl_sha256": "718ad587eb2ccf6d8b815312e6fae5694a972b6f21632f0270adeeb582d2ef20",
+      "run_meta_sha256": "1c7a88d9a7dd3abf0e0a134210f06b68e95634be9b930602450c90925dbcc75d"
+    },
+    "merge_export": {
+      "job_id": "1087345",
+      "state": "completed",
+      "resources": "1 DCU, 8 CPU / 16 GB, 1 h",
+      "records": 104014,
+      "wav_files": 104014,
+      "wav_bytes": 42281386856,
+      "anon_jsonl_sha256": "9ee504df36baecebd6f5973d2552c0ffdcd014f6a3b7734ec6d49e8c31b6bdb4",
+      "verification": "passed",
+      "vpc_wav_scp_sha256": "c7cd48a34a543c5deb196b4246a1f8c14b35db68d0b0fa7b76a7bb23fd4c1efd"
+    },
+    "e_vpc_s": {
+      "job_id": "1087347",
+      "state": "completed_20261111_021149",
+      "resources": "1 DCU, 16 CPU / 60 GB, 8 h",
+      "data_view": "/public/home/a094f4d6/voice_projects/data/n019_official/vpc/eval_view_s_post",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_s_eval",
+      "elapsed_seconds": 5610,
+      "s_metrics": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_soup2_w40_shrink01_s_eval/s_metrics.json",
+      "s_metrics_sha256": "be265b317001fe6c199016224bce5e48ce3cc9ac312e6005e401f02c06f3bb97",
+      "evpc_s_percent": 29.7425
+    },
+    "wnt_s_train": {
+      "job_id": "1087348",
+      "resources": "1 DCU, 16 CPU / 60 GB, 12 h outer, 10 h internal",
+      "epochs": 20,
+      "batch": 8,
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_soup2_w40_shrink01",
+      "state": "cancelled_collapsed_20261111_033256",
+      "actual_seconds": 4867,
+      "failure": "W-PRO embeddings collapsed; classification accuracy zero; replaced by freeze_r1"
+    },
+    "wnt_s_eval": {
+      "job_id": "1087349",
+      "resources": "1 DCU, 16 CPU / 60 GB, 1 h",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_soup2_w40_shrink01/s_eval/wnt",
+      "state": "cancelled_with_dependency_20261111_033256"
+    }
+  },
+  "superseded_pending_jobs": [
+    "1086685",
+    "1086689",
+    "1086700",
+    "1086702",
+    "1087086",
+    "1087087",
+    "1087088"
+  ],
+  "superseded_reason": "The first S chain did not use the post-evaluation data view containing both local exported LS360 and the test suffix. The second merge attempt 1086685 looked for anon.jsonl one directory too high; merge_ls360_anonymisation_shards.py now accepts the per-shard anon/ subdirectory.",
+  "stop_conditions": [
+    "any dependency fails",
+    "missing SHA or row-count mismatch",
+    "non-finite training loss",
+    "wrong output count",
+    "outer wall time reached"
+  ],
+  "replacement_config": "configs/scnet_d6_wnt_s_freeze_20261111.json"
+}

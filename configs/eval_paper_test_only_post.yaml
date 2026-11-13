@@ -1,0 +1,44 @@
+data_dir: data
+exp_dir: exp
+
+anon_data_suffix: _n019
+results_summary_path: !ref <exp_dir>/results_summary/eval_anon<anon_data_suffix>/results_anon.txt
+train_data_name: !ref train-clean-360<anon_data_suffix>
+
+datasets:
+  - name: libri_test
+    data: libri_test
+    enrolls: [_enrolls]
+    trials: [_trials_f, _trials_m]
+
+eval_steps:
+  privacy:
+    - asv
+
+privacy:
+  asv:
+    model_type: ecapa
+    dataset_name: [libri_test]
+    training:
+      model_dir: !ref <exp_dir>/asv_anon<anon_data_suffix>
+      train_data_dir: !ref <data_dir>/<train_data_name>
+      train_config: evaluation/privacy/asv/asv_train/hparams/train_ecapa_tdnn_small.yaml
+      infer_config: evaluation/privacy/asv/asv_train/hparams/ecapa/hyperparams.yaml
+      finetuning: false
+      pretrained_model: null
+      lr: 0.01
+      epochs: 10
+      batch_size: 256
+      num_workers: 10
+      num_utt: ALL
+      utt_selection: spk-diverse-sess
+      num_spk: ALL
+      retrain: true
+    evaluation:
+      model_dir: !ref <exp_dir>/asv_anon<anon_data_suffix>
+      results_dir: !ref <exp_dir>/asv_anon<anon_data_suffix>
+      distance: cosine
+      plda:
+        model_dir: null
+        train_data_dir: null
+        anon: null

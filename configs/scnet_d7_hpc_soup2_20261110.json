@@ -1,0 +1,52 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_soup2_20261110_1912",
+  "job_id": "1084628",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 0.75,
+    "worst": 2.0
+  },
+  "dev": "correct 40-speaker / 100-utterance / 96-target speaker-disjoint set",
+  "mode_name": "target_anonymisation",
+  "baseline": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_avg_88_92_effnorm.pt",
+    "sha256": "fafe5982588bea492dd761f1c2d51cc925474503a4f158cf1680667b2286ded8"
+  },
+  "candidate_glob": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_*.pt",
+  "candidates": {
+    "quad_w40_30_20_10": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "quad_w35_30_20_15": "4db6c971b032e6f63b19cb8cf96f25a664534eaaff72fb86e33ff7264a7706c2",
+    "quad_w30_30_25_15": "7d4aaccc9dc9eadfa1864e0b19e50b197b1730579dc0732a4c0879953dc70e26",
+    "quad_w30_35_20_15": "e344c1f4433657967d456f0fbdd675a20c71da1bb73177e7cf11a258b614bc92",
+    "quint_84_88_90_92_96": "2115f258cddfeb4ceff83d1118552d91cf4e8c59ccc2c15bea8fee774314063f",
+    "quint_84_88_92_94_96": "4389ea4f3f22539456aebb3e4cf6b08b02e1778d386540cb5f828890b2f4ed2b",
+    "hex_84_88_90_92_94_96": "4844b8068080398b00b7273c0419cc9af1dcf53bde6f89b9a45c887a4f23fecd",
+    "quad_plus90_10": "06eb0a57b283d882fa1078a20cca8e1f8d2e1921491d990a4c5fd8f36ce22b0f",
+    "quad_plus94_10": "7eab25f4f288918ad0d2daf9ed9807f975cb3480eaf07e5fd9c13f1c3532f20e",
+    "quad_plus_d6_10": "46ba1707022d32f2dcb06d8df09d91791aaf49e115a27afe20354dfa3a219d4f",
+    "quad_plus_d6_20": "56ca714a950b21277ef1172b1e58e505c918306b093ed2b8522387cc3f6df3fa",
+    "quad_cross_equal": "d38d0f388872fd684d0389e4a0ef84fb84cdab9ac00ea30e072f5d8c6d3d1f03"
+  },
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_selection_soup2_20261110",
+  "gate": {
+    "min_utmos_gain": 0.05,
+    "min_whisqa_gain": 0.05,
+    "max_wer_regression_percent": 0.25
+  },
+  "stop_conditions": [
+    "checkpoint recipe or architecture mismatch",
+    "incorrect dev set or target map",
+    "projected UTMOS gain below threshold after 100 utterances",
+    "missing or non-finite WhiSQA/WER for a passing candidate",
+    "DCU watchdog, OOM, no progress, or 2-hour outer wall clock"
+  ],
+  "submit": false
+}

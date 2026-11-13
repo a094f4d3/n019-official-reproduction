@@ -1,0 +1,53 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_ls360_shard0_20261110",
+  "job_id": "1086660",
+  "state": "completed",
+  "dependency_chain": {
+    "shard_0": "1086660",
+    "shard_1": "1086675",
+    "shard_2": "1086676",
+    "shard_3": "1086677"
+  },
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 6.0
+  },
+  "card_hours": {
+    "expected": 0.4,
+    "worst": 6.0
+  },
+  "source_manifest": "/public/home/a094f4d6/voice_projects/runs/n019_official/ls360_anonymise_shards_soup2_w40_shrink01_20261110/shard_0/manifest.jsonl",
+  "unit_records": "/public/home/a094f4d6/voice_projects/runs/n019_official/ls360_anonymise_shards_soup2_w40_shrink01_20261110/shard_0/unit_records.jsonl",
+  "target_map": "/public/home/a094f4d6/voice_projects/runs/n019_official/ls360_anonymise_shards_soup2_w40_shrink01_20261110/shard_0/target_map.jsonl",
+  "rows": 26054,
+  "vocoder": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_quad_w40_30_20_10.pt",
+  "target_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_all1158_shrink01_20261110.npz",
+  "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/ls360_anonymise_shards_soup2_w40_shrink01_20261110/shard_0/anon",
+  "result": {
+    "records": 26054,
+    "wav_files": 26054,
+    "wall_seconds": 1225,
+    "card_hours": 0.3402777778,
+    "anon_jsonl_sha256": "eaf151dfc3bd2da80d7be2cbe2051adbe4f6ef23860a1a91955a0bea43827260",
+    "run_meta_sha256": "b4883f8fb605ad3abd3dd30f4b47d9dd014f302466df69a1f224c10796c837dc"
+  },
+  "shard_1_result": {
+    "records": 25979,
+    "wav_files": 25979,
+    "wall_seconds": 1238,
+    "card_hours": 0.3438888889,
+    "anon_jsonl_sha256": "55d746ebf1cad5d8a9f29b105c1a352a617ab036e6158509234123a8c64c2235",
+    "run_meta_sha256": "5178981cda479f6be037c73689145c7404997dae6ced9eb16b896c09822853a7"
+  },
+  "stop_conditions": [
+    "300-second tiny-matmul watchdog failure",
+    "missing source, unit, target, checkpoint, or embedding asset",
+    "non-finite or wrong-dimensional conditioning",
+    "six-hour wall time"
+  ]
+}

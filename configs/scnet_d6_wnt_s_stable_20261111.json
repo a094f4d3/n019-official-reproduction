@@ -1,0 +1,50 @@
+{
+  "account": "a094f4d6",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "suffix": "_n019_soup2_w40_shrink01_20261110",
+  "base_model": "/public/home/a094f4d6/voice_projects/models/n019_official/wpro",
+  "reason": "The margin=0.2/scale=30 freeze run reached non-finite loss at epoch 7; use lower AAM margin/scale and resume a stable training trajectory.",
+  "train": {
+    "job_id": "1089071",
+    "retry_of": "1089060",
+    "failed_nodes": [
+      "f11r1n05",
+      "f11r1n20"
+    ],
+    "state": "COMPLETED",
+    "node": "f11r1n03",
+    "resources": "1 DCU, 16 CPU / 60 GB, 1.5 h outer",
+    "epochs": 4,
+    "steps": 26000,
+    "batch": 16,
+    "learning_rate": 0.0001,
+    "head_learning_rate": 0.001,
+    "aam_margin": 0.05,
+    "aam_scale": 10.0,
+    "freeze_wavlm": true,
+    "epoch_loss": 5.48200558581719,
+    "epoch_accuracy": 0.06550961538461539,
+    "actual_start": "2026-11-11T06:12:29+08:00",
+    "actual_end": "2026-11-11T06:57:56+08:00",
+    "actual_wall_hours": 0.7575,
+    "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_stable_smoke_20261111"
+  },
+  "eval": {
+    "job_id": "1089232",
+    "state": "COMPLETED",
+    "resources": "1 DCU, 16 CPU / 60 GB, 1 h",
+    "actual_start": "2026-11-11T06:58:04+08:00",
+    "actual_end": "2026-11-11T07:01:16+08:00",
+    "actual_wall_hours": 0.0533,
+    "female_eer_percent": 23.88092204928398,
+    "male_eer_percent": 25.166791677474976,
+    "mean_eer_percent": 24.52385686337948,
+    "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/wnt_s_stable_smoke_20261111/wnt_s_eval"
+  },
+  "hashes": {
+    "last_pt": "11a006c2f724a655ca3053aaf5ee410359e8a034c0dd633f9b7c8d5535994eaf",
+    "model_safetensors": "cbd6762b757a12260868009c07c31993b9f75391b2b800233caff23eae338e0e",
+    "summary": "cd9cb2f2031554e1dde0960731e841b77f0b223a9197cb0958ef47f43f2ff132"
+  }
+}

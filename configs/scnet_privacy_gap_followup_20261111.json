@@ -1,0 +1,396 @@
+{
+  "date": "2026-11-11",
+  "scope": "E-VPC S and W-NT L residual privacy-gap follow-up",
+  "last_balance_check": {
+    "timestamp": "2026-11-11T15:02:50+08:00",
+    "a094f4d5": 4.216111111,
+    "a094f4d6": 4.9927777776,
+    "a094f4d7": 0.429444444
+  },
+  "jobs": [
+    {
+      "job_id": "1091285",
+      "name": "n019_ls360_spks_s",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "input": "speaker-sampled LS360 target map, mean32 shrink0.1, soup2 checkpoint",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spksamplediag_s_eval_20261111",
+      "status": "completed_scoring_then_postprocess_abort",
+      "result": {
+        "evpc_s_percent": 30.642,
+        "paper_evpc_s_percent": 34.8
+      },
+      "notes": "Official results_anon.txt intact; s_metrics.json rebuilt on CPU with SHA256 307f9366f7f46fe582de81f1c23ef84d51b3a70048d6ef91287eb992e158198a"
+    },
+    {
+      "job_id": "1092021",
+      "name": "n019_ls360_spks_s",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "status": "cancelled_dependency_failed",
+      "note": "Dependency on 1091285; no card time consumed."
+    },
+    {
+      "job_id": "1092299",
+      "name": "n019_evpc005_retry4",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 30
+      },
+      "expected_card_hours": 0.1,
+      "worst_card_hours": 0.5,
+      "input": "existing shrink0.05 VPC outputs",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/du_pred_nt_shrinkscreen005_il_20261111/evpc/evpc_metrics.json",
+      "status": "completed",
+      "result": {
+        "evpc_i_percent": 46.893,
+        "evpc_l_percent": 47.645
+      }
+    },
+    {
+      "job_id": "1092397",
+      "name": "n019_evpc000",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 20
+      },
+      "expected_card_hours": 0.1,
+      "worst_card_hours": 0.34,
+      "input": "existing shrink0 VPC outputs",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/du_pred_nt_shrinkscreen000_evpc_20261111/evpc/evpc_metrics.json",
+      "status": "completed",
+      "result": {
+        "evpc_i_percent": 47.385,
+        "evpc_l_percent": 47.634
+      }
+    },
+    {
+      "job_id": "1092352",
+      "name": "n019_wnti_shrink000r2",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 20
+      },
+      "expected_card_hours": 0.05,
+      "worst_card_hours": 0.34,
+      "input": "existing shrink0 VPC outputs",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/du_pred_nt_shrinkscreen000_i_20261111/wnt/summary.json",
+      "status": "completed_scoring_then_summary_abort",
+      "result": {
+        "wnt_i_percent": 39.5044721663
+      }
+    },
+    {
+      "job_id": "1092755",
+      "name": "n019_ls360_spks005_s",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "input": "speaker-sampled LS360 target map, mean32 shrink0.05, soup2 checkpoint",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spkshrink005diag_s_eval_20261111",
+      "status": "failed_fast_permission_denied",
+      "failure": "The shared anonymised/ls360 parent is root-owned; no card-hours consumed.",
+      "stop_conditions": [
+        "missing source, units, target map, embeddings, checkpoint or VPC metadata",
+        "checkpoint or embedding SHA256 mismatch",
+        "DCU watchdog failure",
+        "non-finite ASV loss",
+        "104014 or VPC split count mismatch",
+        "four-hour wall clock",
+        "result parse failure"
+      ]
+    },
+    {
+      "job_id": "1092783",
+      "name": "n019_ls360_spks005_r2",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "input": "speaker-sampled LS360 target map, mean32 shrink0.05, soup2 checkpoint",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spkshrink005diag_s_eval_20261111/s_eval",
+      "status": "running",
+      "started_at": "2026-11-11T15:06:01+08:00",
+      "stop_conditions": [
+        "missing source, units, target map, embeddings, checkpoint or VPC metadata",
+        "checkpoint or embedding SHA256 mismatch",
+        "DCU watchdog failure",
+        "non-finite ASV loss",
+        "104014 or VPC split count mismatch",
+        "four-hour wall clock",
+        "result parse failure"
+      ]
+    },
+    {
+      "job_id": "1092786",
+      "name": "n019_ls360_spks000_s",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "dependency": "afterok:1092783",
+      "input": "speaker-sampled LS360 target map, mean32 shrink0, soup2 checkpoint",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spkshrink000diag_s_eval_20261111/s_eval",
+      "status": "pending_dependency",
+      "stop_conditions": [
+        "missing source, units, target map, embeddings, checkpoint or VPC metadata",
+        "checkpoint or embedding SHA256 mismatch",
+        "DCU watchdog failure",
+        "non-finite ASV loss",
+        "104014 or VPC split count mismatch",
+        "four-hour wall clock",
+        "result parse failure"
+      ]
+    },
+    {
+      "job_id": "1092779",
+      "name": "n019_wntl_seed_screen",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 25
+      },
+      "expected_card_hours": 0.2,
+      "worst_card_hours": 0.417,
+      "input": "shrink0 embeddings, speaker maps seeds 20261103/04/05",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/wntl_seed_shrink000_20261111",
+      "status": "completed",
+      "actual_seconds": 794,
+      "result": {
+        "seed_20261103_wnt_l_percent": 40.0027513504,
+        "seed_20261104_wnt_l_percent": 40.1628807187,
+        "seed_20261105_wnt_l_percent": 40.1546411216,
+        "mean_wnt_l_percent": 40.1067577302,
+        "population_stddev": 0.0736205045
+      },
+      "conclusion": "The single-seed 41.2432 result is favorable target-map variance; shrink0 is not a robust standalone W-NT L fix."
+    },
+    {
+      "job_id": "1092919",
+      "name": "n019_wntl_seed_screen",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 15
+      },
+      "expected_card_hours": 0.08,
+      "worst_card_hours": 0.25,
+      "input": "shrink0.1 embeddings, speaker map seed 20261103",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/wntl_seed_shrink01_compare_20261111",
+      "status": "completed",
+      "actual_seconds": 318,
+      "result": {
+        "seed_20261103_wnt_l_percent": 39.9580478668
+      },
+      "conclusion": "Same-map shrink0 minus shrink0.1 is only +0.0447 pp."
+    },
+    {
+      "job_id": "1093016",
+      "name": "n019_wntl_ckpt_screen",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 20
+      },
+      "expected_card_hours": 0.25,
+      "worst_card_hours": 0.333,
+      "input": "steps 100k,102k,106k,112k; shrink0.05; seed20261102",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/wntl_late_snapshot_shrink005_20261111",
+      "status": "completed_partial_then_missing_112k",
+      "actual_seconds": 818,
+      "result": {
+        "step_100000_wnt_l_percent": 40.1966258883,
+        "step_102000_wnt_l_percent": 40.1175111532,
+        "step_106000_wnt_l_percent": 40.9905359149
+      },
+      "failure": "The 112k source file was generator_d5_step00112000.pt, not generator_step00112000.pt."
+    },
+    {
+      "job_id": "1093169",
+      "name": "n019_wntl_ckpt_screen",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_minutes": 15
+      },
+      "expected_card_hours": 0.2,
+      "worst_card_hours": 0.25,
+      "input": "steps 112k,134k,136k via explicit symlinks; shrink0.05; seed20261102",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/wntl_verylate_snapshot_shrink005_20261111",
+      "status": "completed",
+      "actual_seconds": 814,
+      "result": {
+        "step_112000_wnt_l_percent": 40.0386251509,
+        "step_134000_wnt_l_percent": 40.6948059797,
+        "step_136000_wnt_l_percent": 40.5316226184
+      },
+      "conclusion": "No later checkpoint reaches 42.3 or shows a monotonic privacy gain."
+    },
+    {
+      "job_id": "1094009",
+      "name": "n019_s_eval_spks005",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 2.0
+      },
+      "expected_card_hours": 0.15,
+      "worst_card_hours": 2.0,
+      "input": "speaker-sampled mean32 shrink0.05; existing full LS360 VPC",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/privacy/du_pred_nt_spkshrink005diag_s_eval_20261111/s_eval",
+      "status": "scoring_complete_postprocess_miopen_abort",
+      "actual_seconds": 5532,
+      "result": {
+        "female_evpc_s_percent": 31.387,
+        "male_evpc_s_percent": 30.07,
+        "mean_evpc_s_percent": 30.7285,
+        "delta_vs_shrink01_percent": 0.0865
+      },
+      "s_metrics_sha256": "d0003d98229a1e44efff6034043f104ebb0eacb684edfccedb20d16f8050aa3a",
+      "conclusion": "Reducing shrink from 0.1 to 0.05 does not materially improve E-VPC S."
+    },
+    {
+      "job_id": "1094023",
+      "name": "n019_ls360_spks000_r2",
+      "account": "a094f4d6",
+      "status": "cancelled_dependency",
+      "note": "Parent Job 1094009 exited non-zero after scoring; no card time consumed."
+    },
+    {
+      "job_id": "1094914",
+      "name": "n019_uttvec_qual",
+      "account": "a094f4d7",
+      "status": "failed_fast_permission",
+      "actual_seconds": 33,
+      "failure": "Shared anonymised/libri_test parent is root-owned."
+    },
+    {
+      "job_id": "1094954",
+      "name": "n019_uttvec_q2",
+      "account": "a094f4d7",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 2.0
+      },
+      "expected_card_hours": 0.2,
+      "worst_card_hours": 2.0,
+      "input": "speaker-uniform single-utterance target on full 1,934 test",
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/utterance_target_maps_20261111/run_r2",
+      "status": "completed",
+      "actual_seconds": 437,
+      "result": {
+        "wer_percent": 6.186861480509103,
+        "utmos": 3.3534552739719325,
+        "whisqa": 3.330335140752201
+      },
+      "quality_metrics_sha256": "9a64c58641864a86dcc6ebc7c460d9276fdd5e4d9d8fc01631e9d3a9024f7aa3"
+    },
+    {
+      "job_id": "1095259",
+      "name": "n019_uttvec_s4",
+      "account": "a094f4d7",
+      "status": "cancelled_slow_node",
+      "actual_seconds": 322,
+      "note": "Observed about 4.6 utterances/s; projected beyond the 4 h limit."
+    },
+    {
+      "job_id": "1095367",
+      "name": "n019_uttvec_s_d6r2",
+      "account": "a094f4d6",
+      "mode": "HPC/Slurm",
+      "partition": "hx1hdnormal",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "input": "speaker-uniform single-utterance target; full LS360 anonymisation and official ECAPA S retraining",
+      "output": "/public/home/a094f4d6/voice_projects/runs/n019_official/utterance_target_maps_20261111/full_s_r2",
+      "status": "scoring_complete_postprocess_miopen_abort",
+      "actual_seconds": 11227,
+      "result": {
+        "female_evpc_s_percent": 30.109,
+        "male_evpc_s_percent": 31.828,
+        "mean_evpc_s_percent": 30.9685,
+        "delta_vs_formal_percent": 1.226
+      },
+      "results_anon_sha256": "a46156d21b891d2dee7b72315f3b031c256a440373e7a85eb1355da8dd6b1a87",
+      "s_metrics_sha256": "7db0eff5036bc65c174f083a1bd9d6dbcf988961b2286adb692e2203368d05c2",
+      "conclusion": "Utterance-level target improves E-VPC S only 1.226 pp and is not a viable replacement."
+    }
+  ]
+}

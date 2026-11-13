@@ -1,0 +1,52 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_d6s144146_20261110_1829",
+  "job_id": "1084308",
+  "node": "f11r2n02",
+  "state": "completed_utmos_rejected",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 1.0,
+    "worst": 2.0
+  },
+  "mode_name": "target_anonymisation",
+  "dev": "correct 40-speaker / 100-utterance / 96-target speaker-disjoint set",
+  "limit": 100,
+  "baseline": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_avg_88_92_effnorm.pt",
+    "sha256": "fafe5982588bea492dd761f1c2d51cc925474503a4f158cf1680667b2286ded8"
+  },
+  "candidates": [
+    {
+      "step": 144000,
+      "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_d6_step00144000.pt",
+      "sha256": "93ef9e9f57b18cd4b81c564922a75326033bf45adf7dcb5ae8083e0736501a75"
+    },
+    {
+      "step": 146000,
+      "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_d6_step00146000.pt",
+      "sha256": "8d344ee824ab47c884aa3b98ffc6b57a607521655a6a9baae8a6d4f696f2bb76"
+    }
+  ],
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_selection_d6_144146_20261110",
+  "gate": {
+    "min_utmos_gain": 0.05,
+    "min_whisqa_gain": 0.05,
+    "max_wer_regression_percent": 0.25
+  },
+  "stop_conditions": [
+    "checkpoint SHA256 mismatch",
+    "incorrect dev set or target map",
+    "projected UTMOS gain below threshold after 100 utterances",
+    "missing or non-finite WhiSQA/WER for a passing candidate",
+    "DCU watchdog, OOM, no progress, or 2-hour outer wall clock"
+  ],
+  "submit": false
+}

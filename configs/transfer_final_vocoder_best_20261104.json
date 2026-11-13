@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "source_host": "scnet-a094f4d3",
+      "source_path": "/public/home/a094f4d3/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "target_host": "scnet-a094f4d5",
+      "target_path": "/public/home/a094f4d5/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "sha256": "32f8cbf064b48e1cedb2541c72b34916570e8d3a1da66c39de0ca04a2cfc1477",
+      "local_name": "best.pt"
+    },
+    {
+      "source_host": "scnet-a094f4d3",
+      "source_path": "/public/home/a094f4d3/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "target_host": "scnet-a094f4d6",
+      "target_path": "/public/home/a094f4d6/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "sha256": "32f8cbf064b48e1cedb2541c72b34916570e8d3a1da66c39de0ca04a2cfc1477",
+      "local_name": "best.pt"
+    },
+    {
+      "source_host": "scnet-a094f4d3",
+      "source_path": "/public/home/a094f4d3/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "target_host": "scnet-a094f4d7",
+      "target_path": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_nt_main/best.pt",
+      "sha256": "32f8cbf064b48e1cedb2541c72b34916570e8d3a1da66c39de0ca04a2cfc1477",
+      "local_name": "best.pt"
+    }
+  ]
+}

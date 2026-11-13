@@ -1,0 +1,48 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_lr5e5sel_20261110_2050",
+  "job_id": "1085261",
+  "state": "completed_rejected",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "card_hours": {
+    "expected": 0.25,
+    "worst": 2.0
+  },
+  "baseline_dev": {
+    "utmos": 3.3922259318828583,
+    "whisqa": 3.3549445152282713,
+    "wer_percent": 6.121516674280493
+  },
+  "results": {
+    "step_500": {
+      "utmos": 2.972115112543106,
+      "delta_utmos": -0.42011081933975225,
+      "sha256": "261247bfd39e12a97a4605774c91fdd1f06495d8750c9e41a43c6af2e0b85e0d"
+    },
+    "step_1000": {
+      "utmos": 3.0097030639648437,
+      "delta_utmos": -0.3825228679180146,
+      "sha256": "047e188aff1aa996b221eae6353063401b6837a9d140d5907e3c5939804bad93"
+    },
+    "step_1500": {
+      "utmos": 3.0385978484153746,
+      "delta_utmos": -0.35362808346748364,
+      "sha256": "bbb7a3802d547635b8656de93c23a96fbb98eeca5b2b9380cd65cc4530d50c6d"
+    },
+    "step_2000": {
+      "utmos": 3.1208910155296326,
+      "delta_utmos": -0.2713349163532257,
+      "sha256": "2c1f79f27364c7b759a42e110e4e566991d0c3fbcfc6127ec707e0e0f984b327"
+    }
+  },
+  "conclusion": "Generator-only initialization with a fresh discriminator and optimizer caused a large transient; this branch does not isolate late-LR annealing and is not eligible.",
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_selection_lr5e5_2k_20261110",
+  "submit": false
+}

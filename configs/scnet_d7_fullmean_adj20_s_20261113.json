@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "submit": false,
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "job_id": "1103529",
+  "job_name": "n019_fullmean_adj20_s",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "walltime_hours": 3.0,
+    "expected_card_hours": 2.8,
+    "worst_card_hours": 3.0
+  },
+  "balance_check": {
+    "quota_assumption_hours": 50.0,
+    "estimated_remaining_hours_before_submit": 3.117744
+  },
+  "inputs": {
+    "data_suffix": "_n019_fullmean1160_20261112",
+    "vpc_data": "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data",
+    "asv_config": "/public/home/a094f4d7/voice_projects/code/n019_official/configs/eval_paper_test_only_post_adj20.yaml",
+    "asv_config_sha256": "ec69c22504d8d8eb6f3f57e2547b8b9ae0176c5a3c68d1c1de427781b115e859",
+    "official_difference": {
+      "lr": "0.01 -> 0.001",
+      "epochs": "10 -> 20"
+    }
+  },
+  "outputs": {
+    "s_eval": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_s_20261112/s_eval_adj20_lr1e3",
+    "metrics": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_s_20261112/s_eval_adj20_lr1e3/s_metrics.json"
+  },
+  "stop_conditions": [
+    "s_metrics.json written",
+    "training or scoring error",
+    "walltime reaches 3 hours"
+  ],
+  "submitted_at": "2026-11-13T00:46:00+08:00",
+  "status": "COMPLETED",
+  "node": "f11r1n12",
+  "started_at": "2026-11-13T00:48:45+08:00",
+  "ended_at": "2026-11-13T03:33:22+08:00",
+  "actual_card_hours": 2.7436111111,
+  "result": {
+    "e_vpc_s_female_percent": 29.929,
+    "e_vpc_s_male_percent": 32.071,
+    "e_vpc_s_mean_percent": 31.0,
+    "official_10_epoch_mean_percent": 31.2,
+    "delta_percentage_points": -0.2,
+    "s_metrics_sha256": "940017ed664ec67f586997d72c73491755e4d85e178513abcf02628ee59ab214",
+    "decision": "reject; S convergence does not explain the paper gap"
+  }
+}

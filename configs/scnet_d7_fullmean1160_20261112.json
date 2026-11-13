@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "name": "n019_fullmean1160_20261112",
+  "purpose": "Paper-aligned DU-pred-nt candidate using the complete original LibriTTS train-other-500 target-speaker pool and full-utterance speaker means, without gender constraints, fixed source-target mappings, or target shrink.",
+  "paper_alignment": {
+    "system": "DU-pred-nt",
+    "target_pool": "original LibriTTS train-other-500",
+    "target_pool_rows": 205044,
+    "target_pool_speakers": 1160,
+    "target_sampling": "uniform over target speakers and independent per source utterance",
+    "target_embedding": "mean over all utterances of the sampled target speaker, then L2 normalization",
+    "target_shrink": 0,
+    "gender_constraint": false,
+    "fixed_source_target_map": false
+  },
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "jobs": {
+    "fullmean315": {
+      "job_id": "1098620",
+      "name": "n019_tspkfull315_20261112",
+      "state": "completed",
+      "elapsed": "00:26:28",
+      "card_hours": 0.4411,
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 2.0
+      },
+      "expected_card_hours": 0.6,
+      "worst_card_hours": 2.0,
+      "input": "/public/home/a094f4d5/voice_projects/runs/n019_official/target_fullmean_audit_20261112/missing_speakers_other500.jsonl",
+      "output": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean315_hpc_20261112/nt_speaker_embeddings.npz",
+      "npz_sha256": "5e414c996e24a3a688bd01f703b1855b0c03edde758deee8410cdfeb5dec06a6",
+      "metadata_sha256": "9a54d49fd15b730138a7d788f3a00ac488f6bd62f67822d6582a267b135f7a5a"
+    },
+    "finish1160_prep": {
+      "job_id": "1098659",
+      "name": "n019_fullmean1160_prep",
+      "dependency": "afterok:1098620",
+      "state": "completed",
+      "elapsed": "00:00:47",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 1.0
+      },
+      "expected_card_hours": 0.15,
+      "worst_card_hours": 1.0,
+      "purpose": "Extract the final two omitted speakers, merge to 1160 full means, and create the 941-key test subset.",
+      "output": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean1160_20261112",
+      "fullmean_sha256": "576e72f72d536f8e24ce4add26abe46da6c426c121d9fa83bb0d7a7645c4bcb4",
+      "test_subset_sha256": "983f9d85f08783842d31755b2a0189904c06ea0e1159b388cafcd3f53dbdb14e"
+    },
+    "quality_eval": {
+      "job_id": "1098741",
+      "name": "n019_fullmean1160_eval",
+      "dependency": null,
+      "state": "completed",
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 2.0
+      },
+      "expected_card_hours": 0.25,
+      "worst_card_hours": 2.0,
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_20261112/eval",
+      "job_history": [
+        {
+          "job_id": "1098670",
+          "state": "failed_fast_permission",
+          "reason": "The prior data-root anonymised/libri_test parent is not writable by the HPC user. Output was moved under runs/n019_official/privacy, and no WAV/MOS output was produced."
+        },
+        {
+          "job_id": "1098697",
+          "state": "failed_fast_permission_after_anonymisation",
+          "reason": "Completed and verified all 1,934 WAV/VPC and the 1,496-row ASR view, then failed because the root-managed runs/n019_official/eval parent could not create the new model directory. Audio/VPC was reused; evaluation output moved under the candidate privacy run."
+        },
+        {
+          "job_id": "1098721",
+          "state": "failed_fast_node_tmp_full",
+          "reason": "Compute node default /tmp was full. TMPDIR is now an explicit candidate-run directory before the watchdog and evaluators start."
+        },
+        {
+          "job_id": "1098741",
+          "state": "completed",
+          "elapsed": "00:06:37",
+          "card_hours": 0.1103,
+          "wer_percent": 6.152616859768278,
+          "utmos": 3.4404968176164203,
+          "whisqa": 3.429524657136405,
+          "wer_count": 1496,
+          "mos_count": 1934,
+          "quality_metrics_sha256": "a723ee9da979d1d5bec4fcc8ee9f4a2c0db9081e9cf1e9f5b89850034ea3c5d9",
+          "gate": "failed against formal on both MOS metrics; S result still required to quantify the privacy trade-off"
+        }
+      ]
+    },
+    "full_s_eval": {
+      "job_id": "1098744",
+      "name": "n019_fullmean1160_s",
+      "dependency": "afterok:1098741",
+      "state": "timeout_after_complete_anonymisation",
+      "node": "f11r1n01",
+      "start": "2026-11-12T09:22:28+08:00",
+      "end": "2026-11-12T13:22:53+08:00",
+      "elapsed": "04:00:25",
+      "failure": "Official ECAPA DataLoader raised torch_shm_manager Invalid argument on f11r1n01 and made no further progress before the four-hour wall limit. The preceding 104,014-row LS360 anonymisation and VPC export are complete and verified.",
+      "ls360_anon_jsonl_rows": 104014,
+      "ls360_anon_jsonl_sha256": "2980f12e1e93ea97244b440df63244c6e54638c5b78fb7e1adb34f883a1f5abf",
+      "ls360_vpc_rows": 104014,
+      "ls360_wav_bytes": 41940252136,
+      "s_metrics_available": false,
+      "resources": {
+        "dcu": 1,
+        "cpus": 16,
+        "memory_gb": 60,
+        "wall_hours": 4.0
+      },
+      "expected_card_hours": 3.0,
+      "worst_card_hours": 4.0,
+      "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_s_20261112/s_eval",
+      "job_history": [
+        {
+          "job_id": "1098672",
+          "state": "dependency_cancelled",
+          "reason": "Cancelled automatically when the first quality-evaluation attempt 1098670 failed its writable-output preflight."
+        },
+        {
+          "job_id": "1098699",
+          "state": "dependency_cancelled",
+          "reason": "Cancelled automatically when evaluation attempt 1098697 failed after completing all anonymised audio."
+        },
+        {
+          "job_id": "1098723",
+          "state": "dependency_cancelled",
+          "reason": "Cancelled automatically when evaluation retry 1098721 hit the full compute-node /tmp."
+        },
+        {
+          "job_id": "1098744",
+          "state": "timeout_after_complete_anonymisation",
+          "reason": "ANON/VPC complete; S DataLoader hit torch_shm_manager Invalid argument and hung to the wall limit."
+        }
+      ],
+      "replacement": {
+        "job_id": "1100375",
+        "account": "a094f4d7",
+        "mode": "HPC/Slurm",
+        "name": "n019_fullmean1160_s_nw0",
+        "state": "cancelled_slow_20261112_145353",
+        "resources": {
+          "dcu": 1,
+          "cpus": 16,
+          "memory_gb": 60,
+          "wall_hours": 2.0
+        },
+        "expected_card_hours": 1.5,
+        "worst_card_hours": 2.0,
+        "reason": "Runs S-only on the already completed and verified d7 VPC output with the official ASV config using num_workers=0. No re-rendering.",
+        "config": "configs/eval_paper_test_only_post_nw0.yaml",
+        "slurm": "hpc/n019_fullmean1160_s_eval_nw0_hpc.slurm"
+      },
+      "retry_nw10": {
+        "job_id": "1100497",
+        "account": "a094f4d7",
+        "mode": "HPC/Slurm",
+        "name": "n019_fullmean1160_s_nw10",
+        "state": "cancelled_shm_path_too_long_20261112_151425",
+        "node": "f11r2n13",
+        "resources": {
+          "dcu": 1,
+          "cpus": 16,
+          "memory_gb": 60,
+          "wall_hours": 2.0
+        },
+        "expected_card_hours": 1.5,
+        "worst_card_hours": 2.0,
+        "excluded_nodes": ["f11r1n01"],
+        "reason": "The 114-character NFS TMPDIR exceeded torch_shm_manager's shared-memory name limit, so the worker DataLoader failed before training.",
+        "config": "configs/eval_paper_test_only_post.yaml",
+        "slurm": "hpc/n019_fullmean1160_s_eval_nw10_hpc.slurm",
+        "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_s_20261112/s_eval_nw10",
+        "stop_condition": "Complete with six results_anon.txt rows and s_metrics.json, or fail on shm/OOM/non-finite loss/node fault, or reach the two-hour wall limit."
+      },
+      "retry_nw10_short_tmpdir": {
+        "job_id": "1100544",
+        "account": "a094f4d7",
+        "mode": "HPC/Slurm",
+        "name": "n019_fullmean1160_s_nw10st",
+        "state": "completed",
+        "start": "2026-11-12T15:18:29",
+        "end": "2026-11-12T16:50:51",
+        "elapsed": "01:32:22",
+        "card_hours": 1.5394,
+        "exit_code": "0:0",
+        "node": "f11r3n14",
+        "resources": {
+          "dcu": 1,
+          "cpus": 16,
+          "memory_gb": 60,
+          "wall_hours": 2.0
+        },
+        "expected_card_hours": 1.5,
+        "worst_card_hours": 2.0,
+        "excluded_nodes": ["f11r1n01", "f11r2n13"],
+        "tmpdir": "/dev/shm/n019_s_${SLURM_JOB_ID}",
+        "reason": "Official num_workers=10 S-only retry after replacing the overlong NFS TMPDIR with a short /dev/shm path; no re-rendering or scientific changes.",
+        "config": "configs/eval_paper_test_only_post.yaml",
+        "slurm": "hpc/n019_fullmean1160_s_eval_nw10_hpc.slurm",
+        "slurm_sha256": "0c7e04930bbe1224de33f4e591e096ba2e4c452974ceca69e705602a649e352c",
+        "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/privacy/fullmean1160_du_pred_nt_s_20261112/s_eval_nw10st",
+        "stop_condition": "Complete with six results_anon.txt rows and s_metrics.json, or fail on shm/OOM/non-finite loss/node fault, or reach the two-hour wall limit.",
+        "result": {
+          "E_VPC_S_female_percent": 32.113,
+          "E_VPC_S_male_percent": 30.287,
+          "E_VPC_S_mean_percent": 31.2,
+          "delta_vs_formal_shrink01_pp": 1.4575,
+          "delta_vs_paper_pp": -3.6
+        },
+        "s_metrics_sha256": "c7106d956870874c5d1ff67c99f5ad839a9cca141528b0034cb22cf034d6e06e",
+        "results_anon_sha256": "6657510d16d93f6f015f01993f9d6d7ed86fc9251dab24af682758a0cd9371d0"
+      }
+    }
+  },
+  "inputs": {
+    "all_other500_manifest_sha256": "c482d1e37b9fabe64006fc97dc1c108d3f866d746e94e97af383275c8396c437",
+    "existing_fullmean843_sha256": "704c80a0f8b081956ff5a16a51f77493ad6514135b421154b0ffffaabee04017",
+    "missing315_manifest_sha256": "eeb097cfdcd99a2f7e4f9676dcb851392d01b23b48519f8ff7a8837583793438",
+    "missing2_manifest_sha256": "abbd83509d37f23625f9e4d2ec6e8f3eb573735ab0dc82c9fa366cdf2f5287ce",
+    "test_target_map_sha256": "0215470094e36b98d6dd4b082f1e0edbf839711f236b2d9ee84c5c35dd2a96f3",
+    "ls360_target_map_sha256": "53058fdbede1bd46ee1fe8013e46c535af58787e5c90182cfa355f351198e6b8"
+  },
+  "candidate": {
+    "vocoder": "/public/home/a094f4d7/voice_projects/tmp/n019_model_soup_round2_candidates_20261110/generator_avg_soup2_quad_w40_30_20_10.pt",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_mode": "pred",
+    "test_subset": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean1160_20261112/test_941.npz",
+    "full_embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/target_speaker_fullmean1160_20261112/nt_speaker_embeddings.npz"
+  },
+  "submit": false,
+  "decision_gate": {
+    "primary": "E-VPC S should approach or exceed the paper value 34.8%.",
+    "quality": "Full 1,934-utterance WER, UTMOS, and WhiSQA must be measured before replacement; target no more than 0.25 pp WER regression and no material MOS regression.",
+    "no_test_set_checkpoint_selection": true
+  }
+}

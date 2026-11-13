@@ -1,0 +1,51 @@
+{
+  "account": "a094f4d7",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "job_name": "n019_lr5e5_2k_d7_20261110_2020",
+  "job_id": "1085015",
+  "resources": {
+    "dcu": 1,
+    "cpus": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "card_hours": {
+    "expected": 0.5,
+    "worst": 1.0
+  },
+  "purpose": "Test whether the post-92k MOS plateau is caused primarily by insufficient late LR annealing.",
+  "init_generator": {
+    "path": "/public/home/a094f4d7/voice_projects/tmp/n019_d5_snapshots_20261110/generator_step00092000.pt",
+    "step": 92000,
+    "sha256": "f203505cdfc90df0a77b37c3c08870dd7421f076aad226ba3429937aa8ee72f7"
+  },
+  "training": {
+    "steps": 2000,
+    "learning_rate": 0.00005,
+    "optimizer": "AdamW",
+    "batch_size": 16,
+    "precision": "bf16",
+    "snapshot_interval": 500
+  },
+  "data": {
+    "records": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+    "records_rows": 33236,
+    "records_sha256": "edf454313639c85d6ff0ab8426008506620045a2a45ed72e9b6129fab5c1f795",
+    "embeddings": "/public/home/a094f4d7/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz",
+    "embeddings_sha256": "698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866"
+  },
+  "output": "/public/home/a094f4d7/voice_projects/runs/n019_official/vocoder_nt_hpc_lr5e5_2k_from92k_20261110",
+  "stop_conditions": [
+    "init generator SHA256 mismatch",
+    "training recipe mismatch",
+    "DCU watchdog or OOM",
+    "non-finite loss",
+    "no progress",
+    "0.9-hour internal or 1-hour outer wall clock"
+  ],
+  "state": "completed_2000_steps",
+  "elapsed_minutes": 25,
+  "final_validation_mel_l1": 0.7027730345726013,
+  "submit": false
+}
