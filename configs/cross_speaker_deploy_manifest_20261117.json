@@ -1,0 +1,62 @@
+{
+  "created_utc": "2026-11-17T13:55:42.4622155Z",
+  "remote_root": "/public/home/a094f4d10/voice_projects/code/n019_official",
+  "files": [
+    {
+      "path": "src/n019/vocoder.py",
+      "sha256": "d44ab81ebb1d949aa200fc45e6e95d8dbafe521ea9ac9a32ab1b5150f9aac76c"
+    },
+    {
+      "path": "src/n019/speaker_diagnostics.py",
+      "sha256": "54e35cecb084c80b8aebfa698d65a3ad1c46af7b222b195541450c3f3982d6db"
+    },
+    {
+      "path": "scripts/run_vocoder_ddp.sh",
+      "sha256": "0bff59602e90f189c18370097898841d4953cff5d0c2c674a826cd3504e73ef1"
+    },
+    {
+      "path": "scripts/build_cross_speaker_finetune_checkpoint.py",
+      "sha256": "f9cb4712bca800d4844c699157139aaabc593b44dccb7ec6513b6deb26225803"
+    },
+    {
+      "path": "hpc/n019_cross_speaker_ft_d10_hpc.slurm",
+      "sha256": "74b38dca1190bcb084195a2d759ae6392191a79514fab9b6bd8d11af26bae7f1"
+    },
+    {
+      "path": "hpc/n019_cross_speaker_select_d10_hpc.slurm",
+      "sha256": "5c5f9d1754d68c15fb04387d6dd520cd5e7d6abae76083004a862c8bf80efa9b"
+    },
+    {
+      "path": "hpc/n019_cross_speaker_privacy_diag_d10_hpc.slurm",
+      "sha256": "1cafed5661bc00d3a180bf659c7d58a9e67ac7315aac6ee8d8950e6372667bd6"
+    },
+    {
+      "path": "hpc/submit_cross_speaker_pipeline_d10.sh",
+      "sha256": "3d8c553c16374b1b1ce640b3adc1d108833a411cf3208abcaf1be8cbb2c4edc6"
+    },
+    {
+      "path": "hpc/n019_cross_speaker_full_eval_d10_hpc.slurm",
+      "sha256": "8bc396f530e4966da546bc5c521028cd90d998b2e765ca9b81f40dd84ec71e9e"
+    },
+    {
+      "path": "hpc/n019_cross_speaker_ls360_s_d10_hpc.slurm",
+      "sha256": "33b18a43b45fd1f0ab8f7df4cfb6f671820e03220f19e6e1f7959947cf045054"
+    },
+    {
+      "path": "configs/scnet_d10_cross_speaker_ft_20261117.json",
+      "sha256": "2307b71cd7999ac4d219880664b73a80e48bc39e1f444eed5c2c9e37029be1ec"
+    },
+    {
+      "path": "tests/test_cross_speaker_checkpoint.py",
+      "sha256": "45d224ee0d005faba4b8b5d741b47030c63b8be407e54d5fc4373e8579885a0f"
+    },
+    {
+      "path": "tests/test_vocoder.py",
+      "sha256": "2e41d4d5d7bb8fc7db5882528b44532234458053b2a8babd8b3435ab3563a5d3"
+    },
+    {
+      "path": "tests/test_paper_alignment.py",
+      "sha256": "1d31385f7e7493d428412efb8608c9cbb453f63ea1a9826f83d87ce227abe3dc"
+    }
+  ]
+}

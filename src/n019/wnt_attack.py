@@ -348,6 +348,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=20261102)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--bf16", action="store_true")
+    parser.add_argument(
+        "--reset-scheduler",
+        action="store_true",
+        help=(
+            "On resume, keep model/head/optimizer state but rebuild the "
+            "cosine schedule for the new --epochs budget."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -508,7 +516,15 @@ def main() -> int:
         model.load_state_dict(checkpoint["model"])
         head.load_state_dict(checkpoint["head"])
         optimizer.load_state_dict(checkpoint["optimizer"])
-        scheduler.load_state_dict(checkpoint["scheduler"])
+        if args.reset_scheduler:
+            for parameter_group, target_lr in zip(
+                optimizer.param_groups,
+                (config.learning_rate, config.head_learning_rate),
+                strict=True,
+            ):
+                parameter_group["lr"] = target_lr
+        else:
+            scheduler.load_state_dict(checkpoint["scheduler"])
         start_epoch = int(checkpoint["epoch"]) + 1
         global_step = int(checkpoint["step"])
 

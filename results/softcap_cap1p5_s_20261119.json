@@ -1,0 +1,22 @@
+{
+  "job_id": "1163486",
+  "name": "n019_cap15_s",
+  "state": "COMPLETED",
+  "elapsed": "02:29:43",
+  "exit_code": "0:0",
+  "conditions": {
+    "OO_mean_eer_percent": 19.943,
+    "OA_mean_eer_percent": 33.2825,
+    "S_female_eer_percent": 32.298,
+    "S_male_eer_percent": 32.294,
+    "S_mean_eer_percent": 32.296
+  },
+  "comparison": {
+    "paper_S": 34.8,
+    "delta_vs_paper_pp": -2.504,
+    "no_cap_S": 33.255,
+    "delta_vs_no_cap_pp": -0.959
+  },
+  "s_metrics_sha256": "46a967116bfbfa37e25c79ce543eb8a8059b5034cd38d1e421c1293100ee7831",
+  "summary_sha256": "5c76f943f6548deab88274513735cc8c093f51eca22fc4d6914c4a00b3d1578a"
+}

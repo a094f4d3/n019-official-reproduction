@@ -1,0 +1,44 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1148283",
+  "previous_job_ids": ["1147727", "1147833", "1147940", "1147970"],
+  "status": "completed_results_valid_summary_reconstructed",
+  "name": "n019_durstrongtest",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_duration_strong_test_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "expected_card_hours": 0.25,
+  "worst_card_hours": 1.0,
+  "purpose": "Full test quality and W-NT I/L screen for the stronger unconditional duration predictor while holding units, target map, target embedding and vocoder fixed.",
+  "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_strong_20261117/best.pt",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_strong_test_20261117",
+  "stop_conditions": [
+    "missing strong duration best.pt",
+    "tiny-matmul watchdog failure",
+    "counts differ from WER 1496 or UTMOS/WhiSQA 1934",
+    "W-NT I/L incomplete",
+    "1 hour wall clock"
+  ],
+  "failure_trace": "1147727 was canceled by its dependency; 1147833 was canceled by its dependency; 1147940 failed in 29 seconds on the 1,158-key versus 843-key embedding preflight mismatch; 1147970 was canceled when the rejected calibration branch was stopped. None produced WAV or metrics.",
+  "actual_job": "1148283",
+  "result": {
+    "WER": 6.203983790879516,
+    "UTMOS": 3.5310196274315557,
+    "WhiSQA": 3.503066468309715,
+    "WNT_I": 39.03944492340088,
+    "WNT_L": 39.184536784887314
+  },
+  "decision": "Reject: quality is marginally better but both W-NT I and W-NT L regress versus formal. The stronger duration predictor does not explain the W-NT gap.",
+  "artifact_sha256": {
+    "summary.json": "1fe9fced386962fcc453e834309faa97f623d58cf72fd037039c430f99819739",
+    "wnt_summary.json": "8c104acf89e7f5153583bfa0d5f24cac4c668a499e34acbf297f2d468a7e6c1a",
+    "quality_metrics.json": "c17b605601a8d179f1dd40187d622238f8fa65bd4deaac1316d8ba296f9c99e0"
+  },
+  "decision_rule": "Rejected. Do not submit this duration model for LS360 S or formal replacement."
+}

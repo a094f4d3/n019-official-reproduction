@@ -56,7 +56,8 @@
       "a094f4d6",
       "a094f4d7",
       "a094f4d8",
-      "a094f4d9"
+      "a094f4d9",
+      "a094f4d10"
     ],
     "balance_label": "机时余量",
     "balance_value_selector": ".el-descriptions-item__content",

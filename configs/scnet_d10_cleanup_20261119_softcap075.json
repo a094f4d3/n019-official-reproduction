@@ -1,0 +1,26 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123234288017514497",
+  "name": "n019_cleanup_20261119_095746",
+  "status": "completed_20261119",
+  "resources": {
+    "dcu": 1,
+    "cpu": 15,
+    "memory_gb": 59,
+    "wall_hours": 0.25,
+    "expected_card_hours": 0.02,
+    "worst_card_hours": 0.25
+  },
+  "removed": [
+    "runs/n019_official/spkuniform_bundle_screen_20261119",
+    "runs/n019_official/duration_ecapa_layer9_20261117.log",
+    "data/n019_official/vpc_ai/data/libri_test_asr_n019_layer9_ecapa_layer9dur_20261117",
+    "data/n019_official/vpc_ai/data/libri_test_asr_n019_du_nt_nt_utt_20261117",
+    "data/n019_official/vpc_ai/data/libri_test_asr_n019_layer9_ecapa_hybrid_20261117",
+    "tmp/tmpdvwa2mdv"
+  ],
+  "preserved_asset_checks": "22/22 passed",
+  "storage_after": "255G used / 146G free / 64%",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/cleanup_20261119_softcap075"
+}

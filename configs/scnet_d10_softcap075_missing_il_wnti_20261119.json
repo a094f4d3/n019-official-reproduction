@@ -1,0 +1,54 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123227114809085953",
+  "name": "n019_sc075_missing_20261119_092917",
+  "status": "metrics_complete_hpc_packaging_permission_failure_20261119",
+  "purpose": "Measure the missing E-VPC I/L and W-NT I values for the exact residual0.5 + duration0.5 + soft-cap0.75 test condition.",
+  "recipe": {
+    "residual_strength": 0.5,
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true,
+    "duration_soft_cap_frames": 0.75,
+    "suffix": "_n019_softcap075_recovery_20261119"
+  },
+  "resources": {
+    "dcu": 1,
+    "cpu": 15,
+    "memory_gb": 59,
+    "wall_hours": 1.0,
+    "expected_card_hours": 0.35,
+    "worst_card_hours": 1.0
+  },
+  "inputs": {
+    "test_bundle": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117",
+    "target_embeddings_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/softcap075_missing_il_wnti_20261119",
+  "startup_script_sha256": "d14427ff45088b37fe8eb6db84f17e3b32645093efb22bbfddd853be21995f69",
+  "hpc_fallback": {
+    "job_id": "1165727",
+    "state": "FAILED",
+    "elapsed": "00:06:16",
+    "exit_code": "1:0",
+    "failure_stage": "summary_write_permission",
+    "metrics_valid": true
+  },
+  "known_metrics_not_rerun": {
+    "WER": 7.705039666685692,
+    "UTMOS": 3.6297727518762155,
+    "WhiSQA": 3.622378650994927,
+    "W_NT_L": 41.61337688565254
+  },
+  "measured": {
+    "E_VPC_I": 47.4375,
+    "E_VPC_L": 48.98,
+    "W_NT_I": 41.46505370736122
+  },
+  "missing": [
+    "E_VPC_S",
+    "W_NT_S"
+  ]
+}

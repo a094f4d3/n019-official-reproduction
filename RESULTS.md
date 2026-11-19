@@ -1,10 +1,50 @@
 # N019 Reproduction Results
 
-This file separates the paper-aligned formal result from diagnostic
-experiments. Only the `Formal` section is the current nine-metric
-reproduction table.
+This file separates the v0.4.0 selected soft-cap candidate, the previous
+formal reference, and diagnostic experiments. Every row below is kept
+separate; values from different audio suffixes must not be concatenated.
 
-## Formal result
+## v0.4.0 selected candidate
+
+System: `DU-pred-nt` soft-cap 0.75
+
+- Vocoder soup: 84k / 88k / 92k / 96k with weights 40:30:20:10
+- Target embedding: NT + ECAPA orthogonal residual 0.5
+- Duration extrapolation: 0.5, preserving total predicted duration
+- Duration soft cap: 0.75
+- Vocoder checkpoint SHA256:
+  `ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6`
+- WER count: 1,496
+- UTMOS / WhiSQA count: 1,934 each
+
+| Metric | Paper | Reproduced | Absolute difference |
+|---|---:|---:|---:|
+| E-VPC I | 47.2% | **47.4375%** | +0.2375 pp |
+| E-VPC L | 47.9% | **48.9800%** | +1.0800 pp |
+| E-VPC S | 34.8% | **32.4120%** | -2.3880 pp |
+| W-NT I | 39.9% | **41.4650537074%** | +1.5650537074 pp |
+| W-NT L | 42.3% | **41.6133768857%** | -0.6866231143 pp |
+| W-NT S | 24.6% | **27.6945129037%** | +3.0945129037 pp |
+| WER | 7.41% | **7.7050396667%** | +0.2950396667 pp |
+| UTMOS | 3.63 | **3.6297727519** | -0.0002272481 |
+| WhiSQA | 3.69 | **3.6223786510** | -0.0676213490 |
+
+The exact machine-readable record is
+`results/softcap075_complete_20261119.json`.
+
+Compared with the complete no-cap candidate:
+
+- WER improves by `0.562182 pp`;
+- UTMOS improves by `0.020932`;
+- WhiSQA improves by `0.015850`;
+- E-VPC I improves by `0.6665 pp`;
+- E-VPC S decreases by `0.8430 pp`;
+- W-NT L decreases by `0.187902 pp`.
+
+This is therefore a better WER/MOS-aligned result, not a strict Pareto
+improvement over the no-cap candidate.
+
+## Previous formal reference
 
 System: `DU-pred-nt`
 

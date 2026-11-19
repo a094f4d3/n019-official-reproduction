@@ -1,0 +1,39 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1148911",
+  "name": "n019_ntecres025s",
+  "status": "failed_after_anonymisation_complete_missing_test_suffix",
+  "actual_elapsed": "01:29:04",
+  "exit_code": "1:0",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_nt_ecapa_residual_025_s_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0
+  },
+  "expected_card_hours": 3.0,
+  "worst_card_hours": 4.0,
+  "purpose": "Official 104,014-row LS360 E-VPC S retraining for the balanced NT+ECAPA residual strength 0.25 candidate.",
+  "fixed_inputs": {
+    "source_rows": 104014,
+    "units_rows": 104014,
+    "target_map_rows": 104014,
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_all1158_20261117/residual_0p25.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+    "vocoder": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_20261117_s/s_metrics.json",
+  "recovery_job": "1149734",
+  "failure_note": "All 104014 LS360 WAVs and verification completed. S preflight stopped only because the test suffix alias was absent. The S-only recovery reused the finished train view.",
+  "stop_conditions": [
+    "any input count differs from 104014",
+    "tiny-matmul watchdog failure",
+    "anonymisation or VPC export incomplete",
+    "non-finite loss or attack training failure",
+    "4 hour wall clock"
+  ],
+  "decision_rule": "This is the decisive S measurement for the residual0.25 candidate. It does not replace the formal model without all nine metrics."
+}

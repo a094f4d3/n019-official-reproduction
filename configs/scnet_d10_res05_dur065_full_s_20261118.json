@@ -1,0 +1,56 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1159221",
+  "name": "n019_res05_dur065_s",
+  "status": "failed_in_s_training_after_anon_complete",
+  "actual_elapsed": "01:22:20",
+  "exit_code": "1:0",
+  "failure": "Official ECAPA S training reached the final batch with a single utterance and BatchNorm rejected input size [1,3072,1]. All 1,934 test rows and 104,014 LS360 rows had already been anonymised and exported successfully.",
+  "reusable_artifacts": {
+    "node": "f11r2n01",
+    "vpc_root": "/dev/shm/n019_res05_dur065_s_1159221/vpc",
+    "ls360_wav_bytes": 41940394216,
+    "ls360_wav_files": 104014,
+    "vpc_train_wav_scp_sha256": "8da7315624a24963d7f08b43e57e7ac72b162e67742221d932d82d216061907d"
+  },
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0,
+    "expected_card_hours": 3.2,
+    "worst_card_hours": 4.0
+  },
+  "purpose": "Measure official same-suffix E-VPC S for the only grid point that nearly matched paper W-NT L: NT+ECAPA residual0.5 with duration extrapolation0.65.",
+  "prerequisite": "Job 1159005 showed W-NT L 42.262605%, only -0.037395 pp from paper, with WER 9.057702%, UTMOS 3.584009, and WhiSQA 3.585362.",
+  "inputs": {
+    "target_embeddings_test": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p5.npz",
+    "target_embeddings_test_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "target_embeddings_all1158": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_all1158_20261117/residual_0p5.npz",
+    "target_embeddings_all1158_sha256": "117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "duration_extrapolation": 0.65,
+    "preserve_predicted_total": true
+  },
+  "suffix": "_n019_n019_res05_dur065_20261118",
+  "storage": {
+    "work": "/dev/shm/n019_res05_dur065_s_1159221",
+    "public_home": "not used because d10 /public/home remains full"
+  },
+  "script": "scripts/n019_res05_dur065_full_s_shm.sh",
+  "expected_outputs": {
+    "test_anonymised_rows": 1934,
+    "ls360_anonymised_rows": 104014,
+    "s_metrics": "/dev/shm/n019_res05_dur065_s_1159221/s_eval/s_metrics.json"
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input row count or hash mismatch",
+    "test or LS360 VPC export failure",
+    "non-finite S training loss",
+    "4 hour wall clock"
+  ],
+  "decision_rule": "This is a privacy diagnostic and potential Pareto point. It cannot replace the current candidate unless E-VPC S closes materially and the WER increase is explicitly accepted. Do not splice any metrics from another suffix."
+}

@@ -1,0 +1,28 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_name": "n019_wntl_fullmean",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 0.75
+  },
+  "expected_card_hours": 0.08,
+  "worst_card_hours": 0.75,
+  "inputs": {
+    "vpc_data": "/public/home/a094f4d7/voice_projects/data/n019_official/vpc/data",
+    "suffix": "_n019_fullmean1160_20261112",
+    "wnt_model": "/public/home/a094f4d7/voice_projects/models/n019_official/wpro"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/wntl_fullmean1160_20261116",
+  "purpose": "Fill the missing W-NT lazy-informed result for the already completed fullmean1160/no-shrink DU-pred-nt WAV set.",
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "missing VPC suffix, trials, or W-NT model",
+    "non-finite embeddings or malformed trial counts",
+    "45 minute Slurm wall clock",
+    "node failure"
+  ]
+}

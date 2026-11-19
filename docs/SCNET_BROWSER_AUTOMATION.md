@@ -237,3 +237,74 @@ python scripts/scnet_browser_tasks.py --submit
   运行不需要再次输入密码。
 - 若持久化会话过期，脚本会明确报 `LoginRequired`；在本地终端交互运行一次，
   通过 `getpass` 输入密码即可刷新该账号会话，不要把密码写入配置或命令参数。
+
+## 8. d10 人工智能/模型训练一键提交
+
+使用 `scripts/scnet_d10_ai_oneclick.ps1`，不要再手工操作浏览器界面。
+该 wrapper 从本地受限文件 `$HOME/.scnet/accounts.json` 读取
+`a094f4d10` 密码，只在当前进程设置
+`SCNET_PASSWORD_A094F4D10`，然后调用
+`scripts/scnet_browser_tasks.py --headless --no-prompt`。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File scripts/scnet_d10_ai_oneclick.ps1 `
+  -TaskId d10-resume-training `
+  -NamePrefix n019_resume `
+  -StartupScript 'bash /public/home/a094f4d10/voice_projects/code/n019_official/scripts/your_launcher.sh' `
+  -WallHours 2 `
+  -ExpectedCardHours 1.0 `
+  -WorstCardHours 2.0 `
+  -InputPaths '/public/home/a094f4d10/voice_projects/...' `
+  -OutputPaths '/public/home/a094f4d10/voice_projects/...' `
+  -Submit
+```
+
+- `-CheckConfig`：离线校验，不打开浏览器。
+- `-DryRun`：自动登录、填表、截图和校验，但不点击创建。
+- `-Submit`：真正创建任务。
+- `-Submit` 返回后，wrapper 会自动把本次生成的临时配置改为
+  `submit:false`，并尽量从 `runs/scnet_browser_submissions/<timestamp>/results.json`
+  回填 `submitted_task_id`，防止后续误重复创建。
+- 启动命令含复杂引号时，优先把完整命令写入本地文件并用
+  `-StartupScriptFile <path>`，避免 PowerShell/JSON 多层转义。
+- 固定使用 `a094f4d10`、1 DCU、1 实例、15 CPU / 59 GB per card。
+- 2026-11-19 已修复登录页 Vue 输入框：改为逐字符输入并显式派发
+  `input/change` 事件；headless dry-run 已真实通过。
+- 2026-11-19 02:30 已用该 wrapper 真正创建 smoke task
+  `2123121797200564225`；任务在 4 秒内正常完成，证明一键提交链路可用。
+- wrapper SHA256：
+  `487ebe85867213fe116db384e93fe5008dc34809ccdd7593beb0035814366d52`。
+
+### 2026-11-19 d10 cleanup and queue note
+
+- `/public/home/a094f4d10` is now `256G used / 145G free / 64%`; it is
+  safe for normal job output writes.
+- Removed obsolete user-owned cross-speaker and `DU-nt-nt-utt` evaluator
+  outputs. Do not remove the current candidate's compact
+  `privacy/ntecres0p5_durextra0p5_20261118_s`, `wnt_s`, quality, or
+  parameter files.
+- AI recovery task `2123124377765978114` was created by this wrapper while
+  it was queued, then stopped without an instance when HPC capacity was
+  confirmed. The active equivalent is HPC Job `1163133`; do not recreate
+  the AI task unless HPC capacity is exhausted again.
+- The same wrapper submitted root cleanup task
+  `2123128559578529793` (`n019_evalrootclean_20261119_025744`) to remove
+  old root-owned `layer9_ecapa_*` evaluator directories. It completed in
+  one second at 03:05:15; `eval/` is empty and storage is healthy.
+
+### 2026-11-19 post-patch UTF-8 fix
+
+- Real one-click task `2123194340386017281`
+  (`n019_oneclick_postpatch_20261119_071907`) exposed a Windows PowerShell
+  5.1 bug: reading SCNet's UTF-8 `results.json` as ANSI corrupted the
+  Chinese `排队中` status and made `ConvertFrom-Json` fail after the task
+  had already been submitted.
+- The wrapper now reads `results.json` with `[Text.Encoding]::UTF8`,
+  uses a task-id regex fallback, and always rewrites the generated config
+  to `submit:false` after the submission attempt.
+- New wrapper SHA256:
+  `b9e800f1c52a851dec2f184bcb5b9ca14e9791ed6ad20f005a09778bc32e480`.
+  End-to-end smoke task `2123196552549867521` returned exit `0` and left
+  `submit:false` plus `submitted_task_id` in the generated config.
+  `tests/test_scnet_browser_tasks.py` remains `10 passed`.

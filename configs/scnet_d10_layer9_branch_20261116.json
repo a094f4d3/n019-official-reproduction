@@ -1,0 +1,108 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "purpose": "Test the paper-compatible unresolved HuBERT-layer hypothesis and fill the W-NT L full-target-mean control without repeating previous target, shrink, checkpoint, or attacker experiments.",
+  "balance_basis": {
+    "hpc_free_hours": 50,
+    "ai_free_card_hours": 50,
+    "hpc_jobs_started_before_branch_seconds": 960,
+    "hpc_jobs_started_before_branch_card_hours": 0.2667
+  },
+  "completed": {
+    "wnt_l_fullmean1160": {
+      "job_id": "1138552",
+      "wall_seconds": 200,
+      "result_mean_eer_percent": 40.43017849326134,
+      "summary_sha256": "8c656958a49033e6311fbbdf5cc4979a1b3f83e593e343fc836da9f8728dbe78"
+    },
+    "unit_leakage": {
+      "job_ids": [
+        "1138511",
+        "1138575"
+      ],
+      "layer6_ngram_speaker_accuracy": 0.2833333333333333,
+      "layer9_ngram_speaker_accuracy": 0.20833333333333334
+    },
+    "layer9_units": {
+      "job_id": "1138621",
+      "records": 33236,
+      "codebook_shape": [
+        200,
+        768
+      ],
+      "records_sha256": "b334b9cd8a235c11ee716f5d6fba1956c4e3a47271d03f63de3eed084bb08e46",
+      "codebook_sha256": "4ea8a5878de4d1431c98ba641cfa2b048443d4f8d5595af4c5066ad0e72b3f08"
+    },
+    "layer9_alignment": {
+      "job_id": "1138800",
+      "records_sha256": "858a239f20262f799af88947e4b84ef6874e71aebe1c8c57e30b8efbe237a9ea",
+      "codebook_sha256": "a0159483843f952e5ac9ac88cb410ca517d7d437c4ddcaf49535ef4be0284c2b",
+      "token_agreement_2000": 0.4510956277957577,
+      "boundary_agreement_2000": 0.6405414915857672
+    },
+    "evaluation_units": {
+      "job_id": "1139076",
+      "test_records": 1934,
+      "test_records_sha256": "25df31e21b12971b951ea41f127ebc4c431d2f8ac34926a21023f6555fa76383",
+      "dev_records": 100,
+      "dev_records_sha256": "b267f825eb963c7392e4ea250b2712bd0126181de0726a8c1b167dbb479f952d"
+    }
+  },
+  "running": {
+    "layer9_vocoder_pilot": {
+      "job_id": "1139262",
+      "resources": {
+        "dcu": 1,
+        "cpu": 16,
+        "memory_gb": 60,
+        "wall_hours": 8,
+        "expected_hours": 4
+      },
+      "steps": 20000,
+      "learning_rate": 0.0001,
+      "batch": 16,
+      "initialization_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+      "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116",
+      "stop_conditions": [
+        "300 second tiny-matmul watchdog fails",
+        "non-finite generator or discriminator loss",
+        "no new log output for 15 minutes",
+        "wall-clock expiry",
+        "missing aligned records or incompatible checkpoint"
+      ]
+    }
+  },
+  "queued": {
+    "layer9_dev_selection": {
+      "job_id": "1139289",
+      "dependency": "afterany:1139262",
+      "resources": {
+        "dcu": 1,
+        "cpu": 16,
+        "memory_gb": 60,
+        "wall_hours": 2,
+        "expected_hours": 0.8
+      },
+      "comparison": "formal soup baseline and all pilot snapshots on the fixed 40-speaker dev-100",
+      "gate": "UTMOS +0.05, WhiSQA +0.05, WER regression <= 0.25 pp"
+    },
+    "layer9_duration": {
+      "job_id": "1139307",
+      "dependency": "afterok:1139289",
+      "resources": {
+        "dcu": 1,
+        "cpu": 16,
+        "memory_gb": 60,
+        "wall_hours": 4,
+        "expected_hours": 1.5
+      },
+      "purpose": "Train the unconditional duration predictor on aligned layer-9 units for the candidate branch."
+    }
+  },
+  "launch_failures": {
+    "1138891": "d6 dev unit records were not readable from d10",
+    "1139018": "d7 dev audio was not readable from d10",
+    "1139051": "an empty dev partial file required explicit cleanup or resume",
+    "1139078": "HuBERT directory symlink was not accepted by the preflight loader; retried as 1139262 with per-file symlinks"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1161556",
+  "name": "n019_softcapgrid",
+  "status": "timed_out_after_2h_partial_result",
+  "purpose": "Test whether soft-capping rare duration-predictor outliers preserves the W-NT I/L privacy gain from duration extrapolation 0.5 while reducing its WER cost.",
+  "submitted_from": "artifacts/submissions/n019_duration_softcap_grid_job_20261118.sh",
+  "submit_script_sha256": "32fc2760f097d0ccc4979d6c4441593df79a99869e76d2692c9f76a809b7020b",
+  "launch_method": "sbatch --wrap: base64-decoded job body, no writable shared script path required",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0,
+    "expected_card_hours": 0.6,
+    "worst_card_hours": 2.0
+  },
+  "balance_before": {
+    "used_top_level_card_hours": 41.4933,
+    "remaining_of_50h": 8.5067
+  },
+  "fixed_inputs": {
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "target_embeddings": "nt_ecapa_residual_test_20261117/residual_0p5.npz",
+    "target_embeddings_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "conditions": [
+    {
+      "duration_soft_cap_frames": 0.75
+    },
+    {
+      "duration_soft_cap_frames": 1.0
+    },
+    {
+      "duration_soft_cap_frames": 1.5
+    }
+  ],
+  "outputs": {
+    "work_root": "/dev/shm/n019_duration_softcap_grid_1161556",
+    "expected_log": "/dev/shm/n019_softcapgrid_1161556.out",
+    "expected_error": "/dev/shm/n019_softcapgrid_1161556.err",
+    "small_results_must_be_copied_before_cleanup": true
+  },
+  "stop_conditions": [
+    "Stop the current condition on non-finite loss or repeated DCU watchdog failure.",
+    "Do not run LS360 E-VPC S until a soft-cap condition passes the full-test quality/W-NT Pareto check."
+  ],
+  "decision_rule": "Prefer a condition that raises W-NT L toward 42.3 while retaining E-VPC S potential, with WER materially below the uncapped 8.267222% candidate and MOS no worse than the paper tolerance.",
+  "partial_result": {
+    "duration_soft_cap_frames": 0.75,
+    "WER": 7.705039666685692,
+    "UTMOS": 3.6297726352557524,
+    "WhiSQA": 3.6223786648636396,
+    "W-NT_I_female": 40.14712572097778,
+    "W-NT_I_male": 42.78298169374466,
+    "W-NT_I_mean": 41.46505370736122,
+    "W-NT_L": "not recovered before node-local /dev/shm cleanup",
+    "note": "Quality is close to the paper and much better than uncapped duration0.5; W-NT L still needs a bounded rerun."
+  },
+  "failed_submission": {
+    "job_ids": [
+      "1161272",
+      "1161346",
+      "1161416"
+    ],
+    "causes": [
+      "1161272 used a login-node /dev/shm script path that was invisible on the compute node.",
+      "1161346 and 1161416 reached the preparation stage but the default python was Python 2 and/or TMPDIR pointed at the full /public filesystem.",
+      "/public is globally 100% full, so new shared logs and scripts cannot be created."
+    ],
+    "remedy": "Use a base64 sbatch --wrap body, activate the N019 Python environment before patching, force TMPDIR to compute-node /dev/shm, and construct a symlink overlay instead of copying the full source tree."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1148449",
+  "previous_job_ids": ["1148319", "1148332"],
+  "status": "submitted_with_cv_selected_ridge_weight_and_summary_parser_fix",
+  "dependency": "afterok:1148283",
+  "name": "n019_ntecres",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_nt_ecapa_residual_screen_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "expected_card_hours": 0.7,
+  "worst_card_hours": 2.0,
+  "purpose": "Inject only the ECAPA-predicted timbral residual into the existing NT target embedding, without changing audio amplitude or the vocoder architecture.",
+  "method": {
+    "paired_source_speakers": 247,
+    "ridge_ecapa_to_nt_train_r2": 0.4648671806,
+    "ridge_ecapa_to_nt_cv_r2": 0.1956509923,
+    "strengths": [0.25, 0.5],
+    "cosine_to_original_nt_mean": {
+      "0.25": 0.9908152090,
+      "0.5": 0.9648936568
+    }
+  },
+  "inputs": {
+    "source_nt_sha256": "698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866",
+    "source_ecapa_sha256": "e7f8478a2c860b59fb5591a13bba359df30438e108781eb1c71bbeb3928ae21f",
+    "target_nt_sha256": "5d00633b04e1ab4b70ebb40b657aa36c25f7809c64a5ce0333d1d2d5e14834c4",
+    "target_ecapa_sha256": "74172a3a9a7d9020959954785a58f363f917a092322e458517951f9cfce0e389"
+  },
+  "output_root": "/public/home/a094f4d10/voice_projects/runs/n019_official/nt_ecapa_residual_screen_20261117",
+  "failure": "The first submission 1148319 used ridge weight 1.0, whose 5-fold CV R2 was -3.38277 despite in-sample R2 0.88001. It was cancelled while pending and must not be resubmitted. Retry 1148332 was auto-cancelled when upstream 1148283 failed its compact summary parser. Final retry 1148449 uses ridge weight 30000 and the fixed W-NT summary parser.",
+  "stop_conditions": [
+    "missing paired embeddings or target keys",
+    "tiny-matmul watchdog failure",
+    "counts differ from WER 1496 or UTMOS/WhiSQA 1934",
+    "W-NT I/L incomplete",
+    "2 hour wall clock"
+  ],
+  "decision_rule": "Only a residual strength preserving UTMOS/WhiSQA within 0.05 and WER within 0.25 pp can advance to full LS360 E-VPC S. Do not infer S from test W-NT."
+}

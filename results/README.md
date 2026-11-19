@@ -1,7 +1,12 @@
 # Result Evidence
 
-`formal/` is the authoritative formal result bundle copied from the
-completed d6/d7 runs.
+`softcap075_complete_20261119.json` is the complete v0.4.0 selected
+candidate. It contains all nine metrics from the same soft-cap 0.75
+audio suffix.
+
+`formal/` is the previous formal reference bundle copied from the
+completed d6/d7 runs. It remains a separate row and must not be
+concatenated with the soft-cap candidate.
 
 Key source hashes:
 

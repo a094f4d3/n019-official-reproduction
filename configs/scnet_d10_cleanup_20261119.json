@@ -1,0 +1,53 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1162900",
+  "name": "n019_privacy_cleanup",
+  "status": "completed",
+  "elapsed": "00:06:11",
+  "exit_code": "0:0",
+  "purpose": "Free d10 storage by deleting rejected/reproducible privacy branches while preserving the current compact candidate results and model assets.",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 8,
+    "memory_gb": 8,
+    "wall_hours": 1.0,
+    "expected_card_hours": 0.2,
+    "worst_card_hours": 1.0
+  },
+  "before": {
+    "public_filesystem": "400G used / 0 available / 100%",
+    "privacy_tree": "237 GB"
+  },
+  "after": {
+    "public_filesystem": "258G used / 143G available / 65%",
+    "privacy_tree": "162 MB",
+    "write_probe": "success"
+  },
+  "retained_privacy_directories": [
+    "ntecres0p5_durextra0p5_20261118_s",
+    "ntecres0p5_durextra0p5_wnt_s_20261118",
+    "ntecres0p5_durextra0p5_wnt_s_stable_20261118"
+  ],
+  "removed_scope": [
+    "all _ls360 anonymised WAV trees",
+    "all _shards WAV trees",
+    "rejected layer-9 and older target/duration privacy branches"
+  ],
+  "preserved": [
+    "current layer-6 soup and parameters",
+    "current compact S/W-NT metrics",
+    "base corpora",
+    "environments and models",
+    "current result JSON/Markdown"
+  ],
+  "root_cleanup_task": {
+    "task_id": "2123122729065873410",
+    "name": "n019_rootclean_20261119_023433",
+    "status": "completed",
+    "start_time": "2026-11-19T02:34:43+08:00",
+    "end_time": "2026-11-19T02:34:58+08:00",
+    "result": "Removed root-owned rejected layer-9 run directories, the rejected data/anonymised tree, root-owned temporary directories, and root-owned audit logs; retained privacy directories are owned by a094f4d10."
+  }
+}

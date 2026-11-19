@@ -1,0 +1,25 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "dependency_root": "1149734",
+  "training_job": "1149762",
+  "selection_job": "1149763",
+  "privacy_diagnostic_job": "1149764",
+  "training_resources": "1 DCU, 16 CPU / 60 GB, 2 h",
+  "training_expected_card_hours": 0.8,
+  "training_worst_card_hours": 2.0,
+  "selection_resources": "1 DCU, 16 CPU / 60 GB, 2 h",
+  "selection_expected_card_hours": 0.6,
+  "selection_worst_card_hours": 2.0,
+  "privacy_diagnostic_resources": "1 DCU, 16 CPU / 60 GB, 1 h",
+  "privacy_diagnostic_expected_card_hours": 0.2,
+  "privacy_diagnostic_worst_card_hours": 1.0,
+  "stop_conditions": [
+    "watchdog failure",
+    "non-finite loss",
+    "missing or mismatched input SHA256",
+    "wall-clock expiry",
+    "no dev snapshot passes the quality gate"
+  ],
+  "note": "The jobs were submitted successfully, but the helper's JSON writer failed under the login node's default Python 2.7. This record was reconstructed after checking the live queue; do not rerun the submission helper."
+}

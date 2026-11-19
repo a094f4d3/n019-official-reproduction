@@ -84,6 +84,42 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--out-dir", required=True)
+    parser.add_argument(
+        "--speaker-embedding-scale",
+        type=float,
+        default=1.0,
+        help=(
+            "Multiply the target speaker embedding before vocoder "
+            "conditioning. The paper-faithful value is 1.0."
+        ),
+    )
+    parser.add_argument(
+        "--duration-extrapolation",
+        type=float,
+        default=0.0,
+        help=(
+            "Extrapolate predicted durations away from original durations by "
+            "this factor. Zero is the paper-faithful prediction."
+        ),
+    )
+    parser.add_argument(
+        "--duration-preserve-total",
+        action="store_true",
+        help=(
+            "After duration extrapolation, rescale to the original predicted "
+            "total duration so only local rhythm is exaggerated."
+        ),
+    )
+    parser.add_argument(
+        "--duration-soft-cap-frames",
+        type=float,
+        default=0.0,
+        help=(
+            "Soft-limit each extrapolated unit-duration change to this many "
+            "HuBERT frames before total-duration rescaling. Zero disables "
+            "the cap."
+        ),
+    )
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--flush-every", type=int, default=25)
@@ -133,6 +169,53 @@ def require_free_space(*, required_bytes: int, available_bytes: int) -> None:
             f"Insufficient output space: need {required_bytes} bytes, "
             f"available {available_bytes} bytes"
         )
+
+
+def scale_speaker_embedding(
+    embedding: torch.Tensor,
+    scale: float,
+) -> torch.Tensor:
+    """Apply a finite positive conditioning-strength scale."""
+    if not math.isfinite(scale):
+        raise ValueError("speaker embedding scale must be finite")
+    if scale <= 0.0:
+        raise ValueError("speaker embedding scale must be positive")
+    return embedding * float(scale)
+
+
+def extrapolate_durations(
+    predicted: torch.Tensor,
+    original: torch.Tensor,
+    strength: float,
+    *,
+    preserve_total: bool,
+    soft_cap_frames: float = 0.0,
+) -> tuple[torch.Tensor, int]:
+    """Exaggerate the predicted rhythm while keeping durations positive."""
+    if predicted.shape != original.shape:
+        raise ValueError("Predicted and original duration shapes differ")
+    if not math.isfinite(strength) or strength < 0.0:
+        raise ValueError("duration extrapolation must be finite and non-negative")
+    if not math.isfinite(soft_cap_frames) or soft_cap_frames < 0.0:
+        raise ValueError("duration soft cap must be finite and non-negative")
+    if strength == 0.0:
+        return predicted, 0
+    predicted_total = float(predicted.sum())
+    delta = float(strength) * (predicted - original)
+    if soft_cap_frames > 0.0:
+        # Keep the sign of the distortion, but stop rare predictor outliers
+        # from dominating the local rhythm.
+        delta = float(soft_cap_frames) * torch.tanh(
+            delta / float(soft_cap_frames)
+        )
+    adjusted = predicted + delta
+    adjusted, negative = sanitize_predicted_durations(adjusted)
+    if preserve_total:
+        adjusted_total = float(adjusted.sum())
+        if predicted_total <= 0.0 or adjusted_total <= 0.0:
+            raise ValueError("Duration totals must be positive")
+        adjusted = adjusted * (predicted_total / adjusted_total)
+    return adjusted, negative
 
 
 def ensure_output_dir_available(
@@ -217,6 +300,26 @@ def main() -> int:
         raise ValueError("--flush-every must be positive")
     if args.space_safety_factor < 1.0:
         raise ValueError("--space-safety-factor must be at least 1.0")
+    if (
+        not math.isfinite(args.duration_extrapolation)
+        or args.duration_extrapolation < 0.0
+    ):
+        raise ValueError("--duration-extrapolation must be finite and non-negative")
+    if (
+        not math.isfinite(args.duration_soft_cap_frames)
+        or args.duration_soft_cap_frames < 0.0
+    ):
+        raise ValueError(
+            "--duration-soft-cap-frames must be finite and non-negative"
+        )
+    if args.duration_mode == "orig" and args.duration_extrapolation != 0.0:
+        raise ValueError(
+            "--duration-extrapolation requires a predicted duration mode"
+        )
+    scale_speaker_embedding(
+        torch.empty(0),
+        args.speaker_embedding_scale,
+    )
     if args.duration_mode in {"pred", "nt", "ecapa"} and not args.duration_model:
         raise ValueError("--duration-model is required for predicted duration modes")
     if args.duration_mode in {"nt", "ecapa"} and not args.duration_embeddings:
@@ -369,6 +472,10 @@ def main() -> int:
                 target_vocoder_embedding = vocoder_embeddings.get(
                     mapping[args.target_embedding_key]
                 ).unsqueeze(0).to(device)
+                target_vocoder_embedding = scale_speaker_embedding(
+                    target_vocoder_embedding,
+                    args.speaker_embedding_scale,
+                )
                 negative = 0
 
                 if args.duration_mode == "orig":
@@ -388,6 +495,15 @@ def main() -> int:
                     predicted, negative = sanitize_predicted_durations(
                         predicted
                     )
+                    if args.duration_extrapolation:
+                        predicted, extra_negative = extrapolate_durations(
+                            predicted,
+                            original_durations.float(),
+                            args.duration_extrapolation,
+                            preserve_total=args.duration_preserve_total,
+                            soft_cap_frames=args.duration_soft_cap_frames,
+                        )
+                        negative += extra_negative
                     if negative:
                         print(
                             f"negative_duration_values={negative} "
@@ -416,6 +532,12 @@ def main() -> int:
                         "duration_mode": args.duration_mode,
                         "duration_embedding_key": args.duration_embedding_key,
                         "vocoder_type": args.vocoder_type,
+                        "speaker_embedding_scale": args.speaker_embedding_scale,
+                        "duration_extrapolation": args.duration_extrapolation,
+                        "duration_preserve_total": args.duration_preserve_total,
+                        "duration_soft_cap_frames": (
+                            args.duration_soft_cap_frames
+                        ),
                         "duration_frames": int(durations.sum()),
                         "negative_duration_values": negative,
                     }

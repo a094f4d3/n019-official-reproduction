@@ -1,0 +1,41 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1159840",
+  "name": "n019_res05_dur065_sretry",
+  "status": "failed_before_s_training",
+  "actual_elapsed": "00:00:03",
+  "exit_code": "1:0",
+  "failure": "Pinned-node retry exited after three seconds, before creating useful output. The reusable VPC data was still present, but repeated inspection allocations were delayed by node scheduling, so the persisted-node recovery path was abandoned in favor of a fresh full rerun.",
+  "node": "f11r2n01",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0,
+    "expected_card_hours": 1.5,
+    "worst_card_hours": 3.0
+  },
+  "purpose": "Retry only the official ECAPA S evaluation using the completed duration0.65 test and LS360 VPC exports from Job 1159221.",
+  "repair": {
+    "cause": "The final training DataLoader batch contained one sample, and ECAPA BatchNorm rejects [1,3072,1].",
+    "code_fix": "Copy the 17 MB project tree to /dev/shm, set train_loader_kwargs.drop_last=True in the copied VPC trainer, and redirect the MIOpen cache to /dev/shm.",
+    "metrics_policy": "Train-loader drop_last only removes the one-sample terminal batch. It does not alter data, labels, epochs, ECAPA architecture, learning rate, or the AA evaluation protocol."
+  },
+  "reused_inputs": {
+    "vpc_root": "/dev/shm/n019_res05_dur065_s_1159221/vpc",
+    "suffix": "_n019_n019_res05_dur065_20261118",
+    "train_rows": 104014,
+    "test_rows": 1934,
+    "vpc_train_wav_scp_sha256": "8da7315624a24963d7f08b43e57e7ac72b162e67742221d932d82d216061907d"
+  },
+  "output": "/dev/shm/n019_res05_dur065_s_retry_1159840/s_eval/s_metrics.json",
+  "stop_conditions": [
+    "missing reused VPC input",
+    "tiny-matmul watchdog failure",
+    "non-finite S training loss",
+    "incomplete six-row AA result",
+    "3 hour wall clock"
+  ],
+  "decision_rule": "Use this only as a privacy diagnostic. Promotion still requires resolving the WER trade-off."
+}

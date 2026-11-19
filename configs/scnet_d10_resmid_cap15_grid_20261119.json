@@ -1,0 +1,108 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1164410",
+  "name": "n019_resmid_cap15_grid",
+  "status": "completed_rejected_20261119",
+  "purpose": "Non-duplicate neighborhood screen around residual0.5 + duration0.5 + soft-cap1.5: test whether residual0.55/0.60/0.65 can recover E-VPC S headroom while retaining the cap1.5 W-NT L and quality gains.",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.5,
+    "expected_card_hours": 0.6,
+    "worst_card_hours": 1.5
+  },
+  "fixed_inputs": {
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/libri_test_target_map_paperfix.jsonl",
+    "duration_soft_cap_frames": 1.5,
+    "duration_preserve_total": true,
+    "speaker_embedding_scale": 1.0
+  },
+  "conditions": [
+    {
+      "tag": "res055_dur05_cap15",
+      "residual_strength": 0.55,
+      "duration_extrapolation": 0.5,
+      "target_embeddings_test_sha256": "855974455b79a3e699d595a36526ac39c9e469449c37d216de3978139fb9801f"
+    },
+    {
+      "tag": "res060_dur05_cap15",
+      "residual_strength": 0.6,
+      "duration_extrapolation": 0.5,
+      "target_embeddings_test_sha256": "51e0da9794310ab09b91f99923f60512db1de6f75557f877cda06c8ee4a580f3"
+    },
+    {
+      "tag": "res065_dur05_cap15",
+      "residual_strength": 0.65,
+      "duration_extrapolation": 0.5,
+      "target_embeddings_test_sha256": "e5d141ded74e13c4bfe77ebf7fb22af88184152d36541d3dc771e2eb5380f37d"
+    },
+    {
+      "tag": "res065_dur06_cap15",
+      "residual_strength": 0.65,
+      "duration_extrapolation": 0.6,
+      "target_embeddings_test_sha256": "e5d141ded74e13c4bfe77ebf7fb22af88184152d36541d3dc771e2eb5380f37d"
+    }
+  ],
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/resmid_cap15_grid_20261119",
+  "result": {
+    "res055_dur05_cap15": {
+      "WER_percent": 7.998972661377775,
+      "UTMOS": 3.624622079677641,
+      "WhiSQA": 3.6268571733411368,
+      "W_NT_I_percent": 41.91257506608963,
+      "W_NT_L_percent": 41.67686700820923
+    },
+    "res060_dur05_cap15": {
+      "WER_percent": 8.038924718908738,
+      "UTMOS": 3.6356041495531275,
+      "WhiSQA": 3.6402699328966692,
+      "W_NT_I_percent": 42.035751044750214,
+      "W_NT_L_percent": 41.050947457551956
+    },
+    "res065_dur05_cap15": {
+      "WER_percent": 8.081730494834769,
+      "UTMOS": 3.6488455860666553,
+      "WhiSQA": 3.650908358279527,
+      "W_NT_I_percent": 42.132729291915894,
+      "W_NT_L_percent": 40.773823857307434
+    },
+    "res065_dur06_cap15": {
+      "WER_percent": 8.232977569773414,
+      "UTMOS": 3.6326838283035845,
+      "WhiSQA": 3.640970378158751,
+      "W_NT_I_percent": 42.2729454934597,
+      "W_NT_L_percent": 41.80651232600212
+    }
+  },
+  "completion": {
+    "actual_elapsed": "00:42:47",
+    "exit_code": "0:0",
+    "local_copy": "results/resmid_cap15_grid_20261119",
+    "decision": "Rejected: no condition reaches W-NT L 42.0. Increasing residual strength monotonically reduces W-NT L, while duration 0.6 only partially recovers it. Do not run full S on these points."
+  },
+  "submission": {
+    "submitted_at": "2026-11-19T07:37:00+08:00",
+    "pre_submit_balance_hours": 3.1858,
+    "remote_script_sha256": "6da34ba37e0644e184bd15039e7b9c2fb673c13fe4d2173d7f0c929ce1818e85",
+    "remote_slurm_sha256": "a00028779643e8e6b6399bc3399b42d64948c6bba4d2a209c4587977c1b8bb60"
+  },
+  "promotion_gate": {
+    "WER_percent_max": 8.5,
+    "UTMOS_min": 3.58,
+    "WhiSQA_min": 3.58,
+    "W_NT_L_percent_min": 42.0,
+    "then": "Run a matching full-LS360 E-VPC S only for the best gate-passing point; do not splice metrics across suffixes."
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input hash or row-count mismatch",
+    "non-finite loss or metric",
+    "10 minutes without progress",
+    "wall-clock expiry"
+  ]
+}

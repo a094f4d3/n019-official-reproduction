@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "purpose": "Determine whether the layer-9 unit representation that reached paper-level W-NT L also closes the E-VPC S gap.",
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "partition": "hx1hdnormal",
+  "stage_1": {
+    "job_id": "1140990",
+    "name": "n019_l9ls360units",
+    "resources": "1 DCU, 16 CPU, 60 GB",
+    "wall_clock": "2 h",
+    "expected_card_hours": 1.0,
+    "worst_card_hours": 2.0,
+    "script": "hpc/n019_layer9_ls360_units_d10_hpc.slurm",
+    "input_manifest": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d10paths_20261117.jsonl",
+    "input_manifest_sha256": "1c32d0cb016289e4528f9a682dc17343ceb72416a1fc174ff27d7422d0a20263",
+    "codebook_sha256": "a0159483843f952e5ac9ac88cb410ca517d7d437c4ddcaf49535ef4be0284c2b",
+    "hubert_layer": 9,
+    "kmeans_k": 200,
+    "expected_records": 104014,
+    "output": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/units/librispeech_train_clean_360_layer9_aligned_20261117",
+    "stop_conditions": [
+      "DCU tiny-matmul watchdog failure",
+      "non-104014 output count",
+      "layer or codebook hash mismatch",
+      "non-finite or runtime error"
+    ]
+  },
+  "stage_2": {
+    "job_id": "1141930",
+    "name": "n019_l9_8k_s",
+    "dependency": "none; reuses exported VPC view aligned to test suffix",
+    "resources": "1 DCU, 16 CPU, 60 GB",
+    "wall_clock": "4 h",
+    "expected_card_hours": 2.5,
+    "worst_card_hours": 4.0,
+    "script": "hpc/n019_layer9_8k_ls360_s_d10_hpc.slurm",
+    "vocoder": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116/snapshots/generator_step00008000.pt",
+    "vocoder_sha256": "39aeebe086700a3b18a29aa1f9ec354575b0a60aa86dc328c0a2ed2543559b66",
+    "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_layer9_aligned_20261116/best.pt",
+    "duration_sha256": "c84fe19ed8f9e31199ac6dd1926e2d565e8a4179c90f04411f55ced0c1191d5b",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/librispeech_train_clean_360_target_map_utterance.jsonl",
+    "target_embeddings": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/target_speaker_mean32_all1158_shrink01.npz",
+    "target_embedding_mode": "speaker_mean_l2_shrink0.1",
+    "vpc_suffix": "_n019_layer9_8k_20261117",
+    "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/layer9_8k_s_20261117/s_eval",
+    "stop_conditions": [
+      "missing or mismatched 104014 layer-9 unit records",
+      "vocoder or duration hash mismatch",
+      "anonymisation/VPC count mismatch",
+      "official S retraining failure",
+      "DCU watchdog failure"
+    ]
+  },
+  "failed_attempt_trace": {
+    "attempts": [
+      {
+        "job_id": "1140921",
+        "state": "FAILED",
+        "elapsed_seconds": 44,
+        "reason": "The source manifest referenced train-clean-360 audio through a non-existent d6 path. A d10-local manifest was generated with verified d4 audio paths; no unit output was produced.",
+        "dependent_job_cancelled": "1140925"
+      },
+      {
+        "job_id": "1140959",
+        "state": "FAILED",
+        "elapsed_seconds": 51,
+        "reason": "A zero-byte partial file triggered the n019.units FileExistsError because the wrapper only passed --resume for non-empty partial files. No unit rows or codes were produced.",
+        "dependent_job_cancelled": "1140961"
+      },
+      {
+        "job_id": "1140991",
+        "state": "FAILED",
+        "elapsed_seconds": 27,
+        "reason": "The d10 VPC view lacked the base train-clean-360/wav.scp required by the VPC post-evaluation path. Layer-9 units and all four shard inputs had already been generated, but no anonymised WAV or EER was produced.",
+        "fix": "Added a read-only d10 symlink to the d6 VPC train-clean-360 view and resubmitted as 1141341."
+      },
+      {
+        "job_id": "1141341",
+        "state": "FAILED",
+        "elapsed_seconds": 5241,
+        "reason": "All 104,014 WAVs were generated and the merged anon.jsonl passed record validation, but export_vpc_anon skipped the directory symlink used for the base train-clean-360 dataset and exported no datasets.",
+        "fix": "Converted the base train-clean-360 symlink into a real metadata directory and submitted export-only/eval job 1141771 against the existing WAVs."
+      },
+      {
+        "job_id": "1141771",
+        "state": "FAILED",
+        "elapsed_seconds": 154,
+        "reason": "VPC export and the 104,014-row verification succeeded, but the train view used suffix _n019_layer9_8k_s_20261117 while the existing test views use _n019_layer9_8k_20261117, so S preflight rejected the missing test suffix.",
+        "fix": "Renamed the exported train VPC directory to the test suffix and submitted S-only job 1141872."
+      },
+      {
+        "job_id": "1141872",
+        "state": "FAILED",
+        "elapsed_seconds": 189,
+        "reason": "S preflight passed and VPC training started, but d10 lacked pyloudnorm.",
+        "fix": "Installed pyloudnorm 0.2.0 in the d10 N019 venv and resubmitted S-only as 1141930."
+      }
+    ]
+  },
+  "interpretation_gate": {
+    "not_a_formal_replacement": true,
+    "reason": "The layer-9 8k full-quality screen is UTMOS 3.1084196950 and WhiSQA 2.9075828042, so this S run is diagnostic even if its EER is high.",
+    "result": {
+      "job_id": "1141930",
+      "state": "COMPLETED",
+      "elapsed_seconds": 5324,
+      "female_eer_percent": 28.466,
+      "male_eer_percent": 25.389,
+      "mean_eer_percent": 26.9275,
+      "paper_eer_percent": 34.8,
+      "formal_layer6_eer_percent": 29.7425,
+      "s_metrics_sha256": "19b03380406b3fcbdbe143f56c5803340120922333016c3dd2757836c5893f09",
+      "conclusion": "Layer 9 at 8k solves W-NT L but does not improve E-VPC S; quality-restored continuation is required before treating this as the representation's final S behavior."
+    }
+  }
+}

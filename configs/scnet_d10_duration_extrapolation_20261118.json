@@ -1,0 +1,60 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1151070",
+  "name": "n019_durextra",
+  "status": "completed",
+  "actual_elapsed": "00:22:42",
+  "exit_code": "0:0",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.5,
+    "expected_card_hours": 0.6,
+    "worst_card_hours": 1.5
+  },
+  "purpose": "Test paper-aligned local-rhythm extrapolation on the balanced residual0.25 candidate while preserving the predicted total duration.",
+  "strengths": [0.5, 1.0],
+  "fixed_inputs": {
+    "units": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/libri_test_paperfix/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/libri_test_target_map_paperfix.jsonl",
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p25.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+    "vocoder": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt"
+  },
+  "output_root": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_extrapolation_screen_20261117",
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "non-finite duration or waveform",
+    "input hash mismatch",
+    "quality or W-NT evaluator count mismatch",
+    "wall-clock expiry"
+  ],
+  "decision_rule": "No strength is promoted without full test quality and W-NT I/L. Any promising strength still requires a separate LS360 E-VPC S check."
+  ,
+  "results": {
+    "0.5": {
+      "WER": 8.104560241995319,
+      "UTMOS": 3.5450128725544006,
+      "WhiSQA": 3.5338041414395978,
+      "W-NT I": 42.52897650003433,
+      "W-NT L": 41.9388510286808,
+      "summary_sha256": "4ebcf06981eacab8de159165d7244a5b766d087c43caa5357cb34e7e57a7f7e8",
+      "quality_sha256": "dda13ed6126ed340ceb3b16d486a25f83a7e80af2560e0be92aba056637431df",
+      "wnt_summary_sha256": "544bbee11d4ed879fd5371a063bfb9ed6a503dc87ad69efc99106c0584415d4a"
+    },
+    "1.0": {
+      "WER": 10.769933222989556,
+      "UTMOS": 3.4540806934776818,
+      "WhiSQA": 3.452389392974828,
+      "W-NT I": 44.53783556818962,
+      "W-NT L": 42.65405610203743,
+      "summary_sha256": "5d27c4be24abd3fbaf368807df171bf90c8d4597c9654b5a64f99052e45b32ea",
+      "quality_sha256": "d9f1d898236e5273a0bebcc3f6e3941aa8ccae47d0d157e63529b1c595765c44",
+      "wnt_summary_sha256": "2c53c380b350b65e3541fdb8a644036d3231b43065f11da04561db3560fd6326"
+    }
+  },
+  "decision": "Strength 0.5 is the balanced candidate and advances to full LS360 E-VPC S as Job 1151369. Strength 1.0 exceeds the W-NT targets but its WER and MOS regressions are too large for promotion."
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "status": "submitted_pending_afterany_1144335",
+  "job_id": "1144607",
+  "submitted_at": "2026-11-17T13:33:00+08:00",
+  "dependency": "afterany:1144335",
+  "name": "n019_l9_20k_s",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_layer9_20k_ls360_s_d10_hpc.slurm",
+  "script_sha256": "2114cc1b536ebd2842206ba6902fd93775ebac6df8cfc00f94a7ccf689cc460b",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0
+  },
+  "expected_card_hours": 3.0,
+  "worst_card_hours": 4.0,
+  "balance_before_submit": {
+    "mode": "HPC",
+    "known_free_hours_at_account_provision": 50.0,
+    "elapsed_raw_since_2026_11_16": 55889,
+    "approximate_consumed_hours": 15.5247,
+    "approximate_remaining_hours_before_job": 34.4753
+  },
+  "purpose": "Measure the official 104,014-row LS360 E-VPC S for the layer-9 20k checkpoint. This checkpoint already reaches paper-level W-NT I/L but its timbral S has never been measured. This is not a repeat of the layer-9 8k S run.",
+  "inputs": {
+    "source_manifest": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d10paths_20261117.jsonl",
+    "unit_records": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/units/librispeech_train_clean_360_layer9_aligned_20261117/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/librispeech_train_clean_360_target_map_utterance.jsonl",
+    "target_embeddings": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/target_speaker_mean32_all1158_shrink01.npz",
+    "vocoder": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116/snapshots/generator_step00020000.pt",
+    "vocoder_sha256": "34f4c46b2e85373585340e0d9b6fc04e72fc9b2d0398edf2181c4b3d233d6b84",
+    "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_layer9_aligned_20261116/best.pt",
+    "duration_sha256": "c84fe19ed8f9e31199ac6dd1926e2d565e8a4179c90f04411f55ced0c1191d5b"
+  },
+  "outputs": {
+    "root": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/layer9_20k_s_20261117",
+    "metrics": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/layer9_20k_s_20261117/s_eval/s_metrics.json",
+    "vpc_suffix": "_n019_layer9_20k_20261117"
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "LS360 anonymisation or VPC count is not 104014",
+    "vocoder or duration SHA256 mismatch",
+    "official 10-epoch ECAPA S retraining fails",
+    "4 hour wall clock",
+    "node failure"
+  ],
+  "existing_reference": {
+    "layer9_20k_WNT_I_percent": 41.38750806450844,
+    "layer9_20k_WNT_L_percent": 42.6131471991539,
+    "layer9_8k_EVPC_S_percent": 26.9275,
+    "formal_layer6_EVPC_S_percent": 29.7425,
+    "paper_EVPC_S_percent": 34.8
+  }
+}

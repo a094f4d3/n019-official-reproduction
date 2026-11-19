@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "purpose": "Bounded cross-speaker conditioning fine-tune of the formal N019 NT Unit HiFi-GAN to reduce source-speaker shortcuts that survive target embedding substitution.",
+  "status": "submitted_20261117",
+  "job_ids": {
+    "training": "1149762",
+    "selection": "1149763",
+    "privacy_diagnostic": "1149764"
+  },
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0,
+    "expected_card_hours": 0.8,
+    "worst_card_hours": 2.0
+  },
+  "initialization": {
+    "generator": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt",
+    "generator_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "full_state": "/public/home/a094f4d5/voice_projects/runs/n019_official/vocoder_nt_hpc_d5_hpclongfinal_20261110/last.pt",
+    "full_state_sha256": "89768a4b94a7a326c02eeaf216022df2341abe36312149b6dac18c5048558c23"
+  },
+  "training": {
+    "steps": 4000,
+    "generator_lr": 5e-5,
+    "optimizer": "adamw",
+    "total_batch": 16,
+    "bf16": true,
+    "speaker_swap_probability": 0.5,
+    "speaker_swap_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_all1158_20261117/residual_0p25.npz",
+    "speaker_swap_embeddings_sha256": "82db74b116f6a4ae58dd1fdf6c8ab1c5accc8b179c63e33a0453addfcf067831",
+    "snapshot_interval": 1000,
+    "discriminator_state": "preserved_from_full_state",
+    "generator_optimizer_state": "reset",
+    "feature_matching_scale": 2.0
+  },
+  "inputs": {
+    "records": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+    "records_sha256": "5d3bb4d7bc41cfd973d9313b84b3faae32c3a3abcb572a03153badfa7669e50d",
+    "embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz",
+    "embeddings_sha256": "698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866",
+    "training_data_marker": "/public/home/a094f4d6/voice_projects/logs/n019_official/d6_training_data_ready.json"
+  },
+  "dev_selection": {
+    "source_records": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_dev100_40spk/unit_records.jsonl",
+    "source_records_sha256": "249aa5c2f551cdc4b1921939ab70d55816170f01f51d2b83b08ca26029fdad92",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/libri_dev100_40spk_reused_target_map_seed20261102.jsonl",
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p25.npz",
+    "target_embeddings_sha256": "dc342ad39027937be3a6bb728ccb85f0026badda45cb95b764e33c7f92044122",
+    "duration_model": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_dev100_40spk/duration_pred_paperfix_best.pt",
+    "duration_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "gate": {
+      "utmos_delta_min": 0.05,
+      "whisqa_delta_min": 0.05,
+      "wer_regression_pp_max": 0.25
+    }
+  },
+  "outputs": {
+    "training": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_crossspeaker_ft_20261117",
+    "selection": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_selection_crossspeaker_20261117",
+    "privacy_diagnostic": "/public/home/a094f4d10/voice_projects/runs/n019_official/cross_speaker_target_shift_20261117"
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "non-finite discriminator or generator loss",
+    "missing or mismatched input checkpoint SHA256",
+    "wall-clock expiry",
+    "no dev snapshot passes the predeclared quality gate"
+  ],
+  "notes": [
+    "This is a structural improvement, not a paper-confirmed training setting.",
+    "Do not run in parallel with another d10 DCU job.",
+    "Do not infer E-VPC S or W-NT values without the matching complete evaluation."
+  ]
+}

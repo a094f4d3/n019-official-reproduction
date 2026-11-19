@@ -52,6 +52,8 @@
     "vocoder_unit_embedding_dim": 128,
     "vocoder_initial_channel": 512,
     "vocoder_speaker_projection": null,
+    "vocoder_speaker_swap_probability_default": 0.0,
+    "vocoder_speaker_swap_probability_note": "Diagnostic-only training regularisation prepared in November 2026 to reduce source-speaker shortcuts before target embedding substitution. The bounded test replaces 50% of source conditions with the exact other-500 residual0.25 inference target archive. The paper-faithful default remains same-speaker reconstruction at probability 0.0.",
     "vocoder_segment_frames": 28,
     "vocoder_batch_size": 16,
     "vocoder_batch_size_evidence": "speech-resynthesis hubert100_lut.json uses batch_size=16; two GPUs correspond to the two separately trained NT/ECAPA vocoders, not per-model DDP",

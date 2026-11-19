@@ -1,0 +1,67 @@
+{
+  "results": [
+    {
+      "duration_extrapolation": 0.6,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.594514130929633,
+        "WER": 8.695279949774557,
+        "WhiSQA": 3.5962076814924178
+      },
+      "residual_strength": 0.5,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p5.npz",
+      "target_embeddings_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+      "wnt_I": 43.195243924856186,
+      "wnt_L": 41.7880617082119
+    },
+    {
+      "duration_extrapolation": 0.65,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.5840092891251287,
+        "WER": 9.05770218594829,
+        "WhiSQA": 3.5853618774042997
+      },
+      "residual_strength": 0.5,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p5.npz",
+      "target_embeddings_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+      "wnt_I": 43.251288682222366,
+      "wnt_L": 42.26260483264923
+    },
+    {
+      "duration_extrapolation": 0.6,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.64007993284401,
+        "WER": 8.755208036071,
+        "WhiSQA": 3.650945243661628
+      },
+      "residual_strength": 0.75,
+      "target_embeddings": "/dev/shm/n019_res_duration_grid_1159005/assets/residual_0p75.npz",
+      "target_embeddings_sha256": "f8735b4522b8edd1f0c4cc8bda3fadf865b0bed6976f6d55773337ca563c6d92",
+      "wnt_I": 43.174633383750916,
+      "wnt_L": 41.38288274407387
+    }
+  ]
+}

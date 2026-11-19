@@ -1,0 +1,84 @@
+{
+  "condition": "residual0.5_duration0.5_softcap0.75",
+  "suffix": "_n019_softcap075_recovery_20261119",
+  "status": "complete_nine_metrics_same_suffix",
+  "recipe": {
+    "vocoder_checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "target_embedding": "NT+ECAPA orthogonal residual 0.5",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total_duration": true,
+    "duration_soft_cap": 0.75
+  },
+  "values": {
+    "E-VPC I": 47.4375,
+    "E-VPC L": 48.98,
+    "E-VPC S": 32.412,
+    "W-NT I": 41.46505370736122,
+    "W-NT L": 41.61337688565254,
+    "W-NT S": 27.694512903690338,
+    "WER": 7.705039666685692,
+    "UTMOS": 3.6297727518762155,
+    "WhiSQA": 3.622378650994927
+  },
+  "paper": {
+    "E-VPC I": 47.2,
+    "E-VPC L": 47.9,
+    "E-VPC S": 34.8,
+    "W-NT I": 39.9,
+    "W-NT L": 42.3,
+    "W-NT S": 24.6,
+    "WER": 7.41,
+    "UTMOS": 3.63,
+    "WhiSQA": 3.69
+  },
+  "delta_vs_paper": {
+    "E-VPC I": 0.2375,
+    "E-VPC L": 1.08,
+    "E-VPC S": -2.388,
+    "W-NT I": 1.56505370736122,
+    "W-NT L": -0.68662311434746,
+    "W-NT S": 3.094512903690338,
+    "WER": 0.295039666685692,
+    "UTMOS": -0.0002272481237845,
+    "WhiSQA": -0.067621349005073
+  },
+  "delta_vs_nocap_complete_candidate": {
+    "E-VPC I": 0.6665,
+    "E-VPC L": -0.255,
+    "E-VPC S": -0.843,
+    "W-NT I": -1.25887329263878,
+    "W-NT L": -0.18790211434746,
+    "W-NT S": 0.158718973398208,
+    "WER": -0.562182333314308,
+    "UTMOS": 0.0209317518762155,
+    "WhiSQA": 0.015849650994927
+  },
+  "counting": {
+    "WER": 1496,
+    "UTMOS": 1934,
+    "WhiSQA": 1934,
+    "W-NT female": 734,
+    "W-NT male": 762
+  },
+  "sources": {
+    "partial_quality_il_wnti": "results/softcap075_missing_il_wnti_20261119.json",
+    "wnt_l": "results/softcap075_recovery_wnt_l_20261119.json",
+    "wnt_s_summary": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_wnt_s_shm_20261119/summary.json",
+    "wnt_s_summary_sha256": "2147f9dc50f8c040502f1d78b40134f844b3505ed220bceed95c5f1ff57ed535",
+    "wnt_s_model_sha256": "8209eb42a52f6c473221ab4e25cca6c0c9efd89aa6a943ece2719396d576aebf",
+    "e_vpc_s_metrics": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_hpc_20261119/s_metrics.json",
+    "e_vpc_s_metrics_sha256": "7d1d1c1394686bc2c97e5c2cc92ef9de6edd4832470f0a8447e7f42b894cf931"
+  },
+  "wnt_s_job": {
+    "account": "a094f4d10",
+    "mode": "ai_model_training",
+    "job_id": "2123316964176134146",
+    "name": "n019_sc075_wnts_shm2_20261119_152617",
+    "resources": "1 DCU, 15 CPU, 59 GB",
+    "wall_hours": 3.0,
+    "expected_card_hours": 2.2,
+    "worst_card_hours": 3.0,
+    "status": "completed",
+    "note": "Cached the 104,014 anonymised WAVs in /dev/shm before training; direct NFS loading was about 5 steps/minute and was stopped."
+  }
+}

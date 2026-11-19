@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "status": "prepared_not_submitted",
+  "job_id": null,
+  "name": "n019_l9scrsel",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_layer9_scratch_select_d10_hpc.slurm",
+  "script_sha256": "d40fc3dd58b387d9d7c9d05a934d566394589b011d73a5a7268782f455fe6d58",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0
+  },
+  "expected_card_hours": 2.0,
+  "worst_card_hours": 3.0,
+  "purpose": "Select a layer-9 from-scratch snapshot on the fixed 40-speaker dev-100 set using UTMOS, WhiSQA, and WER before any full-test or LS360 evaluation.",
+  "baseline": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116/snapshots/generator_step00020000.pt",
+  "snapshots": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_scratch_20261117/snapshots/generator_step00[0-1][0-9][0-9]000.pt",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_selection_layer9_scratch_20261117",
+  "gate": "UTMOS and WhiSQA must improve by at least 0.05 over the selected layer-9 20k adaptation baseline and WER regression must be <= 0.25 pp. The selected candidate must then be compared to the formal layer-6 quality tuple before any full evaluation.",
+  "stop_conditions": [
+    "fewer than two scratch snapshots",
+    "dev-100 count is not 100",
+    "watchdog failure",
+    "UTMOS/WhiSQA/WER evaluator failure",
+    "3 hour wall clock"
+  ],
+  "dependency_plan": "Submit with afterany on the chosen scratch training job. Do not submit before training produces snapshots."
+}

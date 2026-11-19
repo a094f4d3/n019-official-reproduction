@@ -1,0 +1,11 @@
+{
+  "backend": "vpc2024_speechbrain_EncoderASR",
+  "dataset": "libri_test_asr_n019_voc90_res05_dur05_20261118",
+  "hypotheses": "/dev/shm/n019_voc90_res05_dur05_1161028/test/eval/vpc_asr/text",
+  "model": "/public/home/a094f4d10/voice_projects/models/n019_official/vpc_asr_local/asr_n019_local",
+  "references": 1496,
+  "utterances": 1496,
+  "wer": 0.08327150276810684,
+  "wer_file": "/dev/shm/n019_voc90_res05_dur05_1161028/test/eval/vpc_asr/wer",
+  "wer_percent": 8.327150276810684
+}

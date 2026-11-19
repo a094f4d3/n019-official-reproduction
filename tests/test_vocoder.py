@@ -2,13 +2,20 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import json
+import sys
+import types
 from pathlib import Path
+from unittest import mock
 
+import numpy as np
 import torch
 
+from n019.audio import HOP_SAMPLES
 from n019.hifigan import GeneratorConfig, UnitSpeakerHiFiGAN
 from n019.vocoder import (
     UnitVocoderConfig,
+    UnitVocoderDataset,
     load_generator,
     output_directory_conflicts,
     save_generator_checkpoint,
@@ -19,6 +26,197 @@ from n019.vocoder import (
 
 
 class VocoderCheckpointTests(unittest.TestCase):
+    def test_dataset_scales_speaker_embedding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codes_path = root / "codes.npy"
+            embeddings_path = root / "speakers.npz"
+            records_path = root / "records.jsonl"
+            np.save(codes_path, np.arange(4, dtype=np.int64))
+            np.savez(
+                embeddings_path,
+                speaker=np.array([1.0, -2.0], dtype=np.float32),
+            )
+            records_path.write_text(
+                json.dumps(
+                    {
+                        "id": "utt",
+                        "speaker": "speaker",
+                        "audio": str(root / "unused.wav"),
+                        "codes_path": str(codes_path),
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            waveform = torch.linspace(
+                -0.5,
+                0.5,
+                4 * HOP_SAMPLES,
+            )
+            fake_librosa = types.SimpleNamespace(
+                util=types.SimpleNamespace(normalize=lambda value: value)
+            )
+            with (
+                mock.patch.dict(sys.modules, {"librosa": fake_librosa}),
+                mock.patch(
+                    "n019.vocoder.load_audio_16k",
+                    return_value=waveform,
+                ),
+            ):
+                dataset = UnitVocoderDataset(
+                    records_path,
+                    embeddings_path,
+                    segment_frames=4,
+                    padding_unit_id=200,
+                    embedding_level="speaker",
+                    speaker_embedding_scale=1.5,
+                    speaker_swap_probability=0.0,
+                    speaker_swap_embeddings_path=None,
+                    random_crop=False,
+                    seed=1,
+                )
+                _, _, speaker = dataset[0]
+        torch.testing.assert_close(
+            speaker,
+            torch.tensor([1.5, -3.0]),
+        )
+
+    def test_dataset_can_swap_source_speaker_during_training(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codes_path = root / "codes.npy"
+            embeddings_path = root / "speakers.npz"
+            records_path = root / "records.jsonl"
+            np.save(codes_path, np.arange(4, dtype=np.int64))
+            np.savez(
+                embeddings_path,
+                source=np.array([1.0, 0.0], dtype=np.float32),
+                target=np.array([0.0, 1.0], dtype=np.float32),
+            )
+            records_path.write_text(
+                json.dumps(
+                    {
+                        "id": "utt",
+                        "speaker": "source",
+                        "audio": str(root / "unused.wav"),
+                        "codes_path": str(codes_path),
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            waveform = torch.linspace(
+                -0.5,
+                0.5,
+                4 * HOP_SAMPLES,
+            )
+            fake_librosa = types.SimpleNamespace(
+                util=types.SimpleNamespace(normalize=lambda value: value)
+            )
+            with (
+                mock.patch.dict(sys.modules, {"librosa": fake_librosa}),
+                mock.patch(
+                    "n019.vocoder.load_audio_16k",
+                    return_value=waveform,
+                ),
+            ):
+                dataset = UnitVocoderDataset(
+                    records_path,
+                    embeddings_path,
+                    segment_frames=4,
+                    padding_unit_id=200,
+                    embedding_level="speaker",
+                    speaker_embedding_scale=1.0,
+                    speaker_swap_probability=1.0,
+                    speaker_swap_embeddings_path=None,
+                    random_crop=True,
+                    seed=1,
+                )
+                _, _, speaker = dataset[0]
+        torch.testing.assert_close(
+            speaker,
+            torch.tensor([0.0, 1.0]),
+        )
+
+    def test_dataset_uses_external_swap_archive(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codes_path = root / "codes.npy"
+            embeddings_path = root / "speakers.npz"
+            swap_path = root / "swap.npz"
+            records_path = root / "records.jsonl"
+            np.save(codes_path, np.arange(4, dtype=np.int64))
+            np.savez(
+                embeddings_path,
+                source=np.array([1.0, 0.0], dtype=np.float32),
+            )
+            np.savez(
+                swap_path,
+                external=np.array([0.0, 1.0], dtype=np.float32),
+            )
+            records_path.write_text(
+                json.dumps(
+                    {
+                        "id": "utt",
+                        "speaker": "source",
+                        "audio": str(root / "unused.wav"),
+                        "codes_path": str(codes_path),
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            waveform = torch.linspace(
+                -0.5,
+                0.5,
+                4 * HOP_SAMPLES,
+            )
+            fake_librosa = types.SimpleNamespace(
+                util=types.SimpleNamespace(normalize=lambda value: value)
+            )
+            with (
+                mock.patch.dict(sys.modules, {"librosa": fake_librosa}),
+                mock.patch(
+                    "n019.vocoder.load_audio_16k",
+                    return_value=waveform,
+                ),
+            ):
+                dataset = UnitVocoderDataset(
+                    records_path,
+                    embeddings_path,
+                    segment_frames=4,
+                    padding_unit_id=200,
+                    embedding_level="speaker",
+                    speaker_embedding_scale=1.0,
+                    speaker_swap_probability=1.0,
+                    speaker_swap_embeddings_path=swap_path,
+                    random_crop=True,
+                    seed=1,
+                )
+                _, _, speaker = dataset[0]
+                source_dataset = UnitVocoderDataset(
+                    records_path,
+                    embeddings_path,
+                    segment_frames=4,
+                    padding_unit_id=200,
+                    embedding_level="speaker",
+                    speaker_embedding_scale=1.0,
+                    speaker_swap_probability=0.0,
+                    speaker_swap_embeddings_path=swap_path,
+                    random_crop=True,
+                    seed=1,
+                )
+                _, _, source_speaker = source_dataset[0]
+        torch.testing.assert_close(
+            speaker,
+            torch.tensor([0.0, 1.0]),
+        )
+        torch.testing.assert_close(
+            source_speaker,
+            torch.tensor([1.0, 0.0]),
+        )
+
     def test_validation_tracker_and_convergence_threshold(self) -> None:
         best, best_step, stale, improved = update_validation_best(
             metric=1.0,

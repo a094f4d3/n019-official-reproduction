@@ -1,0 +1,55 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm_overlap",
+  "job_id": "1158175",
+  "name": "n019_res075_durextra05_screen",
+  "status": "completed_rejected",
+  "execution": "Ran as an overlapping srun step inside the already allocated 1-DCU job 1158175 after its W-NT S evaluation finished. Outputs were kept under /dev/shm because /public/home was full.",
+  "purpose": "Non-duplicate screen of NT+ECAPA residual strength 0.75 with duration extrapolation 0.5, preserving the predicted total duration.",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "incremental_card_hours_expected": 0.35,
+    "incremental_card_hours_worst": 0.75
+  },
+  "fixed_inputs": {
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "residual_mapping_ridge_weight": 30000,
+    "residual_mapping_cv_r2": 0.1956509922556956,
+    "target_embeddings_sha256": "f8735b4522b8edd1f0c4cc8bda3fadf865b0bed6976f6d55773337ca563c6d92",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "result": {
+    "WER": 8.115975115575594,
+    "UTMOS": 3.6557353510605144,
+    "WhiSQA": 3.6629782521552112,
+    "W-NT_I": 42.38711893558502,
+    "W-NT_L": 41.067905724048615,
+    "paper_WER": 7.41,
+    "paper_UTMOS": 3.63,
+    "paper_WhiSQA": 3.69,
+    "paper_W-NT_I": 39.9,
+    "paper_W-NT_L": 42.3
+  },
+  "comparison_vs_residual05": {
+    "WER_pp": -0.151247074938646,
+    "UTMOS": 0.0468940286133383,
+    "WhiSQA": 0.056449539628122,
+    "W-NT_I_pp": -0.3368079662323,
+    "W-NT_L_pp": -0.733373314142225
+  },
+  "sha256": {
+    "anon_jsonl": "8745e33919e21b2eef331e22347f4642447c8ada8e517ece1128d0d0ec93c01e",
+    "quality_metrics": "690c68a5d20b5d7f2d9dc9b198b0d721f327cc88e21a8bf5179a6fe0fa7b722f",
+    "wnt_summary": "e8f3a19ea6e60ed340004966b98f6a5a57583a4421ec49bec50dcc9580671090",
+    "screen_summary": "77066bbd0ab46785351c343299a49108310a8bfcd7916d3793f9fdbc8b23ccc1"
+  },
+  "local_copies": [
+    "results/res075_durextra05_summary.json",
+    "results/res075_durextra05_wnt_summary.json"
+  ],
+  "decision": "Rejected for promotion. It improves WER, UTMOS and WhiSQA versus residual0.5, but W-NT L falls by 0.733 pp to 41.068%, moving further from the paper target of 42.3%. Keep residual0.5 as the best privacy/quality balance."
+}

@@ -1,0 +1,173 @@
+{
+  "formal_E_VPC_S": 29.7425,
+  "paper_E_VPC_S": 34.8,
+  "residual0.5_duration0.5_E_VPC_S": 33.255,
+  "s_metrics": {
+    "asr_rows": [],
+    "asv": {
+      "AA": {
+        "female_eer_percent": 31.175,
+        "male_eer_percent": 30.536,
+        "mean_eer_percent": 30.8555,
+        "rows": [
+          {
+            "dataset": "libri",
+            "eer_percent": 31.175,
+            "enrollment": "anon",
+            "gender": "f",
+            "index": 2,
+            "split": "test",
+            "trial": "anon"
+          },
+          {
+            "dataset": "libri",
+            "eer_percent": 30.536,
+            "enrollment": "anon",
+            "gender": "m",
+            "index": 5,
+            "split": "test",
+            "trial": "anon"
+          }
+        ]
+      },
+      "OA": {
+        "female_eer_percent": 32.691,
+        "male_eer_percent": 30.959,
+        "mean_eer_percent": 31.825000000000003,
+        "rows": [
+          {
+            "dataset": "libri",
+            "eer_percent": 32.691,
+            "enrollment": "original",
+            "gender": "f",
+            "index": 1,
+            "split": "test",
+            "trial": "anon"
+          },
+          {
+            "dataset": "libri",
+            "eer_percent": 30.959,
+            "enrollment": "original",
+            "gender": "m",
+            "index": 4,
+            "split": "test",
+            "trial": "anon"
+          }
+        ]
+      },
+      "OO": {
+        "female_eer_percent": 21.308,
+        "male_eer_percent": 14.254,
+        "mean_eer_percent": 17.781,
+        "rows": [
+          {
+            "dataset": "libri",
+            "eer_percent": 21.308,
+            "enrollment": "original",
+            "gender": "f",
+            "index": 0,
+            "split": "test",
+            "trial": "original"
+          },
+          {
+            "dataset": "libri",
+            "eer_percent": 14.254,
+            "enrollment": "original",
+            "gender": "m",
+            "index": 3,
+            "split": "test",
+            "trial": "original"
+          }
+        ]
+      }
+    },
+    "asv_rows": [
+      {
+        "dataset": "libri",
+        "eer_percent": 21.308,
+        "enrollment": "original",
+        "gender": "f",
+        "index": 0,
+        "split": "test",
+        "trial": "original"
+      },
+      {
+        "dataset": "libri",
+        "eer_percent": 32.691,
+        "enrollment": "original",
+        "gender": "f",
+        "index": 1,
+        "split": "test",
+        "trial": "anon"
+      },
+      {
+        "dataset": "libri",
+        "eer_percent": 31.175,
+        "enrollment": "anon",
+        "gender": "f",
+        "index": 2,
+        "split": "test",
+        "trial": "anon"
+      },
+      {
+        "dataset": "libri",
+        "eer_percent": 14.254,
+        "enrollment": "original",
+        "gender": "m",
+        "index": 3,
+        "split": "test",
+        "trial": "original"
+      },
+      {
+        "dataset": "libri",
+        "eer_percent": 30.959,
+        "enrollment": "original",
+        "gender": "m",
+        "index": 4,
+        "split": "test",
+        "trial": "anon"
+      },
+      {
+        "dataset": "libri",
+        "eer_percent": 30.536,
+        "enrollment": "anon",
+        "gender": "m",
+        "index": 5,
+        "split": "test",
+        "trial": "anon"
+      }
+    ],
+    "model_role": "anon",
+    "paper_conditions": {
+      "S": {
+        "female_eer_percent": 31.175,
+        "male_eer_percent": 30.536,
+        "mean_eer_percent": 30.8555,
+        "rows": [
+          {
+            "dataset": "libri",
+            "eer_percent": 31.175,
+            "enrollment": "anon",
+            "gender": "f",
+            "index": 2,
+            "split": "test",
+            "trial": "anon"
+          },
+          {
+            "dataset": "libri",
+            "eer_percent": 30.536,
+            "enrollment": "anon",
+            "gender": "m",
+            "index": 5,
+            "split": "test",
+            "trial": "anon"
+          }
+        ]
+      }
+    },
+    "source": "/dev/shm/n019_res05_dur065_s_1159966/s_eval/exp/results_summary/eval_anon_n019_n019_res05_dur065_20261118/results_anon.txt",
+    "timestamp": "18-11-26_21:43",
+    "wer_percent": {}
+  },
+  "system": "DU-pred-nt residual0.5 duration0.65"
+}

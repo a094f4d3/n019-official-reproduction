@@ -1,9 +1,32 @@
 {
   "schema_version": 1,
-  "release": "v0.3.0",
+  "release": "v0.4.0",
   "paper": {
     "title": "Joint Timbral and Non-Timbral Speaker Anonymisation",
     "doi": "10.21437/Odyssey.2026-16"
+  },
+  "selected_candidate": {
+    "system": "DU-pred-nt",
+    "condition": "residual0.5_duration0.5_softcap0.75",
+    "suffix": "_n019_softcap075_recovery_20261119",
+    "checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "canonical_result": "results/softcap075_complete_20261119.json",
+    "counts": {
+      "WER": 1496,
+      "UTMOS": 1934,
+      "WhiSQA": 1934
+    },
+    "metrics": {
+      "E-VPC I": 47.4375,
+      "E-VPC L": 48.98,
+      "E-VPC S": 32.412,
+      "W-NT I": 41.46505370736122,
+      "W-NT L": 41.61337688565254,
+      "W-NT S": 27.694512903690338,
+      "WER": 7.705039666685692,
+      "UTMOS": 3.6297727518762155,
+      "WhiSQA": 3.622378650994927
+    }
   },
   "formal": {
     "system": "DU-pred-nt",

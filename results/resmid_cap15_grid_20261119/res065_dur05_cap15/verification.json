@@ -1,0 +1,67 @@
+{
+  "anon_jsonl_sha256": "2ff1a788e581d4b5b4f075d2876482cb7c335ca254d5f402485d85e7cd17ebe1",
+  "anon_rows": 1934,
+  "checks": {
+    "anon_rows": true,
+    "duration_mode": true,
+    "negative_duration_total_matches": true,
+    "output_ids_match_source": true,
+    "output_ids_unique": true,
+    "owner_gid_matches": true,
+    "owner_matches": true,
+    "owner_uid_matches": true,
+    "row_audio_files_exist": true,
+    "row_audio_matches_wav_set": true,
+    "run_meta_records": true,
+    "sample_wavs_valid": true,
+    "source_rows": true,
+    "vocoder_type": true,
+    "vpc_audio_matches_rows": true,
+    "vpc_ids_match_source": true,
+    "vpc_ids_unique": true,
+    "vpc_rows": true,
+    "wav_count": true
+  },
+  "duration_mode": "pred",
+  "elapsed_seconds": 70.00012016296387,
+  "negative_duration_values": 72,
+  "out_dir": "/dev/shm/n019_resmid_cap15_grid_1164410/screens/res065_dur05_cap15/anonymised",
+  "owner": "a094f4d10",
+  "owner_gid": 666505,
+  "owner_uid": 666505,
+  "passed": true,
+  "run_meta_sha256": "f2f2ffe6e98773b4cb8c5c57f1282772c7c27d0e8cf86eb6d0c82409b25b4283",
+  "sample_wavs": [
+    {
+      "channels": 1,
+      "frames": 106240,
+      "path": "/dev/shm/n019_resmid_cap15_grid_1164410/screens/res065_dur05_cap15/anonymised/1089-134686-0002_fdc065c85625.wav",
+      "sample_rate": 16000,
+      "sample_width": 2
+    },
+    {
+      "channels": 1,
+      "frames": 72960,
+      "path": "/dev/shm/n019_resmid_cap15_grid_1164410/screens/res065_dur05_cap15/anonymised/4970-29095-0005_dafd13f6d146.wav",
+      "sample_rate": 16000,
+      "sample_width": 2
+    },
+    {
+      "channels": 1,
+      "frames": 118400,
+      "path": "/dev/shm/n019_resmid_cap15_grid_1164410/screens/res065_dur05_cap15/anonymised/908-31957-0024_cd89b2b7505d.wav",
+      "sample_rate": 16000,
+      "sample_width": 2
+    }
+  ],
+  "source_manifest": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/manifests/libri_test.jsonl",
+  "source_manifest_sha256": "d97cafa5790e69c41c14bda6d130148dc982933c22d2fccbdd421b0723e1c432",
+  "source_rows": 1934,
+  "vocoder_type": "nt",
+  "vocoder_version": 96000,
+  "vpc_rows": 1934,
+  "vpc_wav_scp": "/dev/shm/n019_resmid_cap15_grid_1164410/vpc/libri_test_n019_n019_res065_dur05_cap15_20261119/wav.scp",
+  "vpc_wav_scp_sha256": "6e33dfe1751cd006964bf12f82b96f1e2664462dfeeda54d3faa5bdd6b6422a6",
+  "wav_bytes": 499704296,
+  "wav_files": 1934
+}

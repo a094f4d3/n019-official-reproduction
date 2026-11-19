@@ -4874,3 +4874,1296 @@ duration/ASR/UTMOS/WhiSQA。输出：
   `0821d709f62c1fe9f5f5db0a18c465de9bcb791d2ac898f42349af62aacce7e4`。
   训练 accuracy 随 AAM 难度变化有波动，最终以正式 W-NT S EER
   和中间快照比较为准，不能按单一 epoch accuracy 选模。
+
+### 2026-11-16 layer-9 branch and W-NT L control
+
+- d10 HPC `1138552` completed W-NT L for the existing final fullmean1160
+  audio in `3m20s`; mean EER `40.43017849326134%`, vs formal `39.7293478251%`
+  and paper `42.3%`. Summary SHA256
+  `8c656958a49033e6311fbbdf5cc4979a1b3f83e593e343fc836da9f8728dbe78`.
+- d10 HPC leakage screens `1138511` and `1138575` completed. Layer 9 reduced
+  speaker-classification accuracy relative to layer 6 for both normalized
+  histograms and order-sensitive 1–3-grams.
+- d10 HPC `1138621` extracted 33,236 layer-9 clean-100 units. Platform status
+  was failed only at the post-check; the records, codebook, metadata, and
+  hashes were validated. HPC `1138800` completed the token-order alignment.
+- d10 HPC `1138891`, `1139018`, and `1139051` are launch failures from
+  cross-account permissions and an empty partial file. `1139076` completed
+  the layer-9 test and dev unit extractions.
+- d10 HPC `1139262` (retry of `1139078`) is the 20,000-step layer-9
+  vocoder adaptation pilot:
+  1 DCU, 16 CPU / 60 GB, 8 h wall, initialized from formal soup
+  `ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6`.
+  It is not a formal result. Stop on non-finite loss, no progress, watchdog
+  failure, or wall-clock expiry.
+
+### 2026-11-17 layer-9 8k full quality and LS360 S screen
+
+- d10 HPC `1140835` completed the full 1,934-sentence layer-9 8k quality
+  evaluation in `00:05:10`. Results: WER `7.3340562753%`, UTMOS
+  `3.1084196950`, WhiSQA `2.9075828042`; counts are 1,496, 1,934 and
+  1,934. This checkpoint is quality-rejected, but its test W-NT L is
+  `42.3416450620%`, essentially matching the paper `42.3%`.
+- d10 HPC `1140921` was the first LS360 layer-9 extraction attempt. It failed
+  after `44s` because the source manifest's d6 audio paths did not exist.
+  No unit file was produced; dependent `1140925` was cancelled.
+- A d10-local manifest with the actual d4 train-clean-360 paths was generated:
+  `/public/home/a094f4d10/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d10paths_20261117.jsonl`,
+  SHA256 `1c32d0cb016289e4528f9a682dc17343ceb72416a1fc174ff27d7422d0a20263`.
+  The first ten audio files were decoded successfully.
+- d10 HPC `1140990` is the corrected layer-9 LS360 unit extraction:
+  1 DCU, 16 CPU / 60 GB, 2 h wall, expected 1.0 / worst 2.0 card-hours.
+  It must produce 104,014 records with the aligned codebook.
+- d10 HPC `1141341` was the E-VPC S retry, 1 DCU, 16 CPU / 60 GB,
+  4 h wall, expected 2.5 / worst 4.0 card-hours. It runs the official
+  E-VPC S retraining for the quality-rejected 8k diagnostic checkpoint.
+  Output:
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/layer9_8k_s_20261117/s_eval`.
+- The second extraction wrapper attempt `1140959` failed after `51s`: the
+  output contained a zero-byte `unit_records.partial.jsonl`, while the wrapper
+  only passed `--resume` for non-empty partials. `1140961` was dependency-
+  cancelled. The fixed wrapper uses existence (`-e`) rather than non-empty
+  (`-s`) and was resubmitted as `1140990` / `1140991`.
+- `1140990` completed in `00:45:17` with 104,014 layer-9 LS360 records,
+  `unit_records.jsonl` SHA256
+  `2cc883f2defd1b431fbc525fae38a16a952fc7f5e6e7b35a77fdbea52bd7823b`,
+  and metadata SHA256
+  `d8008232e37e1609202c9f0af27bc54dcd8698eb6a88927ef3a9f29b3927313b`.
+- `1140991` failed after `27s` before anonymisation because d10 lacked the
+  VPC base `train-clean-360/wav.scp`. A read-only d10 symlink to the d6 VPC
+  base was added. The S pipeline was resubmitted as `1141341`; existing
+  layer-9 units and shard inputs are reused.
+- `1141341` generated all 104,014 WAVs in `01:27:21` and
+  `anonymised/anon.jsonl` has 104,014 rows, but VPC export exported no
+  datasets because the base `train-clean-360` was a directory symlink.
+- d10 HPC `1141771` reused the complete WAV set for
+  export/verification plus official S retraining. The base `train-clean-360`
+  was replaced by a real directory containing the six 36-MB metadata files.
+  Export and 104,014-row verification succeeded, but the train suffix
+  `_n019_layer9_8k_s_20261117` did not match the existing test suffix
+  `_n019_layer9_8k_20261117`.
+- d10 HPC `1141872` runs S only after renaming the exported train view to the
+  existing test suffix. It reuses all VPC/Audio assets and performs no
+  regeneration.
+- `1141872` passed the aligned VPC preflight and entered the official ASV
+  training, then failed because d10 lacked `pyloudnorm`. Installed
+  `pyloudnorm==0.2.0` and resubmitted as `1141930`; no audio, VPC data or
+  export step is repeated.
+- `1141930` completed in `01:28:44`. E-VPC S is female `28.466%`,
+  male `25.389%`, mean **`26.9275%`**; paper `34.8%`, formal layer-6
+  `29.7425%`. `s_metrics.json` SHA256
+  `19b03380406b3fcbdbe143f56c5803340120922333016c3dd2757836c5893f09`.
+  Layer 9 therefore solves W-NT L but not E-VPC S at 8k.
+- d10 HPC `1141349` was cancelled after `1m49s` when S repair took priority;
+  it had not reached a new training step. The continuation was resubmitted
+  only after `1141930` as the sole training branch:
+  continuation: 1 DCU, 16 CPU / 60 GB, 6 h wall, expected 5.75 / worst
+  6.0 card-hours. It resumes from `last.pt` step 10,120, SHA256
+  `9340c3f98293564bfd61ea1039c8aab4ac678e90d32fbede0803510bed381329`,
+  with the same aligned units, AdamW, BF16, batch 16 and LR `1e-4`.
+  Snapshots and validation are written every 2k steps; early stopping is
+  disabled until step 60,000. Output remains
+  `runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116`.
+- d10 HPC `1142379` is the active 6-hour continuation. Resume SHA was
+  rechecked as
+  `9340c3f98293564bfd61ea1039c8aab4ac678e90d32fbede0803510bed381329`.
+- d10 HPC `1142397` is queued `afterany:1142379` for fixed-dev snapshot
+  selection. It compares the existing 8k snapshot with newly generated
+  10k–60k snapshots using layer-9 matched duration and the same target map.
+
+### 2026-11-17 06:00 DU-nt-nt target-utterance full test
+
+- d10 HPC `1142379` (`n019_l9cont`) remains the only vocoder training branch.
+  At approximately `00:57` elapsed it passed step `14,940` at `0.68 s/step`
+  with finite loss. `1142397` remains pending on that dependency.
+- The formal soup conditioning audit found speaker/unit front-end weight RMS
+  `0.0135234 / 0.0157772` (ratio `0.8571`), so the target embedding input has
+  substantial learned weight.
+- Existing layer-9 matched-duration baseline W-PRO diagnostic:
+  anon-to-source `0.428301`, anon-to-target `0.532548`, margin `+0.104246`,
+  `71%` closer to target. The layer-9 8k candidate is anon-source `0.559366`,
+  anon-target `0.610671`, margin `+0.051305`, `61%` closer. Its source
+  similarity rises by `0.131065` while the target-source margin drops by
+  `0.052942`; this is consistent with W-NT improving while E-VPC S worsens
+  under the undertrained checkpoint.
+- New paper-aligned `DU-nt-nt` test uses the same target-utterance W-PRO
+  embedding for duration prediction and NT vocoder synthesis. Unlike prior
+  target experiments, neither side uses speaker-pooled target conditioning.
+- Self-contained bundle:
+  `data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117`,
+  1,934 records/codes. Key SHA256: records
+  `b3cb1b68768eaf33c7ef8c48d8c8efe49ae9920c784a5d9a7bfd3e42d8ff8804`,
+  target map `c497769b4de43824d3a5840d3b497ecd71156222828a69e352140cebc9f4c383`,
+  utterance NPZ `0c2a747220bac2a231cbde981a9d5dfca621750348f87f7ce18fab84994a58b7`.
+- d10 AI Job `2122448002453250050` passed the watchdog and tiny matmul, then
+  stopped in input preflight because the AI container cannot follow d10-home
+  symlinks to d6 `vendor`, `mos`, and `hf_cache/hub`. No anonymisation ran.
+- AI assets were subsequently copied into d10-owned vendor/MOS/Whisper/W-PRO
+  directories, the 1,934 source WAVs were copied into the DU-nt-nt bundle,
+  and a metadata-only local `vpc_ai/data` view was built.
+- d10 AI Job `2122461173191950337` is running the actual DU-nt-nt test with
+  those self-contained inputs. The watchdog passed and 1,934-utterance
+  anonymisation entered progress.
+- d10 HPC Job `1142507` (`n019_dunntutt`) had its dependency removed:
+  1 DCU, 16 CPU / 60 GB, 1.5 h, expected/worst 0.5/1.5 card-hours. It is
+  pending on `AssocGrpCpuLimit` while `1142379` owns the allocation. Output
+  `eval/du_nt_nt_utt_20261117`. HPC can read the cross-account symlinks.
+  Stop conditions remain watchdog failure, incomplete bundle/coverage, wrong
+  anonymised/VPC/WER/MOS count, wall-clock expiry, or node failure.
+- `2122447534302920705` and `2122447776079368193` failed during launch in
+  one second because the audit directory was absent and then because the AI
+  container `$HOME=/root`. `2122457929743601666` and
+  `2122459800839393282` failed on source-WAV and VPC-metadata symlinks.
+  Do not resubmit any of the five failed AI attempts.
+- AI balance after the failed preflight was `49.9538888889` card-hours.
+- Detail: `docs/N019_DU_NT_NT_UTT_TEST_20261117.md`.
+- LS360 coverage check completed: 104,014 source rows map to 81,605 unique
+  target utterance IDs; the existing target NPZ has all 81,605 keys, all
+  250-D, with zero missing. No further target embedding extraction is needed.
+
+### 2026-11-17 07:30 DU-nt-nt AI failure and DU-ecapa-nt queue
+
+- d10 AI Job `2122465687953358849` completed anonymisation, VPC export,
+  verification, and WER, then failed when UTMOS could not import `hydra` from
+  the AI container overlay. WER is valid: 1,496 utterances,
+  `6.449403572855431%`; `WER.json` SHA256
+  `bf98997e8d52acbd75c98405ca0754c78c5b816a9fdb66401771bc9ae29ab94a`.
+  No MOS or W-NT output exists. Do not resubmit this AI Job.
+- HPC fallback `1142507` remains queued on the d10 allocation. It reuses the
+  complete anonymised/VPC/WER assets and is the authoritative continuation for
+  UTMOS, WhiSQA, and W-NT I/L.
+- Created a target speaker manifest for the next untried paper row,
+  `DU-ecapa-nt`: 1,158 speakers, 32 deterministic samples each, 36,560 rows.
+  Manifest SHA256:
+  `712df414ca9ca7fbd394ae96b2cf6c85d9ca75582dbb393099dd09dfee08baa2`.
+- Submitted d10 HPC `1142673` (`n019_du_ecapa_nt`) with
+  `afterany:1142507`; 1 DCU, 16 CPU / 60 GB, 4 h, expected/worst 2.5/4.0
+  card-hours. Balance before submission was `49.5833333334`.
+- The job creates source ECAPA embeddings, trains a 30-epoch ECAPA duration
+  predictor, extracts target ECAPA speaker means, then evaluates the full
+  1,934-sentence `DU-ecapa-nt` test set for WER/UTMOS/WhiSQA and W-NT I/L.
+  It does not retrain the NT vocoder.
+- `1142673` failed after 37 seconds before producing any embedding because it
+  ran the pre-local-model script snapshot and SpeechBrain attempted to create
+  `custom.py` in the read-only d7 model directory. The corrected d10-local
+  model script was resubmitted as `1143063`.
+- The UTMOS failure was fixed by replacing d10's cross-account symlink to the
+  63-MB overlay with a real d10-owned copy. Original symlink backup:
+  `envs/n019_utmos_overlay.symlink_d6_20261117`.
+- AI continuation `2122474022949900289` completed full quality for
+  `DU-nt-nt` target-utterance using the existing WAV/VPC/WER:
+
+| Metric | Result | Formal | Paper |
+|---|---:|---:|---:|
+| WER | 6.449403572855431% | 6.2239598196% | 7.41% |
+| UTMOS | 3.3327209665955286 | 3.5253666541 | 3.63 |
+| WhiSQA | 3.30789153569117 | 3.4957589100 | 3.69 |
+
+  The row is quality-negative and cannot replace the formal model.
+  `quality_metrics.json` SHA256
+  `020dcb9c87a68299af06a000097c06fd0ffeb64e2f80427666c664de2c0b57a6`.
+- The first W-NT-only continuation `2122480138102525953` failed because the
+  metadata-only AI VPC view lacked `data/libri_test/wav`. The 1,934 source WAVs
+  were hard-linked into that path. W-NT-only Job `2122482465006592002` was
+  submitted after materialization and does not recompute quality.
+- Job `2122482465006592002` completed female I at
+  `37.750741839408875%` and male I at `40.51681011915207%`. Partial I mean is
+  `39.13377597928047%`, only `-0.0340819359 pp` versus formal. The L passes
+  made the AI path too slow, so it was stopped at `08:51:17`.
+- HPC fallback `1142507` was cancelled at `08:59:31` after the completed
+  quality and W-NT I showed no candidate value. W-NT L for this rejected row
+  is intentionally not measured. Cancellation released the dependency on
+  `1142673`, which now only waits for the d10 CPU allocation.
+  Partial summary SHA256
+  `30d08477f257fadd277f2f339250a91410fb0d8bbefa47dc5833457ce13b21ca`.
+- AI Job `2122493925840797697` restored ownership of
+  `runs/n019_official/eval` from root to d10 (`666505:666505`), preventing a
+  subsequent HPC write failure.
+
+### 2026-11-17 10:00 layer-9 20k full-test follow-up
+
+- Fixed-dev selection `1142397` completed and selected layer-9 step `20,000`
+  (`34f4c46b2e85373585340e0d9b6fc04e72fc9b2d0398edf2181c4b3d233d6b84`).
+  Dev UTMOS/WhiSQA/WER are `3.3853938341 / 3.1239056051 / 7.4006395614%`.
+- d10 HPC `1143327` (`n019_layer9_20k_test`) was submitted as the first
+  complete test evaluation of this checkpoint. It is queued behind the active
+  `1143063` allocation. Resources are 1 DCU, 16 CPU / 60 GB, 3 h wall;
+  expected/worst `0.35/3.0` card-hours.
+- It reuses the existing layer-9 test units, matched duration model, and
+  mean32+shrink0.1 target embeddings. It evaluates full WER/UTMOS/WhiSQA and
+  W-NT I/L. It does not rerun the completed 8k diagnostic and does not
+  substitute inferred values for E-VPC I/L/S.
+- Script SHA256:
+  `45311e65b6cca58475ea012f169d56f762488f48506534da70ae89583dd79555`.
+  Config SHA256:
+  `fb9d0f4a18f8a72e9e61c0bff7b782cdbdd3241f220aeb36de62d758601555ec`.
+- `1143327` completed full quality in `00:07:53` with WER `7.0458307174%`,
+  UTMOS `3.3536372757`, WhiSQA `3.1486805168`; all required counts pass.
+  It failed only because W-NT could not resolve `data/libri_test/wav` under
+  the metadata-only `vpc/data` root. The quality files remain valid.
+- d10 HPC `1143535` (`n019_layer9_20k_wnt`) reuses the completed WAV/VPC and
+  runs W-NT I/L only after adding the missing read-only source-audio symlink.
+  Resources: 1 DCU, 16 CPU / 60 GB, 1 h; expected/worst `0.1/1.0`
+  card-hours.
+- `1143535` completed in `00:05:17`. W-NT I is `41.387508%` (paper `39.9%`)
+  and W-NT L is `42.613147%` (paper `42.3%`). Summary SHA256
+  `00c4c16cc8721047984f5ea9844727d6909afa45898afe37846fdce1bd11af9f`.
+  Layer 9 at 20k resolves the non-timbral W-NT target, but its lower
+  UTMOS/WhiSQA and still-unmeasured E-VPC S prevent formal replacement.
+
+### 2026-11-17 10:30 DU-ecapa-nt validation repair
+
+- `1143063` completed source ECAPA extraction (251 speakers), a finite
+  30-epoch ECAPA duration model, and target ECAPA extraction (1,158 speakers).
+  It failed before test anonymisation because the test script requires the
+  target NPZ key set to equal the 843 test speakers exactly, while the full
+  archive is an intentional 1,158-key superset.
+- The source NPZ, duration checkpoint and full target NPZ are valid and are
+  reused. Do not recompute them.
+- `subset_target_embeddings.py` now has opt-in `--allow-nonunit`, with `2`
+  focused tests passing. It created:
+  - NT 843 subset
+    `5d00633b04e1ab4b70ebb40b657aa36c25f7809c64a5ce0333d1d2d5e14834c4`;
+  - ECAPA 843 raw subset
+    `3bab6904dda1b4feea4e8e0dc29ad9654617acf45a547eb2166bfcecd26910f2`.
+- The first repair submission `1143477` was cancelled while pending after a
+  zero-card audit found the continuation needed explicit source and
+  ECAPA-duration SHA expectations; without them the old DUpred duration hash
+  would have been used.
+- d10 HPC `1143490` (`n019_du_ecapa_nt_r2`) then failed after 39 seconds
+  because the self-contained bundle target map was not exported and the
+  default paperfix map path was absent. No model stage or WAV output ran.
+- d10 HPC `1143536` (`n019_du_ecapa_nt_r2`) passed the NT subset checks but
+  failed after 39 seconds because the shared test anonymiser hard-coded a
+  250-D duration-embedding shape and rejected the valid 192-D ECAPA vectors.
+  The validator now uses 250 for NT and 192 for ECAPA. No model, duration
+  training, or WAV output was repeated.
+- d10 HPC `1143569` (`n019_du_ecapa_nt_r2`) exports the bundle source, units,
+  target map, NT/ECAPA 843-key subsets, explicit duration hash, and runs only
+  the repaired full test evaluation and W-NT I/L. Resources: 1 DCU,
+  16 CPU / 60 GB, 2 h; expected/worst `0.35/2.0` card-hours. Script SHA256
+  `1c6f8d852df841be9b0dca9ee7d154d41b067f5e25b336c7131422acf7233a5e`;
+  shared anonymiser SHA256
+  `708853a08e2bd7e29eff6c3ad65a16ab79a13a9ea8fcc6f8e7a4a32398b85aed`.
+- `1143569` passed the NT and ECAPA shape checks, then failed after 39 seconds
+  because the old data-tree anonymisation output directory was not writable.
+  No WAV output was produced.
+- d10 HPC `1143588` moves only the anonymisation output to the d10-owned
+  `runs/n019_official/du_ecapa_nt_20261117/anonymised` tree and reruns the
+  same test evaluation. Script SHA256
+  `839a2208c565b04e7c7ec08bc03aa2f60f95d7b619be87bef82ee5238268ef79`.
+- `1143588` completed anonymisation/VPC/quality and W-NT I/L in `00:11:49`.
+  The platform failed only in compact-summary arithmetic
+  (`float(dict)`). The valid summary was reconstructed offline at
+  `runs/n019_official/eval/du_ecapa_nt_20261117/du_ecapa_nt_summary.json`,
+  SHA256 `d9df45350e266f2b8b57da48ea7216bb3b4fd14b55f7a78bef2c09c0c44f6559`.
+  WER `6.383768%`, UTMOS `3.510845`, WhiSQA `3.489686`, W-NT I
+  `39.095412%`, W-NT L `39.454734%`. W-NT L is below formal by
+  `0.274614 pp`, so this row is not a formal replacement.
+- d10 HPC `1143733` (`n019_du_ecapa_nt_s`) was submitted as an independent
+  E-VPC S diagnostic: official 104,014-row LS360 anonymisation, VPC export
+  and 10-epoch ECAPA S retraining. Resources: 1 DCU, 16 CPU / 60 GB, 4 h;
+  expected/worst `3.0/4.0` card-hours. Script SHA256
+  `5eb0ef68fafc717beb16d8d39aaadfaa5d7b2c0c465899db683259d5e0f0f959`.
+- `1143733` completed the 104,014-row anonymisation and VPC train export in
+  `01:30:01`, then failed only in S preflight because the test suffix views
+  were absent under `vpc/data`.
+- Added four read-only symlinks for the existing test suffix views. d10 HPC
+  `1144335` (`n019_du_ecapa_nt_s2`) runs only the official 10-epoch ECAPA S
+  retraining. Resources: 1 DCU, 16 CPU / 60 GB, 3 h; expected/worst
+  `1.5/3.0` card-hours. Script SHA256
+  `ba6e2b63bbcd115e8a0fead9c9d3f41aa942c19c9ec8604b9d85943d43669ca6`.
+
+### 2026-11-17 11:09 layer-9 + ECAPA hybrid test
+
+- Created a hybrid record file from the self-contained 1,934-source bundle and
+  layer-9 unit code paths:
+  `runs/n019_official/layer9_ecapa_hybrid_20261117/bundle/unit_records.jsonl`,
+  SHA256 `507d434c194002c56e67c223d68d8f39162f95edfb95a9f9caa8a1d3fcd2588e`.
+- d10 AI Job `2122527539681730562` (`n019_l9ecapa_20261117_110926`) is
+  running with 1 DCU, 15 CPU / 59 GB, 1 h; expected/worst `0.35/1.0`
+  card-hours. Balance before submit was `47.9352777778`.
+- It combines the layer-9 20k vocoder with ECAPA-conditioned duration and
+  evaluates full WER/UTMOS/WhiSQA plus W-NT I/L. This is a new hybrid, not a
+  repeat of the pred-duration layer-9 run.
+- Hybrid quality was rejected: WER `11.118087%`, UTMOS `3.251377`, WhiSQA
+  `3.058096`. W-NT I was `41.987921%`; female L was `42.336157%`. Male L was
+  still running when the job was stopped because the layer-6-trained ECAPA
+  duration predictor was mismatched to layer-9 sequences.
+- d10 AI `2122550456553480193` (`n019_l9e9d_20261117_124032`) trains the
+  ECAPA duration predictor on aligned layer-9 clean-100 units and reruns the
+  hybrid test. Resources: 1 DCU, 15 CPU / 59 GB, 1.5 h; expected/worst
+  `0.55/1.5` card-hours.
+- `2122550456553480193` failed before training because the static record-count
+  preflight used layer-6's 28,539 instead of layer-9's actual 33,236.
+- Corrected d10 AI `2122550684299993090`
+  (`n019_l9e9d_20261117_124127`) keeps the same recipe and fixes only that
+  count.
+
+### 2026-11-17 layer-9 20k E-VPC S pipeline prepared
+
+- Paper audit confirms `DU-pred-*` is the unconditional-duration row:
+  the formal duration checkpoint metadata has `speaker_dim=0`. No hidden
+  speaker-conditioning mismatch remains in the formal DU-pred-nt row.
+- Layer-9 20k already meets W-NT I/L but its E-VPC S is unmeasured. The 8k S
+  result cannot be reused because the checkpoint differs.
+- Prepared d10 HPC job `n019_l9_20k_s`:
+  - 1 DCU, 16 CPU / 60 GB, 4 h wall;
+  - expected/worst 3.0/4.0 card-hours;
+  - queued after `1144335`;
+  - reuses existing layer-9 LS360 units and unconditional duration;
+  - output
+    `/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/layer9_20k_s_20261117`;
+  - VPC suffix `_n019_layer9_20k_20261117`.
+- Submitted as Job `1144607` with `afterany:1144335`. Script SHA256
+  `2114cc1b536ebd2842206ba6902fd93775ebac6df8cfc00f94a7ccf689cc460b`.
+  Latest per-account HPC elapsed sum since 2026-11-16 is `15.5247 h` out of
+  the 50 h allowance, so the approximate remaining allowance before this
+  job is `34.4753 h`. Do not resubmit.
+
+### 2026-11-17 paper-aligned layer-9 scratch training prepared
+
+- Layer-9 + aligned ECAPA duration completed quality at WER `7.174248%`,
+  UTMOS `3.326005`, WhiSQA `3.147667`; this does not recover the formal
+  layer-6 perceptual scores.
+- Existing layer-9 training was a 32k-step adaptation initialized from the
+  layer-6 soup. The paper says the two Unit HiFi-GANs are trained
+  independently, so a from-scratch layer-9 model remains an untested
+  paper-aligned difference.
+- Prepared d10 HPC script `hpc/n019_layer9_scratch_d10_hpc.slurm` and config
+  `configs/scnet_d10_layer9_scratch_20261117.json`, but did not submit.
+  Resources if approved: 1 DCU, 16 CPU / 60 GB, 20 h wall,
+  expected/worst 19.5/20.0 card-hours. Output is
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_scratch_20261117`.
+- Prepared a d10-AI fallback wrapper/config:
+  `scripts/run_layer9_scratch_ai.sh` and
+  `configs/scnet_d10_layer9_scratch_ai_20261117.json`. It is not submitted
+  and must not be used together with the HPC scratch path.
+- Prepared `hpc/n019_layer9_scratch_select_d10_hpc.slurm` and
+  `configs/scnet_d10_layer9_scratch_selection_20261117.json` for post-training
+  fixed-dev selection. Resources if used: 1 DCU, 16 CPU / 60 GB, 3 h,
+  expected/worst 2.0/3.0 card-hours.
+
+### 2026-11-17 14:13 DU-ecapa-nt E-VPC S complete
+
+- d10 HPC `1144335` completed `01:33:11`, exit `0:0`.
+- E-VPC S female/male/mean:
+  `31.233% / 31.150% / 31.1915%`.
+- Delta vs formal `DU-pred-nt` `29.7425%`: `+1.4490 pp`.
+  Delta vs paper `DU-ecapa-nt` `36.6%`: `-5.4085 pp`.
+  Delta vs paper `DU-pred-nt` `34.8%`: `-3.6085 pp`.
+- Combined with this row's W-NT L `39.454734%`, it remains
+  privacy-incomplete and cannot replace the formal model.
+- `s_metrics.json` SHA256
+  `92b7bde62a8411cb7d71e1292ba6f99060413740f0f3ab6a97b9c4f438317b2b`.
+- Layer-9 20k S `1144607` was released from dependency and is scheduled next.
+- The quality-rejected layer-9 + ECAPA-duration AI Job
+  `2122550684299993090` was stopped at `13:45:45` after its valid quality
+  tuple (`WER 7.174248%`, UTMOS `3.326005`, WhiSQA `3.147667`). It had no
+  W-NT result files at stop time; its outcome cannot be treated as complete.
+- d10 AI `2122566914658443266` (`n019_l9scratch_20261117_134555`) was
+  submitted for the paper-aligned layer-9 from-scratch training:
+  1 DCU, 15 CPU / 59 GB, 20 h wall, expected/worst `19.5/20.0`
+  card-hours. The previous AI balance was about `46.9`; this is the only
+  layer-9 training branch. Do not submit the prepared HPC duplicate.
+- `2122566914658443266` failed after one second because the AI container
+  could not read the d6 NT embedding path. No training step ran. The
+  306,174-byte embedding archive was copied into d10:
+  `.../processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz`,
+  SHA256 `698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866`.
+  This is a launch-path failure, not a model failure.
+- Corrected retry: d10 AI `2122567216179675138`
+  (`n019_l9scratch_20261117_134707`), submitted at `13:47:07` with the same
+  20 h envelope. It is the only active scratch training job.
+## 2026-11-17 18:45 duration-conditioning and conditioning-scale follow-up
+
+- d10 HPC `1144607` (`n019_l9_20k_s`) completed in `02:56:01`, exit `0:0`.
+  E-VPC S is female `30.439%`, male `29.397%`, mean `29.918%`.
+  It is only `+0.1755 pp` over the formal `29.7425%` and remains
+  `-4.882 pp` from the paper `34.8%`. The layer-9 privacy path is therefore
+  closed for timbral S, not merely quality-limited. Do not rerun this Job.
+- d10 AI `2122567216179675138` (`n019_l9scratch_20261117_134707`) failed
+  after the tiny-matmul watchdog because 33,236 unit records still pointed to
+  d6 audio paths unavailable in the AI container. No training step ran.
+  Do not resubmit this JobID.
+- Added `--speaker-embedding-scale` to `n019.anonymize`; the default remains
+  `1.0`, so prior paper-aligned runs are unchanged. The value is written to
+  every output row and `run_meta.json`. The two shared test/LS360
+  anonymisation wrappers pass `N019_SPEAKER_EMBEDDING_SCALE`.
+- Local tests for anonymisation, duration and paper alignment pass:
+  `28 passed`.
+- d10 HPC `1147640` (`n019_durstrong`) was submitted:
+  - 1 DCU, 16 CPU / 60 GB, 1 h wall;
+  - expected/worst `0.2/1.0` card-hours;
+  - unconditional duration predictor, 60 epochs, batch 64, lr `8e-4`;
+  - input
+    `/public/home/a094f4d4/voice_projects/data/n019_official/processed/units/librispeech_train_clean_100/unit_records.jsonl`;
+  - output
+    `/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_strong_20261117`;
+  - stop on watchdog failure, non-finite loss, missing `best.pt`, or wall
+    clock.
+  It tests the underfitting hypothesis for W-NT L without changing the
+  vocoder or repeating the completed S-attacker convergence experiment.
+- Before submission, d10 HPC elapsed since 2026-11-16 was `68,892 s`
+  (`19.1367 h`) across 45 card-hour-bearing jobs, leaving approximately
+  `30.8633 h` from the 50 h allowance.
+- d10 HPC `1147683` (`n019_condscl`) was submitted with
+  `afterok:1147640`. It evaluates target conditioning scales `1.5` and
+  `2.0` on the full official test set with the formal units, target map,
+  mean32+shrink0.1 embedding, unconditional duration and soup vocoder.
+  Resources: 1 DCU, 16 CPU / 60 GB, 1.5 h; expected/worst `0.4/1.5`
+  card-hours. This is not a target-map/shrink/soup repeat: only the
+  speaker-vector scale entering the already trained vocoder changes.
+  Outputs are under
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/conditioning_scale_screen_20261117`.
+  A scale is eligible only if UTMOS/WhiSQA stay within 0.05 and WER regresses
+  by at most 0.25 pp versus formal; any eligible scale still requires LS360 S.
+- d10 HPC `1147727` (`n019_durstrongtest`) was submitted with
+  `afterok:1147683` to keep only one DCU job active at a time. It evaluates
+  the stronger unconditional duration predictor on the complete official test
+  set while holding units, target map, mean32+shrink0.1 target embedding and
+  the formal soup vocoder fixed. Resources: 1 DCU, 16 CPU / 60 GB, 1 h;
+  expected/worst `0.25/1.0` card-hours. Output
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/duration_strong_test_20261117`.
+  This isolates W-NT L without repeating the S-attacker or target-conditioning
+  axes.
+- `1147640` completed in `00:07:39`, exit `0:0`.
+  `best.pt` SHA256 is
+  `ba74d00cc7910bcb26b0a75ddb52ea33d8230526b3aeb321b92b6124018d31a2`.
+  The 60-epoch strong duration model ended at train point-MSE `0.84434`,
+  below the original 30-epoch model's `0.88161`.
+- A 200-utterance CPU comparison against the formal duration model found:
+  - formal global duration ratio `0.991049`;
+  - strong global duration ratio `0.993082`;
+  - formal mean absolute total-duration error `0.044447`;
+  - strong mean absolute total-duration error `0.045332`;
+  - unit-level formal/strong correlation `0.803011`.
+  The stronger model is not simply collapsing all durations, but it is also
+  not closer to source total duration. Full test quality and W-NT L remain
+  the deciding evidence.
+- `1147683` (`n019_condscl`) failed after 32 seconds in target-embedding
+  preflight: the 1,158-key full archive did not exactly match the 843
+  test-map target-speaker key set. No WAV or metric was produced.
+  The validated 843-key subset
+  `runs/n019_official/layer9_step8k_test_20261117/target_speaker_mean32_shrink01_843.npz`
+  has SHA256
+  `5d00633b04e1ab4b70ebb40b657aa36c25f7809c64a5ce0333d1d2d5e14834c4`.
+- Retry `1147832` uses only that validated subset and reruns the two-scale
+  screen. Retry `1147833` is queued after it for the strong-duration test.
+  `1147727` was cancelled automatically when `1147683` failed and produced
+  no output. Do not resubmit `1147683` or `1147727`.
+- `1147832` produced valid complete quality for scale `1.5`:
+  WER `6.503624%`, UTMOS `3.057108`, WhiSQA `3.145502`. The female W-NT L
+  reached `43.428998%` versus formal female `37.808798%`, but the quality
+  regression is far outside the gate. The job was stopped after 11m21s and
+  before the `2.0` branch, which would strengthen the same out-of-distribution
+  failure. Do not resubmit.
+- Added training-time
+  `--speaker-embedding-scale` / `N019_VOCODER_SPEAKER_EMBEDDING_SCALE`.
+  This allows the vocoder to be calibrated to amplified conditioning rather
+  than applying it only at inference. Default remains `1.0`.
+- d10 HPC `1147969` (`n019_scl15ft`) was submitted:
+  - 1 DCU, 16 CPU / 60 GB, 2.5 h; expected/worst `0.7/2.5` card-hours;
+  - init from formal soup `ada6e5e3...`;
+  - 2,000 steps, lr `5e-5`, batch 16, AdamW, BF16;
+  - training speaker scale `1.5`;
+  - evaluates 1k and 2k calibrated snapshots at inference scale `1.5`
+    on full quality plus W-NT I/L.
+  This is not a repeat of direct-scale inference: the model weights now see
+  the scaled conditioning during training.
+- `1147969` trained normally and validation mel-L1 improved
+  (`0.711658` at 500, `0.705872` at 1000), but the 1k calibrated checkpoint
+  still failed quality: WER `6.372353%`, UTMOS `2.875843`,
+  WhiSQA `2.996429`. The job was stopped at `00:32:55`; no 2k quality or
+  W-NT was computed. The speaker-scale/calibration axis is rejected and must
+  not be resubmitted.
+- The strong-duration test retry `1147970` was canceled with the rejected
+  calibration dependency before running. Corrected independent Job `1148283`
+  uses the validated 843-key embedding subset. Previous `1147940` failed on
+  the full-archive key mismatch and produced no output; do not resubmit it.
+- Also tested speaker-conditioning calibration (`1147969`): training was
+  finite and validation mel-L1 improved, but the 1k model at inference
+  scale `1.5` still had UTMOS `2.875843` and WhiSQA `2.996429`. The branch
+  was stopped and must not be resubmitted.
+- d10 HPC `1148319` (`n019_ntecres`) is queued after `1148283`. It fits a
+  ridge map from 247 paired clean-100 ECAPA/NT speakers (`R2=0.880012`) and
+  adds only the ECAPA-predicted orthogonal timbral residual to each existing
+  843-speaker NT target embedding. Strengths `0.25` and `0.5` preserve mean
+  cosine `0.969597` and `0.894116` to the original NT vector. Resources:
+  1 DCU, 16 CPU / 60 GB, 2 h; expected/worst `0.7/2.0` card-hours.
+  This is a new conditioning representation, not a scale/target-map/shrink
+  repeat.
+- `1148319` was cancelled while still pending after a 5-fold CV audit:
+  ridge weight `1.0` had in-sample `R2=0.880012` but CV `R2=-3.382770`,
+  proving severe overfitting. Do not submit it. The corrected mapping uses
+  ridge weight `30000`, train `R2=0.464867`, CV `R2=0.195651`.
+- Corrected residual-screen retry `1148332` uses ridge weight `30000` and
+  is queued after `1148283`. Do not reuse `1148319`.
+- Strong-duration full test `1148283` completed all anonymisation, quality
+  and W-NT evaluations; the platform failed only in the compact summary
+  parser. Valid values:
+  - WER `6.203984%`;
+  - UTMOS `3.531020`;
+  - WhiSQA `3.503066`;
+  - W-NT I `39.039445%`;
+  - W-NT L `39.184537%`.
+  Relative to formal, quality changes are negligible or slightly positive,
+  but W-NT I regresses `0.128413 pp` and W-NT L regresses `0.544811 pp`.
+  The stronger duration predictor is rejected and must not be used for LS360
+  S or replacement.
+  Reconstructed summary SHA256
+  `1fe9fced386962fcc453e834309faa97f623d58cf72fd037039c430f99819739`;
+  W-NT summary SHA256
+  `8c104acf89e7f5153583bfa0d5f24cac4c668a499e34acbf297f2d468a7e6c1a`.
+- Because `1148283` failed its final step, dependent `1148332` was
+  auto-cancelled before start. The residual screen must be resubmitted only
+  after the summary parser is fixed; do not reuse `1148332`.
+- Fixed the W-NT summary field extraction for the residual screen and
+  submitted `1148449` as the corrected independent retry. It uses ridge
+  weight `30000` (CV `R2=0.195651`) and strengths `0.25/0.5`. Do not reuse
+  `1148319` or `1148332`.
+- `1148449` completed in `00:21:59`, exit `0:0`.
+  NT+ECAPA residual strength `0.25`:
+  WER `6.164032%`, UTMOS `3.602459`, WhiSQA `3.585092`,
+  W-NT I `39.279869%`, W-NT L `39.873361%`.
+  Strength `0.5`:
+  WER `6.069859%`, UTMOS `3.672624`, WhiSQA `3.660854`,
+  W-NT I `38.582350%`, W-NT L `39.201399%`.
+  Strength `0.25` is the balanced candidate: quality nearly reaches paper
+  and both W-NT metrics slightly exceed formal. Strength `0.5` improves
+  quality further but regresses W-NT. Neither is a formal replacement until
+  LS360 S is measured.
+- Submitted d10 HPC `1148888` (`n019_l9scratch`) after the earlier AI launch
+  failures. Resources: 1 DCU, 16 CPU / 60 GB, 20 h; expected/worst
+  `19.5/20.0` card-hours. It independently trains the layer-9 Unit HiFi-GAN
+  from scratch with AdamW `2e-4`, batch 16, BF16 and 2x feature matching.
+  Audio reads use d6 through the verified read-only ACL, so the prior AI
+  container path failure does not recur. This is the only active long
+  training branch.
+- `1148888` was cancelled after only `00:00:24` to run the decisive
+  E-VPC S measurement first; it had not completed a useful training interval.
+  Do not count it as a model failure. Resume from scratch in a new Job only
+  after the S result is known.
+- Submitted d10 HPC `1148911` (`n019_ntecres025s`): official 104,014-row
+  LS360 anonymisation, VPC export and 10-epoch ECAPA S retraining for the
+  NT+ECAPA residual0.25 candidate. Resources: 1 DCU, 16 CPU / 60 GB, 4 h;
+  expected/worst `3.0/4.0` card-hours. The target archive has 1,158 keys and
+  mean cosine `0.990815` to the original NT vectors. This is the decisive
+  S measurement for the only current candidate that improves quality and
+  both W-NT I/L.
+
+## 2026-11-17 cross-speaker conditioning fine-tune prepared
+
+- Re-audited the rejected axes before choosing another experiment:
+  target shrink/seed/pooling, mean32/fullmean/utterance replacement, soup and
+  late-checkpoint search, S-attacker convergence, conditioning scale,
+  stronger duration and layer-9-only replacement already have decisive
+  negative evidence.
+- The remaining untested training mismatch is that the vocoder sees the
+  source speaker's own embedding during training but a random target speaker
+  embedding at inference. Source-reconstruction S (`0%`) proves conditioning
+  is followed when source identity is supplied; the formal random-target
+  result still leaves source-speaker shortcuts.
+- Added a bounded speaker-swap training option. Default probability remains
+  `0.0`, so all completed paper-aligned runs are unchanged.
+- The swap embedding is drawn from the actual inference target distribution
+  (the 1,158-speaker NT+ECAPA residual0.25 archive),
+  not from another clean-100 source speaker. Source waveform reconstruction
+  stays fixed while the generator must use the supplied cross-domain target
+  condition.
+- Prepared `scripts/build_cross_speaker_finetune_checkpoint.py`, which keeps
+  the trained discriminator and discriminator optimizer from d5 final
+  `last.pt` while replacing the generator with the formal soup and resetting
+  only the generator optimizer.
+- d5 full-state SHA256:
+  `89768a4b94a7a326c02eeaf216022df2341abe36312149b6dac18c5048558c23`.
+  Formal soup SHA256:
+  `ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6`.
+- Prepared d10 HPC `hpc/n019_cross_speaker_ft_d10_hpc.slurm`:
+  1 DCU, 16 CPU / 60 GB, 2 h; expected/worst `0.8/2.0` card-hours;
+  4,000 steps at `5e-5`, total batch 16, BF16, speaker-swap probability
+  `0.5`, snapshots every 1,000 steps. Swap archive SHA256:
+  `82db74b116f6a4ae58dd1fdf6c8ab1c5accc8b179c63e33a0453addfcf067831`.
+- Prepared `hpc/n019_cross_speaker_select_d10_hpc.slurm` for the fixed
+  40-speaker dev-100 under the same target map, mean32+shrink0.1 embedding,
+  duration predictor and evaluators.
+- The experiment is not submitted. d10 HPC already has `1148911` active;
+  do not launch another d10 DCU job concurrently. Before submission,
+  re-check the HPC allowance and record the actual JobID here.
+- `hpc/submit_cross_speaker_pipeline_d10.sh 1148911` is the idempotent
+  submission helper. It queues training after the S job, queues the selector
+  after training, queues the W-PRO target-shift diagnostic after selection,
+  and refuses duplicate submission if its JSON record or the training
+  `last.pt` already exists.
+- From approximately `21:25` to `21:50` the direct SCNet E-Shell endpoint
+  (`zzeshell.scnet.cn:65032`) and the direct `www.scnet.cn` console were
+  unreachable. A backup proxy exit could load the SCNet website, but the SSH
+  port granted TCP then returned no SSH banner, consistent with either an
+  E-Shell outage or source-IP restriction. Clash was restored to its original
+  `rule` mode and `♻️ 自动选择` selection after each connectivity test.
+  No Job was resubmitted or duplicated. Existing HPC `1148911` continues
+  independently; retry SSH/console after the link recovers.
+- The direct SCNet web console was also unreachable, but a temporary backup
+  proxy exit allowed a headless read-only console check. At `21:59` the
+  high-performance job page confirmed:
+  - name `n019_ntecres025s`;
+  - JobID `1148911`;
+  - status `运行中`;
+  - queue `hx1hdnormal`;
+  - region `华中一区【A区】`;
+  - submitted `2026-11-17 20:43:38`;
+  - elapsed `1h17m09s`.
+  The web E-Shell terminal and E-File manager still remained on their loading
+  spinner, so this confirms scheduler-side survival but does not provide a
+  substitute for SSH/file access yet. Clash was restored to `rule` /
+  `♻️ 自动选择` after the check.
+
+## 2026-11-17 22:30 residual0.25 S failure and cross-speaker queue
+
+- d10 HPC `1148911` (`n019_ntecres025s`) finished as `FAILED`, exit `1:0`,
+  after `01:29:04`. The anonymisation stage completed all 104,014 records
+  and verification passed. The failure was only the same test-suffix alias
+  issue seen previously: screening data used
+  `_n019_ntecres0p25_20261117`, while the S script requested
+  `_n019_ntecres025_20261117`.
+- Verified before reuse:
+  - train `wav.scp`: 104,014 rows;
+  - `anon.jsonl` SHA256
+    `fe6f8cd3baa564094719e8e92145d13fae6a1aa31fd660381c38a5123d28bb22`;
+  - `verification.json` SHA256
+    `cbb48f06a4083f407e6bcc2212a5b58aa76aaf8afe4cdfb1cea694d64be2a5f8`;
+  - residual0.25 test views: enrolls/trials-f/trials-m `438/734/762`.
+- Created read-only aliases for `libri_test`, `libri_test_enrolls`,
+  `libri_test_trials_f`, and `libri_test_trials_m` under the new suffix.
+  Submitted d10 HPC `1149734` (`n019_ntecres025_sonly`): 1 DCU, 16 CPU /
+  60 GB, 3 h; expected/worst `1.5/3.0` card-hours. It runs only official
+  10-epoch ECAPA S retraining on the existing 104,014-row view.
+- Deployed the current cross-speaker implementation after backing up the
+  previous remote copies. The remote SHA256 values now match
+  `configs/cross_speaker_deploy_manifest_20261117.json`, and `bash -n`
+  passed on all five shell entrypoints.
+- Queued the cross-speaker pipeline after `1149734`:
+  - training `1149762`: 1 DCU, 16 CPU / 60 GB, 2 h, expected/worst `0.8/2.0`;
+  - selection `1149763`: 1 DCU, 16 CPU / 60 GB, 2 h, expected/worst `0.6/2.0`;
+  - W-PRO diagnostic `1149764`: 1 DCU, 16 CPU / 60 GB, 1 h,
+    expected/worst `0.2/1.0`.
+  The jobs are dependency-chained and must not be resubmitted.
+- The helper's first run reached all three `sbatch` calls, then failed while
+  writing its JSON under the login node's default Python 2.7. Live `squeue`
+  was checked before any retry. The record was recreated manually as
+  `runs/n019_official/cross_speaker_pipeline_submission_20261117.json`;
+  the helper now sources the N019 environment before writing JSON.
+- HPC usage through `1148911` is 54 jobs / `79,479 s = 22.0775 h`, leaving
+  approximately `27.9225 h` from the 50 h allowance.
+
+## 2026-11-18 00:20 residual0.25 S completed; cross-speaker train started
+
+- d10 HPC `1149734` (`n019_ntecres025_sonly`) completed in `01:32:48`,
+  exit `0:0`.
+- Official residual0.25 E-VPC S:
+  - female `30.655%`;
+  - male `31.616%`;
+  - mean `31.1355%`.
+  Relative to formal `29.7425%`: `+1.3930 pp`.
+  Relative to paper `34.8%`: `-3.6645 pp`.
+  Relative to fullmean/no-shrink `31.200%`: `-0.0645 pp`.
+- Residual0.25's already measured test quality and W-NT:
+  WER `6.164032%`, UTMOS `3.602459`, WhiSQA `3.585092`,
+  W-NT I `39.279869%`, W-NT L `39.873361%`.
+  It is a balanced improvement but not a formal replacement while S remains
+  below the paper target.
+- SHA256:
+  - `s_metrics.json`
+    `f3b18521fabeace1ecfd08c56eb465ff1e3bdf3e067ea70cfb3d3036eb6635a5`;
+  - `results_anon.txt`
+    `83a609bb801a4247e890fae5267a7d167c5c39c446b6ba04a8705f686b52848a`.
+- Dependency released cross-speaker training `1149762` on `f11r3n10`.
+  The initialization checkpoint SHA256 is
+  `0855726eb563e24afad063a1ace959eb41a1cd5b88fcc852fa2c5e3e6d97c2e1`.
+  At step 1,160 all losses are finite, throughput is `~0.676 s/step`,
+  and step-1000 validation mel-L1 is `0.771344`.
+- Do not rerun `1149734` or start a parallel cross-speaker training branch.
+- Queued d10 HPC `1150570` (`n019_ntecres025_il`) after `1149764`:
+  E-VPC I/L only on the existing residual0.25 test views, with W-NT skipped.
+  Resources: 1 DCU, 16 CPU / 60 GB, 1 h; expected/worst `0.3/1.0`
+  card-hours. It fills the fallback row without regenerating audio.
+
+## 2026-11-18 01:10 cross-speaker snapshots rejected on dev quality
+
+- d10 HPC `1149762` completed in `00:45:35`; all four snapshots have finite
+  losses and distinct SHA256 values recorded in
+  `configs/scnet_d10_cross_speaker_followup_20261117.json`.
+- Dev-100 baseline under residual0.25:
+  UTMOS `3.5883346009`, WhiSQA `3.5149893388`, WER `6.3042485153%`.
+- Cross-speaker UTMOS:
+  1k `3.4072178078`; 2k `2.9447056639`; 3k `3.2238986015`;
+  4k `3.3101186419`.
+  Every candidate fails the predeclared UTMOS gain gate, so selector
+  `1149763` completed in `00:06:53` and retained the formal baseline.
+- `1149764` failed in `00:00:56` before a privacy metric because its source
+  manifest points at d6 audio. No W-PRO result exists; do not resubmit it as-is.
+- Queued d10 HPC `1150821` (`n019_cross1keval`) after `1150570` to run full
+  test WER/UTMOS/WhiSQA and W-NT I/L for the least-degraded 1k snapshot.
+  Resources: 1 DCU, 16 CPU / 60 GB, 1.5 h; expected/worst
+  `0.3/1.5` card-hours. This diagnostic can still justify a later LS360 S
+  check, but the snapshot is not promoted.
+
+## 2026-11-18 01:20 residual fallback completed; cross-speaker closed
+
+- `1150570` ran E-VPC successfully but was marked `FAILED` after `00:03:26`
+  because the summary code still required a W-NT JSON while W-NT was skipped.
+  Valid E-VPC I/L: `47.006% / 48.580%`.
+  `evpc_metrics.json` SHA256
+  `4029def5df2c783ad0da1343eccc4941caf5caf6db6664c9b05788c3f99e7964`.
+  The summary code was fixed for partial outputs and an EVPC-only summary was
+  regenerated offline, SHA256
+  `182c54975fe5b9ad0aca0afd128562456fdcb01015de1fefef6b596ba714bd8c`.
+- Residual0.25's measured row is now:
+  E-VPC `47.006 / 48.580 / 31.1355`,
+  W-NT I/L `39.279869 / 39.873361`,
+  WER `6.164032%`, UTMOS `3.602459`, WhiSQA `3.585092`.
+  This is the best balanced fallback but still fails the paper S and W-NT L
+  targets by `-3.6645/-2.4266 pp`.
+- `1150821` completed full cross-speaker 1k test evaluation in `00:11:43`:
+  WER `6.340962%`, UTMOS `3.424324`, WhiSQA `3.302659`,
+  W-NT I `38.051815%`, W-NT L `39.632292%`.
+  It regresses quality and W-NT and is rejected. No LS360 S is run for this
+  cross-speaker snapshot.
+- Submitted `1151070` (`n019_durextra`): residual0.25 plus local-rhythm
+  extrapolation strengths `0.5/1.0`, preserving predicted total duration.
+  Resources: 1 DCU, 16 CPU / 60 GB, 1.5 h; expected/worst `0.6/1.5`.
+  This tests a paper-defined temporal-control axis, not another target-map or
+  checkpoint search.
+
+## 2026-11-18 01:45 duration extrapolation completed
+
+- `1151070` completed in `00:22:42`, exit `0:0`.
+- Residual0.25 + duration extrapolation `0.5`:
+  WER `8.1045602420%`, UTMOS `3.5450128726`, WhiSQA `3.5338041414`,
+  W-NT I `42.5289765000%`, W-NT L `41.9388510287%`.
+  W-NT L is now only `-0.3611 pp` from paper and W-NT I exceeds paper by
+  `+2.6290 pp`.
+- Residual0.25 + duration extrapolation `1.0`:
+  WER `10.7699332230%`, UTMOS `3.4540806935`, WhiSQA `3.4523893930`,
+  W-NT I `44.5378355682%`, W-NT L `42.6540561020%`.
+  It clears both W-NT targets but is rejected on WER/MOS trade-off.
+- `0.5` advances to the decisive E-VPC S job `1151369`
+  (`n019_res_de05_s`): 1 DCU, 16 CPU / 60 GB, 4 h;
+  expected/worst `3.0/4.0`. It reuses the completed 104,014-row source/units
+  and residual0.25 target archive, sets extrapolation `0.5`, preserves the
+  predicted total duration, and runs official ECAPA S on the matching suffix.
+- Do not run another duration-strength screen until `1151369` returns. If S is
+  still near 31, this axis is closed for timbral S even though it solved W-NT L.
+
+## 2026-11-18 03:30 duration0.5 S alias recovery
+
+- `1151369` finished as `FAILED`, exit `1:0`, after `01:40:10`.
+  All 104,014 LS360 WAVs, VPC train export and verification completed before
+  the failure; only the test suffix aliases were missing.
+- Verified:
+  - train `wav.scp`: 104,014;
+  - `anon.jsonl` SHA256
+    `177f15c62b115ee2b9602283fe113e39777a0881d5a196bcfbd0a115ed89c01a`;
+  - `verification.json` SHA256
+    `cd76a7b116fe788129b96e86d155d66ae396076cca392e2fe0ea813585690bd1`;
+  - train `wav.scp` SHA256
+    `c31fbbdfea7261dabb0bf23c26c39c33bf4e3a101049e73972be7a4e815d77de`.
+- Created read-only aliases from the existing duration0.5 test suffix and
+  submitted d10 HPC `1152061` (`n019_resde05_sonly`) for S only.
+  Resources: 1 DCU, 16 CPU / 60 GB, 3 h; expected/worst `1.5/3.0`.
+  Do not rerun `1151369` or regenerate the 104,014-row audio.
+- `1152061` failed after 16 seconds on `f11r2n12`: the tiny-matmul watchdog
+  raised `hipErrorInvalidDeviceFunction`, exit `124:0`. No S training started.
+  Retry `1152161` excludes `f11r2n12,f11r1n01,f11r2n13` and reuses the same
+  verified WAV/VPC data. Do not reuse `1152061`.
+
+## 2026-11-18 05:29 duration0.5 E-VPC S completed
+
+- `1152161` trained the official ECAPA S model for 10 epochs and saved
+  `CKPT+10`, then failed during evaluation because the original-test enroll
+  `wav.scp` used relative `data/libri_test/wav/*.wav` paths and that audio
+  view was missing. This was an evaluation-path failure, not an S-training
+  failure.
+- Restored the original WAV view via
+  `vpc/data/libri_test/wav -> d7 .../libri_test/wav`, added a no-retrain
+  evaluation config, and submitted evaluation-only retry `1152488`.
+- `1152488` (`n019_resde05_evalonly`) completed in `00:05:01`, exit `0:0`.
+  Resources: d10 HPC, 1 DCU, 16 CPU / 60 GB, 0.5 h wall.
+- E-VPC S for residual0.25 + duration extrapolation `0.5`:
+  female `30.840%`, male `30.287%`, mean **`30.5635%`**.
+  OO/OA means: `18.6245% / 31.4165%`.
+- Relative results:
+  paper `34.8%` -> `-4.2365 pp`;
+  formal `29.7425%` -> `+0.8210 pp`;
+  residual0.25 `31.1355%` -> `-0.5720 pp`.
+- SHA256:
+  `s_metrics.json`
+  `dee9d39ea88145ee7fed205fc09babb7d165956406dcf070e7b0cc0c7fe06286`;
+  `results_anon.txt`
+  `3433e0ad057c42be7d7fdcd004034f85e116efa31c642fd010a10e05ce73e14e`.
+- Closed: duration extrapolation improves W-NT but not timbral S. Do not
+  promote or rerun this branch.
+
+## 2026-11-18 05:58 residual0.5 + duration0.5
+
+- `1152520` (`n019_res05de05`) completed in `00:11:13`, exit `0:0`.
+  d10 HPC resources: 1 DCU, 16 CPU / 60 GB, 0.75 h wall.
+- Full test result:
+  WER `8.2672221905%`, UTMOS `3.6088413224`,
+  WhiSQA `3.6065287125`, W-NT I `42.7239269018%`,
+  W-NT L `41.8012790382%`.
+  This is better balanced than residual0.25 + duration0.5 on quality and
+  W-NT I, with W-NT L down only `0.137572 pp`.
+- Submitted matching LS360 S pipeline `1152779`
+  (`n019_res05_de05_s`): 1 DCU, 16 CPU / 60 GB, 4 h;
+  expected/worst `3.0/4.0` card-hours. It reuses the validated 104,014-row
+  source/units/target map and residual0.5 archive.
+- First attempt `1152554` failed in one second on an incorrect target-hash
+  guard using the 843-key test archive instead of the 1,158-key LS360
+  archive. No output was produced. Correct full-archive SHA256 is
+  `117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2`.
+
+## 2026-11-18 09:08 residual0.5 + duration0.5 full privacy
+
+- `1152779` completed in `03:06:47`, exit `0:0`, after anonymising
+  104,014 LS360 rows and training the official 10-epoch ECAPA S attacker.
+- E-VPC S: female `32.840%`, male `33.670%`, mean **`33.255%`**.
+  This is `+3.5125 pp` over formal and `-1.5450 pp` from paper.
+- `1155368` completed E-VPC I/L on the same suffix in `00:03:28`:
+  I `46.771%`, L `49.235%`.
+- Full measured candidate row:
+  E-VPC `46.771 / 49.235 / 33.255`;
+  W-NT I/L `42.723927 / 41.801279`;
+  WER `8.267222%`; UTMOS `3.608841`; WhiSQA `3.606529`.
+- SHA256:
+  `s_metrics.json`
+  `eb9a4253f8f76cf49d661b5736f0ed705f4aeae1b4a0b299753080cd2bd82c87`;
+  `results_anon.txt`
+  `9f98a7f5d662eb818c5ffbfcf780d2e707d797228fb5c81281f7d0b299023bb4`;
+  `privacy_il_metrics.json`
+  `748efdc50a5908bf0ba4ca6106f5ebeb3697937b5ecf65976cb29821d616d864`.
+- d10 HPC `1155398` trains the matching W-NT S attacker for six epochs
+  with frozen WavLM. Resources: 1 DCU, 16 CPU / 60 GB, 2 h;
+  expected/worst `1.2/2.0` card-hours. This is the only active training job.
+
+## 2026-11-18 10:56 W-NT S underfit and continuation
+
+- The original W-NT S jobs `1155398` and `1155447` failed after about three
+  minutes with no logged training step on two different nodes. With
+  `N019_WNT_S_WORKERS=0`, retry `1155473` ran normally and completed six
+  epochs in `01:31:20`, exit `0:0`.
+- Model SHA256:
+  `93cf7883fb8b6aca09f935a1ad5f3f2a8f3bda3857ff0f974b459f4d622907cf`.
+- Evaluation `1156482` completed in `00:03:12`:
+  W-NT S `41.188676%`, far above both formal `24.523857%` and paper
+  `24.6%`. This is an underfit attacker, not a valid formal metric.
+- Continuation `1156525` resumes the same run to epoch 10 with frozen WavLM.
+  Resources: 1 DCU, 16 CPU / 60 GB, 2 h; expected/worst `1.0/2.0`.
+  Do not start a parallel W-NT S branch.
+
+## 2026-11-18 15:34 residual0.5 + duration0.5 W-NT S completed
+
+- d10 HPC `1158175` (`n019_wnt_stable_shm`, `f11r2n09`) completed the
+  matching four-epoch stable W-NT S training and evaluation on suffix
+  `_n019_ntecres0p5_durextra0p5_20261118`.
+  Resources: 1 DCU, 16 CPU / 60 GB, 3 h outer; expected/worst
+  `1.0/3.0` card-hours. Frozen WavLM, AAM `margin=0.05`, `scale=10`,
+  batch 16.
+- Training ended at step 26,000 with loss `5.850030` and accuracy
+  `0.0388077`.
+- W-NT S: female `27.008472%`, male `28.063115%`, mean
+  **`27.535794%`**. This is `+2.935794 pp` over paper and
+  `+3.011937 pp` over formal, i.e. more private rather than a regression.
+- Model SHA256:
+  `67602b0d9e64e463b9103896ce83740de2f080ec665b54abf514601fd3c2264a`.
+  Summary SHA256:
+  `97bd5fdc81ece40eb67360396000a18360b3dd8536c0ecfbd0dd2db2d4140894`.
+- The complete same-suffix candidate is:
+  E-VPC `46.771 / 49.235 / 33.255`;
+  W-NT `42.723927 / 41.801279 / 27.535794`;
+  WER `8.267222%`; UTMOS `3.608841`; WhiSQA `3.606529`.
+  It is not yet promoted because WER is `+0.857 pp` versus paper.
+- d10 `/public/home` was full, so outputs remain under
+  `/dev/shm/n019_res05_wnt_stable_1158175` while the job sleeps to preserve
+  the node-local files. The summary was copied locally to
+  `results/wnt_s_1158175_summary.json`.
+- Full 1.26 GB model transfer was too slow. A 10-tensor frozen-base delta
+  of 2,361,989 bytes was exported and copied locally with SHA256
+  `f54ddd518896ff0b1372e56aa0747f6ebb19ee2e9d75e77cd89e76ebd82ed20c`.
+  Job `1158175` was cancelled at `02:02:28`, exit `0:0`. Metadata and the
+  delta are under `artifacts/wnt_s_1158175_model/`.
+
+## 2026-11-18 16:10 residual0.75 plus duration0.5 rejected
+
+- Used an overlapping `srun` step in already allocated Job `1158175`; no
+  separate Card-hour job was submitted. Disposable outputs stayed under
+  `/dev/shm/n019_res075_durextra05_1158175`.
+- NT+ECAPA residual `0.75` + duration extrapolation `0.5`:
+  WER `8.115975%`, UTMOS `3.655735`, WhiSQA `3.662978`,
+  W-NT I `42.387119%`, W-NT L `41.067906%`.
+- Versus residual `0.5`: better WER/UTMOS/WhiSQA by
+  `-0.151247 pp/+0.046894/+0.056450`, but worse W-NT I/L by
+  `-0.336808/-0.733373 pp`. Rejected; do not rerun the same strength.
+- SHA256:
+  residual0.75 `f8735b4522b8edd1f0c4cc8bda3fadf865b0bed6976f6d55773337ca563c6d92`;
+  quality `690c68a5d20b5d7f2d9dc9b198b0d721f327cc88e21a8bf5179a6fe0fa7b722f`;
+  W-NT summary `e8f3a19ea6e60ed340004966b98f6a5a57583a4421ec49bec50dcc9580671090`.
+- d10 queue is now empty. Fresh `sacct` accounting over 82 top-level
+  DCU-bearing jobs is `36.8372 h`, leaving approximately `13.1628 h` of the
+  50 h HPC allowance. `/public/home/a094f4d10` still reports zero bytes free
+  even after three closed-branch LS360 WAV trees were removed, so future
+  disposable work should stay under compute-node `/dev/shm` until storage
+  is rechecked.
+- Submitted d10 HPC `1159005` (`n019_resdur_grid`): 1 DCU, 16 CPU /
+  60 GB, 2 h, expected/worst `0.75/2.0` card-hours. It screens the new
+  points `res0.5/dur0.6`, `res0.5/dur0.65`, and `res0.75/dur0.6`
+  under `/dev/shm/n019_res_duration_grid_1159005`. The job was submitted
+  as an inline base64 payload because public storage is still full.
+
+## 2026-11-18 16:54 residual/duration grid rejected
+
+- `1159005` completed all three screens in about 34 minutes and held
+  `/dev/shm` afterward.
+- `res0.5/dur0.6`: WER `8.695280%`, UTMOS `3.594514`,
+  WhiSQA `3.596208`, W-NT I `43.195244%`, W-NT L `41.788062%`.
+- `res0.5/dur0.65`: WER `9.057702%`, UTMOS `3.584009`,
+  WhiSQA `3.585362`, W-NT I `43.251289%`, W-NT L `42.262605%`.
+- `res0.75/dur0.6`: WER `8.755208%`, UTMOS `3.640080`,
+  WhiSQA `3.650945`, W-NT I `43.174633%`, W-NT L `41.382883%`.
+- No point passes both the WER and W-NT L trade-off. Grid summary SHA256:
+  `d292f962ae0bbc2ebc1633f40fe8c116770a44876f79b5472f2d928b1088788d`;
+  local copy `results/res_duration_grid_1159005.json`.
+- Submitted d10 HPC `1159221` (`n019_res05_dur065_s`): 1 DCU,
+  16 CPU / 60 GB, 4 h; expected/worst `3.2/4.0` card-hours. It regenerates
+  the matching 1,934 test suffix, anonymises all 104,014 LS360 rows with
+  residual0.5+duration0.65, exports the train VPC view, and runs the official
+  10-epoch ECAPA S. Outputs stay under
+  `/dev/shm/n019_res05_dur065_s_1159221`.
+- `1159221` completed all anonymisation and VPC exports, then failed after
+  `01:22:20` because the final ECAPA training batch had one utterance and
+  BatchNorm rejected `[1,3072,1]`. The 104,014 train rows and 1,934 test
+  rows remain reusable on `f11r2n01`; train `wav.scp` SHA256 is
+  `8da7315624a24963d7f08b43e57e7ac72b162e67742221d932d82d216061907d`.
+- Submitted `1159840` (`n019_res05_dur065_sretry`) pinned to
+  `f11r2n01`: 1 DCU, 16 CPU / 60 GB, 3 h; expected/worst
+  `1.5/3.0`. It copies the code tree to `/dev/shm`, applies only
+  training-loader `drop_last=True`, redirects MIOpen cache to `/dev/shm`,
+  and reruns only S training/evaluation.
+- `1159840` failed after three seconds before any training. Same-node
+  inspection jobs were delayed by scheduler priority, so the local-data
+  recovery path was not worth further waiting. Submitted clean full retry
+  `1159966` (`n019_res05_dur065_s2`): 1 DCU, 16 CPU / 60 GB, 4 h;
+  expected/worst `3.2/4.0`. It applies the drop-last and MIOpen-cache fixes
+  from the start and regenerates the matching test/LS360 VPC views.
+- `1159966` completed in `02:37:30`. Official E-VPC S for residual0.5 +
+  duration0.65 is female `31.175%`, male `30.536%`, mean **`30.8555%`**.
+  This is `-2.3995 pp` versus residual0.5+duration0.5 and `-3.9445 pp`
+  versus paper. Rejected despite W-NT L `42.2626%`.
+- SHA256: `s_metrics.json`
+  `1c33cf171713b1117eb002dddb942a4de6f5bd05a44b20434073a56d880f795c`;
+  summary `02f71756eeacc3fcf2315932fd6c0fbfd2568dd3679f319a9ffa8eca54ac9ddf`.
+- Submitted d10 HPC `1161028` (`n019_voc90_res05`): 1 DCU, 16 CPU /
+  60 GB, 45 min; expected/worst `0.3/0.75`. It tests the d5 step-90000
+  checkpoint (SHA256 `cf6d64f...99be2`) under residual0.5+duration0.5 to
+  see whether the historically lowest-WER snapshot reduces the remaining
+  `+0.857 pp` WER gap without sacrificing W-NT L or MOS.
+- The step-90000 checkpoint produced full-test WER `8.327150%`, worse than
+  the current soup `8.267222%`. Job `1161028` was cancelled at `00:05:14`
+  after the WER gate, before UTMOS/WhiSQA/W-NT scoring. Local WER JSON
+  `results/voc90_res05_dur05_WER.json` has SHA256
+  `a249532f6992e0672cc44e408c3ad2af0c4af6393438ea9e5250b83d25f0b3db`.
+
+## 2026-11-18 22:05 duration soft-cap grid submitted
+
+- Zero-card analysis of all `437,390` unit durations found that the
+  residual0.5 + duration0.5 recipe has a long outlier tail: predicted-minus-
+  original durations are P50 `0.362` frames, P95 `1.521`, P99 `2.973`, and
+  max `35.052`; after 0.5 extrapolation the P99 local change is `1.486`
+  frames and the max is `17.526`.
+- A soft cap keeps the sign of each duration change but applies
+  `cap * tanh(delta / cap)` before predicted-total rescaling. It therefore
+  targets rare predictor outliers rather than globally reducing privacy.
+- d10 HPC `1161272` (`n019_softcapgrid`) screens caps `0.75`, `1.0`, and
+  `1.5` frames with residual0.5, duration extrapolation `0.5`, the formal
+  soup, and preserved predicted total. Resources: 1 DCU, 16 CPU / 60 GB,
+  2 h; expected/worst `0.6/2.0` card-hours. Balance before submission:
+  `8.5067 h` remaining.
+- This is full-test WER/UTMOS/WhiSQA plus W-NT I/L only. No LS360 E-VPC S
+  is run until one soft-cap condition passes the Pareto check.
+- Submit script SHA256:
+  `7bae376d27cbaabc2dd811eddcd5a18b84d990901754044bb5747a0cac11538a`.
+  Overlay SHA256:
+  `d8e94b2e2657c867f7b6606a92add69861c2d841ee4389609a36f7cbefe7db78`.
+  Config: `configs/scnet_d10_duration_softcap_grid_20261118.json`.
+
+### 22:20 submission wrapper corrected
+
+- First Job `1161272` failed after one second before any experiment code ran.
+  The script was stored on a login node's `/dev/shm`; the compute node could
+  not access that path. `/public` is also now completely full, so shared
+  stdout/stderr files could not be created.
+- The source tree was differential-audited against d10: the only changes in
+  `src/n019/anonymize.py` and the two anonymisation wrappers are the new
+  soft-cap lines. No divergent remote implementation was found.
+- The obsolete remote `scripts/run_target_embedding_ab_ai.sh` was backed up
+  locally as
+  `artifacts/submissions/remote_run_target_embedding_ab_ai_before_repurpose.sh`
+  and repurposed into a self-contained soft-cap grid job. It copies the
+  source tree to compute-node `/dev/shm`, patches only the copied duration
+  function, writes logs/results under `/dev/shm`, and holds the allocation
+  for inspection.
+- Replacement Job `1161346` (`n019_softcapgrid`) was submitted. Its remote
+  script SHA256 is
+  `9d7dc211abd7115d64bbd65c1b0a584c71dd50ea45638bbad07b8ef9342e8d8b`.
+  The first failed Job consumed only one second and produced no metric.
+
+### 22:45 self-contained wrapper finally validated
+
+- Jobs `1161346` and `1161416` also failed before training. Zero-card
+  reproduction found two additional causes: the default `python` at batch
+  startup was Python 2, and activating the N019 environment reset `TMPDIR`
+  to the already-full `/public` filesystem.
+- `/public` could not be made writable even after three redundant logs were
+  downloaded to `artifacts/logs/remote_pruned_20261118/`, SHA256-verified,
+  and deleted. A full recursive copy also stalled in kernel `D` state on NFS.
+- Final launch design: build a `/dev/shm` symlink overlay of the source tree,
+  write only a patched copy of `src/n019/anonymize.py`, force `TMPDIR` to
+  `/dev/shm`, and submit the entire job body with
+  `sbatch --wrap='printf ... | base64 -d | bash'`. No shared writable file is
+  required.
+- A zero-card login-node preparation test printed
+  `N019_SOFT_CAP_PREP_OK`.
+- Job `1161556` (`n019_softcapgrid`, `f11r3n09`) is running the soft-cap
+  grid. The tiny-matmul watchdog passed the initial launch path and was
+  active on the correct DCU.
+
+## 2026-11-19 d10 cleanup and one-click AI control
+
+- d10 `/public` was 100% full. Removed all four layer-9 unit branches and
+  the rejected layer-9/cross-speaker/conditioning-scale/old-duration
+  experiment directories while preserving the current layer-6 soup,
+  parameters, compact result JSON/Markdown, base corpora, environments,
+  and models.
+- Storage attribution found `runs/n019_official/privacy = 237 GB`, mainly
+  reproducible `_ls360` and `_shards` WAV/VPC copies. The current
+  candidate's compact `_s`, W-NT, metrics, and parameters are retained;
+  large raw/shard copies are removed.
+- Added `scripts/scnet_d10_ai_oneclick.ps1`. It loads the d10 credential
+  from `$HOME/.scnet/accounts.json`, sets only a process-local password
+  variable, and invokes the existing headless Edge submitter.
+- Fixed Vue-controlled login inputs by using per-character input plus
+  explicit `input/change` events. Offline check, headless form-fill dry
+  run, and the test suite (`10 passed`) all succeeded. This is now the
+  required one-click path when HPC hours are unavailable.
+- Final cleanup Slurm Job `1162900` completed in `00:06:11` with exit
+  `0:0`. `/public` changed from 100% full to `258G used / 143G free`;
+  `runs/n019_official/privacy` was reduced from `237 GB` to `162 MB`;
+  the write probe succeeded. The retained privacy subdirectories are only
+  the current candidate's compact `_s` and W-NT result directories.
+- The one-click AI path was validated with a real smoke task
+  `2123121797200564225`, created by headless Edge and completed in about
+  four seconds. Wrapper SHA256:
+  `da3d1393ed0580e53c8f4cf021590ab22d84a564174b7a6aef850e664ba63cd8`.
+- A second one-click AI task `2123122729065873410`
+  (`n019_rootclean_20261119_023433`) ran as root and removed the remaining
+  root-owned rejected layer-9 directories, rejected `data/anonymised`,
+  temporary directories, and old root-owned audit logs. Retained privacy
+  result directories are now owned by `a094f4d10`.
+- Soft-cap Job `1161556` ended by the 2-hour outer timeout. Its completed
+  `cap=0.75` condition reached WER `7.705040%`, UTMOS `3.629773`,
+  WhiSQA `3.622379`, and W-NT I mean `41.465054%`; W-NT L was not recovered
+  before node-local `/dev/shm` cleanup and needs a bounded rerun.
+
+## 2026-11-19 d10 storage recheck and queued AI recovery
+
+- Storage after cleanup is `256G used / 145G free / 64%` on
+  `/public/home/a094f4d10`; the write path is healthy.
+- Removed additional old user-owned evaluator outputs for cross-speaker and
+  `DU-nt-nt-utt` experiments. The current candidate's compact privacy,
+  quality, W-NT, parameter, corpus, environment, and model assets remain.
+- The only follow-up account is `a094f4d10`. AI submissions must use
+  `scripts/scnet_d10_ai_oneclick.ps1`; the headless Edge path has already
+  completed a real smoke task and is the supported one-click route.
+- AI recovery task `2123124377765978114`
+  (`n019_softcap075_20261119_024106`) remained queued with no instance and
+  was stopped at 02:55:37 before consuming card-hours.
+- HPC recovery Job `1163133` (`n019_softcap075_hpc`) is pending on d10,
+  `hx1hdnormal`, 1 DCU, 16 CPU / 60 GB, wall 1 h, expected 0.4 and worst
+  1.0 card-hours. It uses
+  `hpc/n019_softcap075_hpc_20261119.slurm` and the existing recovery
+  launcher; output remains
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/softcap075_recovery_20261119`.
+- `1163133` completed anonymisation/VPC export but exited `1:0` after
+  `00:02:13` because `anon.jsonl` changed from the old path-dependent hash
+  (`eac6f4...`) to `ef547e...`. The WAV/VPC counts are complete (1,934);
+  this was not an audio-generation failure.
+- `1163171` (`n019_softcap075_eval`) is now running the corrected bounded
+  continuation: d10 HPC, 1 DCU, 16 CPU / 60 GB, 1.5 h wall, expected 0.7 /
+  worst 1.5 card-hours. It reuses the complete 1,934 WAV/VPC and evaluates
+  WER, UTMOS, WhiSQA, and W-NT L. Do not submit a duplicate.
+- `1163171` completed in `00:07:37`, exit `0:0`.
+  Soft-cap 0.75 results:
+  WER `7.705039666685692%`, UTMOS `3.6297727518762155`,
+  WhiSQA `3.622378650994927`, W-NT L `41.61337688565254%`
+  (female `39.596518874168396%`, male `43.63023489713669%`).
+  The quality values exactly reproduce the earlier run after normalizing
+  the path-dependent manifest hash; the current complete candidate remains
+  better on W-NT I/L (`42.723927/41.801279%`), so soft-cap 0.75 is rejected
+  as a replacement and has no matching E-VPC S run.
+- Result files:
+  `results/softcap075_recovery_summary_20261119.json`,
+  `results/softcap075_recovery_quality_20261119.json`, and
+  `results/softcap075_recovery_wnt_l_20261119.json`.
+
+## 2026-11-19 remaining soft-cap grid submitted
+
+- Job `1163250` (`n019_softcap_remaining`) is running on d10 HPC,
+  `hx1hdnormal`, 1 DCU, 16 CPU / 60 GB, 2 h wall; expected/worst
+  `0.6/2.0` card-hours. It tests the untried caps `1.0` and `1.5` with
+  residual `0.5`, duration extrapolation `0.5`, and preserve-total.
+- Output root:
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/softcap_remaining_20261119`.
+- Script/SLURM SHA256:
+  `4229fad3e119dc2e1450d4ccc884786e8aa0eefd8dc0fbb000d16a468c06fd1e`
+  and `83e699eb8cf85becbe779547cbb6a6007e148593bbcb9946ca564bf0bf7e634b`.
+- Do not duplicate this job. A full E-VPC S run remains separate and is only
+  justified if one cap improves the current quality/privacy trade-off.
+- `1163250` completed both remaining caps. Results:
+  cap `1.0` WER `7.8477255864%`, UTMOS `3.6192089852`,
+  WhiSQA `3.6174467112`, W-NT I/L `41.6372716427/41.3588114083%`;
+  cap `1.5` WER `8.0360710005%`, UTMOS `3.6153429877`,
+  WhiSQA `3.6160274039`, W-NT I/L `41.6978813708/42.4506798387%`.
+  Cap `1.5` is the new best balance and is promoted to a matching E-VPC S
+  trial.
+- Submitted d10 HPC `1163378`
+  (`n019_res05_de05_cap15_s`): 1 DCU, 16 CPU / 60 GB, 4 h,
+  expected/worst `3.0/4.0` card-hours. It runs full LS360 anonymisation,
+  VPC export, and official 10-epoch ECAPA S with the cap-1.5 recipe.
+  Intermediate shard WAV trees are removed after the canonical merge.
+- `1163378` was cancelled after about 10 minutes because the first NFS
+  shard slowed to an unusable rate. Its partial 376 MB shard tree was
+  removed.
+- Replacement `1163471` (`n019_cap15_s`) keeps all scratch under
+  `/dev/shm` and writes only compact S metrics/summary to public storage.
+  Same resources and `3.0/4.0` expected/worst card-hours; do not duplicate.
+- `1163471` failed after 21 seconds at the inline Python heredoc because
+  the compute node's default `/tmp` was full. No anonymisation or S metric
+  was produced. `1163486` is the corrected wrapper: it exports `TMPDIR` to
+  the job-local `/dev/shm` path before the heredoc. Same resources and
+  output target; do not duplicate.
+- AI cleanup task `2123128559578529793`
+  (`n019_evalrootclean_20261119_025744`) was submitted through
+  `scripts/scnet_d10_ai_oneclick.ps1` and is queued. It removes four
+  root-owned rejected `layer9_ecapa_*` directories under the evaluator
+  output tree; expected 0.02 / worst 0.5 card-hours. Do not duplicate it.
+- The cleanup task completed at 03:05:15; `eval/` is empty and the storage
+  check remains healthy (`257G used / 144G free / 65%`).
+
+## 2026-11-19 cap1.5 S closure and d10 cleanup
+
+- Job `1163486` (`n019_cap15_s`) completed: d10 HPC, 1 DCU,
+  16 CPU / 60 GB, wall `02:29:43`, exit `0:0`.
+  E-VPC S is female `32.298%`, male `32.294%`, mean `32.296%`;
+  OO/OA are `19.943 / 33.2825%`. This is `-2.504 pp` versus the paper
+  `34.8%` and `-0.959 pp` versus the no-cap candidate `33.255%`.
+- Cap 1.5's matching quality/W-NT values remain
+  WER `8.0360710005%`, UTMOS `3.6153429877`,
+  WhiSQA `3.6160274039`, W-NT I/L
+  `41.6978813708 / 42.4506798387%`. It is retained as a control,
+  not promoted.
+- Deleted four obsolete anonymous-WAV trees:
+  `ntecres05_durextra05_screen_20261118/anonymised`,
+  `softcap075_recovery_20261119/anonymised`,
+  `softcap_remaining_20261119/res05_dur05_cap1p0/anonymised`, and
+  `.../res05_dur05_cap1p5/anonymised`. Compact JSON/TSV results and all
+  current weights were retained. Also removed rejected VPC suffix aliases
+  and the non-inference `optimizer.ckpt` plus regenerable train/dev CSVs
+  from the retained S-attacker. `runs/n019_official` is about `248 MB`;
+  VPC data is `83 MB`; `/public` is `255G used / 146G free / 64%`.
+- Recorded a checksum manifest for the current weights and compact
+  candidate results:
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/CURRENT_GOOD_ASSETS_20261119.sha256`.
+- Fixed `scripts/scnet_d10_ai_oneclick.ps1` to read SCNet results as UTF-8
+  and tolerate metadata parsing failures after a successful submission.
+  Post-patch smoke task `2123194340386017281` was submitted and its
+  generated config was rewritten to `submit:false` with the task ID.
+  A final fixed-wrapper smoke `2123196552549867521`
+  (`n019_ocfix_20261119_072755`) returned exit `0` and also persisted
+  `submit:false` plus `submitted_task_id`.
+
+## 2026-11-19 soft-cap 0.75 missing metrics
+
+- Account/mode: `a094f4d10`.
+- HPC accounting helper: `scripts/scnet_hpc_usage.py`; billed usage is
+  104 jobs / `171,098 s = 47.5272 h`, leaving about `2.4728 h`.
+- AI Job `2123227114809085953`, name
+  `n019_sc075_missing_20261119_092917`: 1 DCU, 15 CPU / 59 GB,
+  1 h wall, expected 0.35 / worst 1.0 card-hour. It regenerates the
+  deterministic cap-0.75 test WAV/VPC and measures missing E-VPC I/L and
+  W-NT I. Output:
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/softcap075_missing_il_wnti_20261119`.
+- Stale AI Job `2123212663813480450`
+  (`n019_spkuni_20261119_083151`) was stopped after more than one hour
+  with no public output; do not treat it as a valid result.
+- AI cleanup Job `2123234288017514497`
+  (`n019_cleanup_20261119_095746`) completed. It removed only obsolete
+  root-owned rejected outputs and passed all preserved-asset hashes.
+  Cleanup log:
+  `/public/home/a094f4d10/voice_projects/runs/n019_official/cleanup_20261119_softcap075/cleanup.log`.
+- Full-S continuation is prepared but not submitted:
+  `scripts/run_softcap075_full_s_wnts_ai_20261119.sh`. Resources:
+  1 DCU, 15 CPU / 59 GB, 6 h wall, expected 4 / worst 6 card-hours.
+  It runs matching E-VPC S and W-NT S on the same cap-0.75 suffix.
+
+## 2026-11-19 soft-cap 0.75 partial metrics recovered
+
+- AI Job `2123227114809085953` was stopped after exceeding a useful
+  one-hour window without publishing metrics.
+- HPC fallback `1165727` (`n019_sc075_missing`) completed all scoring in
+  `00:06:16` but exited `1:0` only because the public output directory
+  was root-owned and the final summary write was denied.
+- Recovered valid values: E-VPC I `47.4375%`, E-VPC L `48.9800%`,
+  W-NT I `41.4650537074%`. The already-known values are W-NT L
+  `41.6133768857%`, WER `7.7050396667%`, UTMOS `3.6297727519`,
+  WhiSQA `3.6223786510`.
+- Metrics log:
+  `/public/home/a094f4d10/voice_projects/logs/n019_official/n019_sc075_missing_1165727.out`
+  SHA256 `f20f6bcba5af1a840f8cbd2b544a06cced0213c714b984b381b9dede33c66250`.
+- Local record:
+  `results/softcap075_missing_il_wnti_20261119.json`.
+- Full-S AI attempts `2123243353116418050`,
+  `2123243603213565954`, and `2123245816554721281` failed before any
+  valid LS360 run. The tar/copy route through the login node was
+  abandoned because of permission-denied backup files and slow NFS
+  metadata throughput.
+- HPC Job `1166106` (`n019_sc075_s`) now runs the matched LS360
+  anonymisation and official 10-epoch ECAPA S directly from d6 units.
+  Resources: 1 DCU, 16 CPU / 60 GB, 3 h wall, expected/worst 2.5/3.0
+  card-hours. It preserves compact metrics plus the anon WAV and rewritten
+  VPC views needed for the subsequent W-NT S run.
+
+## 2026-11-19 Soft-cap 0.75 nine-metric closure
+
+- HPC `1166106` completed successfully in `02:47:12`, exit `0:0`.
+  E-VPC S is female `32.091%`, male `32.733%`, mean `32.412%`.
+  `s_metrics.json` SHA256:
+  `7d1d1c1394686bc2c97e5c2cc92ef9de6edd4832470f0a8447e7f42b894cf931`.
+- The first W-NT S AI retry `2123294168419930113` was stopped because
+  direct NFS random reads produced only about five training steps per
+  minute and no snapshot.
+- Matching W-NT S Job `2123316964176134146`
+  (`n019_sc075_wnts_shm2_20261119_152617`) completed successfully after
+  copying the 104,014 anonymised WAVs (about 7.3 GB) into `/dev/shm`.
+  It used a094f4d10 AI mode, 1 DCU, 15 CPU / 59 GB, 3 h wall,
+  expected/worst `2.2/3.0` card-hours, four epochs, frozen WavLM, batch 16,
+  AAM margin `0.05`, scale `10`.
+- W-NT S is female `26.6428887844%`, male `28.7461370230%`,
+  mean `27.6945129037%`; model SHA256
+  `8209eb42a52f6c473221ab4e25cca6c0c9efd89aa6a943ece2719396d576aebf`.
+- The complete same-suffix result is now:
+  E-VPC `47.4375 / 48.9800 / 32.4120`;
+  W-NT `41.4650537074 / 41.6133768857 / 27.6945129037`;
+  WER `7.7050396667%`, UTMOS `3.6297727519`, WhiSQA `3.6223786510`.
+  Local record: `results/softcap075_complete_20261119.json`;
+  documentation: `docs/N019_SOFTCAP075_METRICS_20261119.md`.
+

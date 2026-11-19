@@ -1,0 +1,45 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1147832",
+  "previous_job_ids": ["1147683"],
+  "status": "cancelled_after_1.5x_quality_rejection_do_not_resubmit",
+  "name": "n019_condscl",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_conditioning_scale_screen_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.5
+  },
+  "expected_card_hours": 0.4,
+  "worst_card_hours": 1.5,
+  "purpose": "Controlled target-speaker conditioning-strength screen at 1.5x and 2.0x against the already measured formal 1.0x result.",
+  "fixed_inputs": {
+    "units": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/libri_test_paperfix/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/libri_test_target_map_paperfix.jsonl",
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step8k_test_20261117/target_speaker_mean32_shrink01_843.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+    "vocoder": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt"
+  },
+  "outputs": {
+    "1.5": "/public/home/a094f4d10/voice_projects/runs/n019_official/conditioning_scale_screen_20261117/condscl1p5_20261117",
+    "2.0": "/public/home/a094f4d10/voice_projects/runs/n019_official/conditioning_scale_screen_20261117/condscl2p0_20261117"
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "counts differ from WER 1496 or UTMOS/WhiSQA 1934",
+    "W-NT I/L incomplete",
+    "1.5 hour wall clock"
+  ],
+  "failure": "1147683 stopped in 32 seconds because the 1,158-key full embedding archive did not exactly match the 843 test target-speaker keys. No WAV or metric was produced. Retry 1147832 uses the validated 843-key subset.",
+  "result_1_5": {
+    "WER": 6.503624222361737,
+    "UTMOS": 3.057108066074604,
+    "WhiSQA": 3.1455024264005496,
+    "WNT_L_female_partial": 43.428997695446014
+  },
+  "decision": "Direct 1.5x inference increased W-NT privacy but failed quality by about -0.47 UTMOS and -0.35 WhiSQA. The job was stopped before 2.0x because the failure is monotonic in out-of-distribution conditioning strength.",
+  "decision_rule": "Do not resubmit 1147683 or 1147832. A scale is only eligible if it preserves UTMOS/WhiSQA within 0.05 and does not regress WER by more than 0.25 pp versus formal. Eligible scales then need full LS360 E-VPC S."
+}

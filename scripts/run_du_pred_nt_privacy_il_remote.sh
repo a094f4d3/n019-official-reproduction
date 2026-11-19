@@ -66,29 +66,44 @@ from pathlib import Path
 import sys
 
 out = Path(sys.argv[1])
-evpc = json.loads((out / "evpc" / "evpc_metrics.json").read_text())
-wnt = json.loads((out / "wnt" / "summary.json").read_text())
-summary = {
-    "E-VPC I": evpc["paper_conditions"]["I"]["mean_eer_percent"],
-    "E-VPC L": evpc["paper_conditions"]["L"]["mean_eer_percent"],
-    "W-NT I": wnt["attacks"]["I"]["mean_eer_percent"],
-    "W-NT L": wnt["attacks"]["L"]["mean_eer_percent"],
-    "suffix": evpc.get("source", ""),
-    "sources": {
-        "evpc": str(out / "evpc" / "evpc_metrics.json"),
-        "wnt": str(out / "wnt" / "summary.json"),
-    },
-}
-(out / "privacy_il_metrics.json").write_text(
+evpc_path = out / "evpc" / "evpc_metrics.json"
+wnt_path = out / "wnt" / "summary.json"
+summary = {"suffix": "", "sources": {}}
+paths = []
+
+if evpc_path.is_file():
+    evpc = json.loads(evpc_path.read_text())
+    summary.update(
+        {
+            "E-VPC I": evpc["paper_conditions"]["I"]["mean_eer_percent"],
+            "E-VPC L": evpc["paper_conditions"]["L"]["mean_eer_percent"],
+            "suffix": evpc.get("source", ""),
+        }
+    )
+    summary["sources"]["evpc"] = str(evpc_path)
+    paths.append(evpc_path)
+
+if wnt_path.is_file():
+    wnt = json.loads(wnt_path.read_text())
+    summary.update(
+        {
+            "W-NT I": wnt["attacks"]["I"]["mean_eer_percent"],
+            "W-NT L": wnt["attacks"]["L"]["mean_eer_percent"],
+        }
+    )
+    summary["sources"]["wnt"] = str(wnt_path)
+    paths.append(wnt_path)
+
+if len(paths) == 0:
+    raise SystemExit("Neither E-VPC nor W-NT output is available")
+
+summary_path = out / "privacy_il_metrics.json"
+summary_path.write_text(
     json.dumps(summary, indent=2) + "\n",
     encoding="utf-8",
 )
+paths.append(summary_path)
 
-paths = [
-    out / "evpc" / "evpc_metrics.json",
-    out / "wnt" / "summary.json",
-    out / "privacy_il_metrics.json",
-]
 with (out / "SHA256SUMS.txt").open("w", encoding="utf-8") as handle:
     for path in paths:
         digest = hashlib.sha256(path.read_bytes()).hexdigest()

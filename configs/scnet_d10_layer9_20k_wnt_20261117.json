@@ -1,0 +1,53 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1143535",
+  "submitted_at": "2026-11-17T10:37:47+08:00",
+  "submit_state": "completed",
+  "name": "n019_layer9_20k_wnt",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_layer9_20k_wnt_only_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "expected_card_hours": 0.1,
+  "worst_card_hours": 1.0,
+  "purpose": "Complete W-NT I/L for the layer-9 20k checkpoint while reusing its already completed 1,934-sentence anonymisation and WER/UTMOS/WhiSQA outputs.",
+  "completed_quality": {
+    "WER_percent": 7.0458307174248045,
+    "UTMOS": 3.353637275676076,
+    "WhiSQA": 3.14868051678158,
+    "WER_count": 1496,
+    "UTMOS_count": 1934,
+    "WhiSQA_count": 1934
+  },
+  "completed_wnt": {
+    "I": 41.38750806450844,
+    "L": 42.6131471991539,
+    "paper_I": 39.9,
+    "paper_L": 42.3
+  },
+  "summary_sha256": "00c4c16cc8721047984f5ea9844727d6909afa45898afe37846fdce1bd11af9f",
+  "elapsed": "00:05:17",
+  "failed_predecessor": {
+    "job_id": "1143327",
+    "reason": "The quality phase completed, but W-NT could not resolve relative source audio paths because vpc/data/data/libri_test/wav was absent."
+  },
+  "repair": "Create a read-only symlink from vpc/data/data/libri_test/wav to the existing 1,934 hard-linked source WAV directory, then rerun W-NT only.",
+  "outputs": {
+    "root": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117",
+    "quality": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117/eval",
+    "wnt": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117/wnt_il"
+  },
+  "stop_conditions": [
+    "source WAV count is not 1934",
+    "VPC suffix counts differ",
+    "W-NT I/L incomplete",
+    "1 hour Slurm wall clock",
+    "tiny-matmul watchdog failure",
+    "node failure"
+  ]
+}

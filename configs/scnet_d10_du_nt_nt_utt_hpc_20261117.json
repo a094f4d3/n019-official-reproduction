@@ -1,0 +1,36 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1142507",
+  "name": "n019_dunntutt",
+  "partition": "hx1hdnormal",
+  "dependency": null,
+  "queue_state": "AssocGrpCpuLimit while Job 1142379 owns the account allocation; becomes eligible when training releases resources",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.5
+  },
+  "expected_card_hours": 0.5,
+  "worst_card_hours": 1.5,
+  "input_bundle": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117",
+  "outputs": [
+    "/public/home/a094f4d10/voice_projects/data/n019_official/anonymised/libri_test/DU-nt-nt-utt-20261117",
+    "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/du_nt_nt_utt_20261117"
+  ],
+  "purpose": "Evaluate paper-aligned DU-nt-nt conditioning where duration and NT vocoder use the same random target-utterance embedding.",
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "bundle is not 1,934 records/codes",
+    "anonymised or VPC count is not 1,934",
+    "WER count is not 1,496 or MOS counts are not 1,934",
+    "90 minute Slurm wall clock",
+    "node failure"
+  ],
+  "ai_launch_attempts": {
+    "2122447534302920705": "failed before work: audit directory absent",
+    "2122447776079368193": "failed before work: AI $HOME=/root",
+    "2122448002453250050": "watchdog passed; stopped before anonymisation because AI container cannot follow cross-account vendor/mos/hf_cache symlinks"
+  }
+}

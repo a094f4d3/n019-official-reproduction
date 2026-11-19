@@ -1,0 +1,167 @@
+{
+  "source": "/dev/shm/n019_res05_dur065_s_1159966/s_eval/exp/results_summary/eval_anon_n019_n019_res05_dur065_20261118/results_anon.txt",
+  "timestamp": "18-11-26_21:43",
+  "asv": {
+    "OO": {
+      "female_eer_percent": 21.308,
+      "male_eer_percent": 14.254,
+      "mean_eer_percent": 17.781,
+      "rows": [
+        {
+          "index": 0,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "f",
+          "enrollment": "original",
+          "trial": "original",
+          "eer_percent": 21.308
+        },
+        {
+          "index": 3,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "m",
+          "enrollment": "original",
+          "trial": "original",
+          "eer_percent": 14.254
+        }
+      ]
+    },
+    "OA": {
+      "female_eer_percent": 32.691,
+      "male_eer_percent": 30.959,
+      "mean_eer_percent": 31.825000000000003,
+      "rows": [
+        {
+          "index": 1,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "f",
+          "enrollment": "original",
+          "trial": "anon",
+          "eer_percent": 32.691
+        },
+        {
+          "index": 4,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "m",
+          "enrollment": "original",
+          "trial": "anon",
+          "eer_percent": 30.959
+        }
+      ]
+    },
+    "AA": {
+      "female_eer_percent": 31.175,
+      "male_eer_percent": 30.536,
+      "mean_eer_percent": 30.8555,
+      "rows": [
+        {
+          "index": 2,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "f",
+          "enrollment": "anon",
+          "trial": "anon",
+          "eer_percent": 31.175
+        },
+        {
+          "index": 5,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "m",
+          "enrollment": "anon",
+          "trial": "anon",
+          "eer_percent": 30.536
+        }
+      ]
+    }
+  },
+  "wer_percent": {},
+  "asv_rows": [
+    {
+      "index": 0,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "f",
+      "enrollment": "original",
+      "trial": "original",
+      "eer_percent": 21.308
+    },
+    {
+      "index": 1,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "f",
+      "enrollment": "original",
+      "trial": "anon",
+      "eer_percent": 32.691
+    },
+    {
+      "index": 2,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "f",
+      "enrollment": "anon",
+      "trial": "anon",
+      "eer_percent": 31.175
+    },
+    {
+      "index": 3,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "m",
+      "enrollment": "original",
+      "trial": "original",
+      "eer_percent": 14.254
+    },
+    {
+      "index": 4,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "m",
+      "enrollment": "original",
+      "trial": "anon",
+      "eer_percent": 30.959
+    },
+    {
+      "index": 5,
+      "dataset": "libri",
+      "split": "test",
+      "gender": "m",
+      "enrollment": "anon",
+      "trial": "anon",
+      "eer_percent": 30.536
+    }
+  ],
+  "asr_rows": [],
+  "paper_conditions": {
+    "S": {
+      "female_eer_percent": 31.175,
+      "male_eer_percent": 30.536,
+      "mean_eer_percent": 30.8555,
+      "rows": [
+        {
+          "index": 2,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "f",
+          "enrollment": "anon",
+          "trial": "anon",
+          "eer_percent": 31.175
+        },
+        {
+          "index": 5,
+          "dataset": "libri",
+          "split": "test",
+          "gender": "m",
+          "enrollment": "anon",
+          "trial": "anon",
+          "eer_percent": 30.536
+        }
+      ]
+    }
+  },
+  "model_role": "anon"
+}

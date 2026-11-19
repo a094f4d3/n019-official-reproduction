@@ -1,0 +1,47 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1143588",
+  "previous_job_ids": [
+    "1143477",
+    "1143490",
+    "1143536",
+    "1143569"
+  ],
+  "submitted_at": "2026-11-17T10:49:30+08:00",
+  "submit_state": "submitted_pending_allocation",
+  "name": "n019_du_ecapa_nt_r2",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_du_ecapa_nt_eval_r2_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0
+  },
+  "expected_card_hours": 0.35,
+  "worst_card_hours": 2.0,
+  "purpose": "Repair continuation after the completed source ECAPA, duration-model and target ECAPA extraction stages. Each prior attempt exposed a distinct validation or filesystem contract, not a model failure. The current repair uses the d10-owned run output tree and reruns only the evaluation.",
+  "reused_assets": {
+    "source_ecapa": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_100_ecapa_20261117/ecapa_speaker_embeddings.npz",
+    "target_ecapa_all": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_ecapa_all1158_20261117/ecapa_speaker_embeddings.npz",
+    "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_ecapa_main_20261117/best.pt",
+    "nt_target_843": "/public/home/a094f4d10/voice_projects/runs/n019_official/du_ecapa_nt_20261117/test_assets/nt_target_843.npz",
+    "ecapa_target_843": "/public/home/a094f4d10/voice_projects/runs/n019_official/du_ecapa_nt_20261117/test_assets/ecapa_target_843.npz"
+  },
+  "outputs": {
+    "anonymised": "/public/home/a094f4d10/voice_projects/runs/n019_official/du_ecapa_nt_20261117/anonymised",
+    "quality": "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/du_ecapa_nt_20261117",
+    "wnt": "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/du_ecapa_nt_20261117_wnt"
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "reused asset hashes differ",
+    "anonymised or VPC count is not 1934",
+    "WER count is not 1496 or MOS counts are not 1934",
+    "W-NT I/L incomplete",
+    "2 hour Slurm wall clock",
+    "node failure"
+  ],
+  "decision_rule": "Only submit the prepared LS360 E-VPC S pipeline if the repaired test row is quality-competitive and improves W-NT L."
+}

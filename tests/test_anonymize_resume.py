@@ -8,13 +8,57 @@ from pathlib import Path
 from n019.anonymize import (
     ensure_output_dir_available,
     estimate_pcm16_wav_bytes,
+    extrapolate_durations,
     load_anonymize_resume,
     require_free_space,
+    scale_speaker_embedding,
 )
 from n019.manifest import safe_filename
+import torch
 
 
 class AnonymizeResumeTests(unittest.TestCase):
+    def test_scales_speaker_embedding(self) -> None:
+        embedding = torch.tensor([0.5, -1.0])
+        scaled = scale_speaker_embedding(embedding, 1.5)
+        torch.testing.assert_close(scaled, torch.tensor([0.75, -1.5]))
+        with self.assertRaisesRegex(ValueError, "finite"):
+            scale_speaker_embedding(embedding, float("nan"))
+        with self.assertRaisesRegex(ValueError, "positive"):
+            scale_speaker_embedding(embedding, 0.0)
+
+    def test_extrapolates_and_preserves_predicted_total(self) -> None:
+        predicted = torch.tensor([2.0, 4.0, 3.0])
+        original = torch.tensor([3.0, 2.0, 3.0])
+        adjusted, negative = extrapolate_durations(
+            predicted,
+            original,
+            0.5,
+            preserve_total=True,
+        )
+        self.assertEqual(negative, 0)
+        self.assertAlmostEqual(float(adjusted.sum()), float(predicted.sum()), 5)
+        self.assertLess(float(adjusted[0]), 2.0)
+        self.assertGreater(float(adjusted[1]), 4.0)
+        with self.assertRaisesRegex(ValueError, "non-negative"):
+            extrapolate_durations(predicted, original, -0.1, preserve_total=False)
+
+    def test_soft_cap_limits_extreme_duration_change(self) -> None:
+        predicted = torch.tensor([2.0, 3.0])
+        original = torch.tensor([20.0, 1.0])
+        adjusted, negative = extrapolate_durations(
+            predicted,
+            original,
+            0.5,
+            preserve_total=False,
+            soft_cap_frames=1.0,
+        )
+        self.assertEqual(negative, 0)
+        self.assertTrue(
+            bool(((adjusted - predicted).abs() <= 1.0001).all())
+        )
+        self.assertTrue(bool((adjusted > 0.0).all()))
+
     def test_allows_launcher_metadata_in_new_output_dir(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             out_dir = Path(directory)

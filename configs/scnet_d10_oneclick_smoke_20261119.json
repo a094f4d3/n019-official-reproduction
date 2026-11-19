@@ -1,0 +1,25 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123121797200564225",
+  "name": "n019_oneclick_smoke_20261119_023051",
+  "status": "completed",
+  "start_time": "2026-11-19T02:31:03+08:00",
+  "end_time": "2026-11-19T02:31:07+08:00",
+  "startup_script": "bash -lc \"echo N019_ONECLICK_SMOKE_OK; sleep 5\"",
+  "resources": {
+    "region": "HuaZhong-1 A",
+    "accelerator": "BW",
+    "resource_group": "113",
+    "dcu": 1,
+    "instances": 1,
+    "cpu_per_card": 15,
+    "memory_gb_per_card": 59,
+    "wall_hours": 0.1,
+    "expected_card_hours": 0.02,
+    "worst_card_hours": 0.1
+  },
+  "wrapper": "scripts/scnet_d10_ai_oneclick.ps1",
+  "wrapper_sha256": "da3d1393ed0580e53c8f4cf021590ab22d84a564174b7a6aef850e664ba63cd8",
+  "result": "Real task creation succeeded and the short command completed normally."
+}

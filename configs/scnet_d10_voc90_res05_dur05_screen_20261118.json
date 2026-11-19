@@ -1,0 +1,44 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1161028",
+  "name": "n019_voc90_res05",
+  "status": "completed_rejected_on_wer",
+  "actual_elapsed": "00:05:14",
+  "exit_code": "0:0",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 0.75,
+    "expected_card_hours": 0.3,
+    "worst_card_hours": 0.75
+  },
+  "purpose": "Targeted WER check using the d5 step-90000 checkpoint, which had the lowest WER among the correct 40-speaker development snapshots, under the current residual0.5 + duration0.5 recipe.",
+  "recipe": {
+    "vocoder": "/public/home/a094f4d5/voice_projects/runs/n019_official/vocoder_nt_hpc_d5_hpclongfinal_20261110/snapshots/generator_step00090000.pt",
+    "vocoder_sha256": "cf6d64fed6637f3f2bbe0a9c11af455fd01c9b7bdbf280cdd219c7f4c8199be2",
+    "vocoder_steps": 90000,
+    "residual_strength": 0.5,
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true,
+    "target_embeddings_test_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c"
+  },
+  "outputs": {
+    "work": "/dev/shm/n019_voc90_res05_dur05_1161028",
+    "quality": "/dev/shm/n019_voc90_res05_dur05_1161028/test/eval/quality_metrics.json",
+    "wnt": "/dev/shm/n019_voc90_res05_dur05_1161028/test/wnt_il/summary.json",
+    "summary": "/dev/shm/n019_voc90_res05_dur05_1161028/test/summary.json"
+  },
+  "result": {
+    "WER": 8.327150276810684,
+    "paper_WER": 7.41,
+    "current_soup_WER": 8.26722219051424,
+    "delta_vs_current_soup_pp": 0.059928086296444,
+    "local_WER_json": "results/voc90_res05_dur05_WER.json",
+    "local_WER_sha256": "a249532f6992e0672cc44e408c3ad2af0c4af6393438ea9e5250b83d25f0b3db"
+  },
+  "decision_rule": "Advance only if WER improves materially toward 7.41% while UTMOS/WhiSQA remain near 3.63/3.69 and W-NT L stays near the current 41.801%. A passing screen still requires a fresh matching LS360 E-VPC S run.",
+  "decision": "Rejected at the WER gate. The step-90000 checkpoint did not transfer its development WER advantage to the new residual0.5+duration0.5 candidate; full-test WER worsened by 0.0599 pp versus the current soup. UTMOS/WhiSQA and W-NT scoring were stopped to save Card-hours."
+}

@@ -1,0 +1,52 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123316964176134146",
+  "name": "n019_sc075_wnts_shm2_20261119_152617",
+  "status": "completed_20261119_1732",
+  "purpose": "Train and evaluate the matching W-NT S attacker on the same soft-cap0.75 LS360 anonymisation produced by HPC Job 1166106.",
+  "recipe": {
+    "duration_soft_cap_frames": 0.75,
+    "residual_strength": 0.5,
+    "duration_extrapolation": 0.5,
+    "suffix": "_n019_softcap075_recovery_20261119",
+    "epochs": 4,
+    "batch": 16,
+    "lr": 0.0001,
+    "head_lr": 0.001,
+    "freeze_wavlm": true
+  },
+  "resources": {
+    "dcu": 1,
+    "cpu": 15,
+    "memory_gb": 59,
+    "wall_hours": 3.0,
+    "expected_card_hours": 2.2,
+    "worst_card_hours": 3.0
+  },
+  "input": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_hpc_20261119/vpc",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_wnt_s_shm_20261119",
+  "failed_predecessors": [
+    {
+      "job_id": "2123294168419930113",
+      "reason": "NFS random reads limited training to about five steps per minute; stopped before the first snapshot.",
+      "decision": "Do not retry the same NFS-backed configuration."
+    }
+  ],
+  "localization": {
+    "source": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_hpc_20261119/anonymised_ls360",
+    "destination": "/dev/shm/n019_softcap075_wnt_s_shm_<task>/audio",
+    "workers": 8
+  },
+  "result": {
+    "female_eer_percent": 26.64288878440857,
+    "male_eer_percent": 28.746137022972107,
+    "mean_eer_percent": 27.694512903690338,
+    "paper_eer_percent": 24.6,
+    "delta_vs_paper_pp": 3.094512903690338,
+    "summary_sha256": "2147f9dc50f8c040502f1d78b40134f844b3505ed220bceed95c5f1ff57ed535",
+    "model_sha256": "8209eb42a52f6c473221ab4e25cca6c0c9efd89aa6a943ece2719396d576aebf"
+  },
+  "canonical_result": "results/softcap075_complete_20261119.json",
+  "gate": "Completed: W-NT S uses the matching four-epoch attacker and the same soft-cap 0.75 suffix."
+}

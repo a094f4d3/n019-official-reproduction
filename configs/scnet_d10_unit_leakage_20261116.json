@@ -1,0 +1,28 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1138511",
+  "job_name": "n019_unit_leak",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 0.75
+  },
+  "expected_card_hours": 0.25,
+  "worst_card_hours": 0.75,
+  "inputs": {
+    "manifest": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+    "hubert_model": "/public/home/a094f4d6/voice_projects/models/n019_official/hubert"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/unit_speaker_leakage_1138511/unit_speaker_leakage.json",
+  "purpose": "Compare speaker leakage in K=200 units from HuBERT layers 6 and 9 with fixed speakers, utterances, codebook size, classifier, and split.",
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "any input or embedding dimension check fails",
+    "non-finite HuBERT features or model labels",
+    "45 minute Slurm wall clock",
+    "node failure"
+  ]
+}

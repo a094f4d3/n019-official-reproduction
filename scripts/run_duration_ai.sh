@@ -14,7 +14,8 @@ KIND="${N019_DURATION_EMBEDDING_KIND:-nt}"
 EPOCHS="${N019_DURATION_EPOCHS:-30}"
 BATCH_SIZE="${N019_DURATION_BATCH_SIZE:-32}"
 WORKERS="${N019_DURATION_WORKERS:-4}"
-RECORDS="$N019_OFFICIAL_DATA/processed/units/librispeech_train_clean_100/unit_records.jsonl"
+LR="${N019_DURATION_LR:-0.0003}"
+RECORDS="${N019_DURATION_RECORDS:-$N019_OFFICIAL_DATA/processed/units/librispeech_train_clean_100/unit_records.jsonl}"
 
 case "$KIND" in
   nt)
@@ -71,6 +72,8 @@ fi
   echo "embeddings=${EMBEDDINGS:-none}"
   echo "epochs=$EPOCHS"
   echo "batch_size=$BATCH_SIZE"
+  echo "lr=$LR"
+  echo "records=$RECORDS"
   echo "out=$OUT"
   echo "resume=${#RESUME_FLAG[@]}"
 } | tee "$OUT/launch.txt"
@@ -90,6 +93,7 @@ python -u -m n019.duration \
   --embedding-kind "$TRAINING_EMBEDDING_KIND" \
   --epochs "$EPOCHS" \
   --batch-size "$BATCH_SIZE" \
+  --lr "$LR" \
   --workers "$WORKERS" \
   --device cuda \
   --out "$OUT" \

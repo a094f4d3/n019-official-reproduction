@@ -1,0 +1,39 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "status": "planned_not_submitted",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0
+  },
+  "expected_card_hours": 3.0,
+  "worst_card_hours": 4.0,
+  "script": "hpc/n019_ls360_du_nt_nt_utt_s_pipeline_hpc.slurm",
+  "inputs": {
+    "source_manifest": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d10paths_20261117.jsonl",
+    "unit_records": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/librispeech_train_clean_360/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/targets/librispeech_train_clean_360_target_map_utterance.jsonl",
+    "target_embeddings": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_360_target_nt_utterance/nt_utterance_embeddings.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_nt_main/best.pt",
+    "vocoder": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/generator_soup2.pt"
+  },
+  "coverage": {
+    "source_rows": 104014,
+    "unique_target_ids": 81605,
+    "missing_target_embeddings": 0
+  },
+  "outputs": [
+    "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/du_nt_nt_utt_20261117_s/s_eval/s_metrics.json"
+  ],
+  "submit_gate": "Only submit if HPC Job 1142507 shows quality and W-NT I/L are competitive with the formal model.",
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "104,014 anonymised/VPC rows are not produced",
+    "official S export or ASV preflight fails",
+    "non-finite generated audio or metrics",
+    "4 hour wall clock"
+  ]
+}

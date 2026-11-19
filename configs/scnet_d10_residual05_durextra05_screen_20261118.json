@@ -1,0 +1,48 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1152520",
+  "name": "n019_res05de05",
+  "status": "completed",
+  "actual_elapsed": "00:11:13",
+  "exit_code": "0:0",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 0.75,
+    "expected_card_hours": 0.25,
+    "worst_card_hours": 0.75
+  },
+  "purpose": "Test the untested combination of the stronger residual0.5 target embedding with duration extrapolation 0.5 while preserving predicted total duration.",
+  "fixed_inputs": {
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_20261117/residual_0p5.npz",
+    "target_embeddings_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "result": {
+    "WER": 8.26722219051424,
+    "UTMOS": 3.608841322447176,
+    "WhiSQA": 3.606528712527089,
+    "W-NT_I": 42.72392690181732,
+    "W-NT_L": 41.80127903819084,
+    "paper_WER": 7.41,
+    "paper_UTMOS": 3.63,
+    "paper_WhiSQA": 3.69,
+    "paper_W-NT_I": 39.9,
+    "paper_W-NT_L": 42.3
+  },
+  "comparison": {
+    "vs_residual025_durextra05_UTMOS": 0.0638284498927754,
+    "vs_residual025_durextra05_WhiSQA": 0.0727245710874912,
+    "vs_residual025_durextra05_W-NT_I_pp": 0.19495040178299,
+    "vs_residual025_durextra05_W-NT_L_pp": -0.13757204048996,
+    "vs_residual025_durextra05_WER_pp": 0.162661948518921
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/ntecres05_durextra05_screen_20261118",
+  "decision": "This is the stronger quality/W-NT-balanced combination. Its E-VPC S must be measured before it can replace any formal result."
+}

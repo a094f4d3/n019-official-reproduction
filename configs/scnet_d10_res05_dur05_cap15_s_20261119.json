@@ -1,0 +1,57 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1163486",
+  "name": "n019_cap15_s",
+  "status": "completed",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0,
+    "expected_card_hours": 3.0,
+    "worst_card_hours": 4.0,
+    "actual_elapsed": "02:29:43",
+    "exit_code": "0:0"
+  },
+  "recipe": {
+    "checkpoint_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "target_embedding": "mean32 + NT/ECAPA residual 0.5",
+    "target_embedding_sha256": "117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true,
+    "soft_cap": 1.5,
+    "suffix": "_n019_n019_res05_dur05_cap1p5_20261119"
+  },
+  "s_result": {
+    "female_eer_percent": 32.298,
+    "male_eer_percent": 32.294,
+    "mean_eer_percent": 32.296,
+    "paper_eer_percent": 34.8,
+    "delta_vs_paper_pp": -2.504,
+    "no_cap_candidate_eer_percent": 33.255,
+    "delta_vs_no_cap_candidate_pp": -0.959,
+    "s_metrics_sha256": "46a967116bfbfa37e25c79ce543eb8a8059b5034cd38d1e421c1293100ee7831",
+    "summary_sha256": "5c76f943f6548deab88274513735cc8c093f51eca22fc4d6914c4a00b3d1578a"
+  },
+  "other_metrics": {
+    "WER_percent": 8.0360710005,
+    "UTMOS": 3.6153429877,
+    "WhiSQA": 3.6160274039,
+    "W_NT_I_percent": 41.6978813708,
+    "W_NT_L_percent": 42.4506798387,
+    "W_NT_S": null,
+    "E_VPC_I": null,
+    "E_VPC_L": null
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres0p5_durextra0p5_softcap1p5_20261119_s",
+  "decision": "Keep as a quality/W-NT-L-biased control. Do not replace the no-cap complete candidate because E-VPC S drops by 0.959 pp and matching W-NT S plus E-VPC I/L are not yet available.",
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input hash or row-count mismatch",
+    "incomplete 104014-row anonymisation or VPC export",
+    "incomplete six-row VPC S result",
+    "wall-clock expiry"
+  ]
+}

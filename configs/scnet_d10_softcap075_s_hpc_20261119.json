@@ -1,0 +1,30 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "task_id": "1166106",
+  "name": "n019_sc075_s",
+  "status": "completed_20261119",
+  "purpose": "Measure matching E-VPC S for residual0.5 + duration0.5 + soft-cap0.75 and preserve the matching W-NT training views.",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0,
+    "expected_card_hours": 2.5,
+    "worst_card_hours": 3.0
+  },
+  "result": {
+    "elapsed": "02:47:12",
+    "exit_code": "0:0",
+    "E_VPC_S": 32.412,
+    "s_metrics_sha256": "7d1d1c1394686bc2c97e5c2cc92ef9de6edd4832470f0a8447e7f42b894cf931",
+    "summary_sha256": "5027f4f08b9e0314364e31e54bd05a8f4304a9c0931f4632bb60beeaac561d8e"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_hpc_20261119",
+  "preserved": {
+    "ls360_anon_rows": 104014,
+    "train_wav_scp_rows": 104014,
+    "train_utt2spk_rows": 104014,
+    "test_wavs": 1934
+  }
+}

@@ -8,7 +8,7 @@ cd "$ROOT"
 
 ACCOUNT="$(id -un)"
 case "$ACCOUNT" in
-  a094f4d3|a094f4d4|a094f4d5|a094f4d6|a094f4d7) ;;
+  a094f4d3|a094f4d4|a094f4d5|a094f4d6|a094f4d7|a094f4d10) ;;
   *)
     echo "Refusing unexpected SCNet account: $ACCOUNT" >&2
     exit 2

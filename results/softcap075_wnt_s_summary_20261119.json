@@ -1,0 +1,10 @@
+{
+  "attacks": {
+    "S": {
+      "female_eer_percent": 26.64288878440857,
+      "male_eer_percent": 28.746137022972107,
+      "mean_eer_percent": 27.694512903690338
+    }
+  },
+  "suffix": ""
+}

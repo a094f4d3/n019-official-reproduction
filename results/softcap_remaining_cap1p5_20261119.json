@@ -1,0 +1,13 @@
+{
+  "duration_extrapolation": 0.5,
+  "duration_soft_cap_frames": 1.5,
+  "preserve_predicted_total": true,
+  "quality": {
+    "UTMOS": 3.61534298773019,
+    "WER": 8.036071000513669,
+    "WhiSQA": 3.616027403873273
+  },
+  "residual_strength": 0.5,
+  "wnt_I": 41.69788137078285,
+  "wnt_L": 42.45067983865738
+}

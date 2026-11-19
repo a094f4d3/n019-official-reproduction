@@ -1,0 +1,61 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "name": "n019_ntecres025_sonly",
+  "status": "completed",
+  "job_id": "1149734",
+  "actual_elapsed": "01:32:48",
+  "exit_code": "0:0",
+  "parent_job": "1148911",
+  "purpose": "Reuse the verified 104,014-row LS360 residual0.25 anonymisation and run only the official 10-epoch ECAPA S evaluation after exposing the existing residual0.25 test views under the training suffix.",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0,
+    "expected_card_hours": 1.5,
+    "worst_card_hours": 3.0
+  },
+  "inputs": {
+    "train_view": "/public/home/a094f4d10/voice_projects/data/n019_official/vpc/data/train-clean-360_n019_ntecres025_20261117",
+    "anon_manifest": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_20261117_ls360/anonymised/anon.jsonl",
+    "verification": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_20261117_ls360/anonymised/verification.json",
+    "test_views_source_suffix": "_n019_ntecres0p25_20261117",
+    "test_views_alias_suffix": "_n019_ntecres025_20261117"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_20261117_s/s_eval/s_metrics.json",
+  "result": {
+    "s_female_eer_percent": 30.655,
+    "s_male_eer_percent": 31.616,
+    "s_mean_eer_percent": 31.1355,
+    "delta_vs_formal_pp": 1.393,
+    "delta_vs_paper_pp": -3.6645,
+    "s_metrics_sha256": "f3b18521fabeace1ecfd08c56eb465ff1e3bdf3e067ea70cfb3d3036eb6635a5",
+    "results_anon_sha256": "83a609bb801a4247e890fae5267a7d167c5c39c446b6ba04a8705f686b52848a"
+  },
+  "privacy_il_followup": {
+    "job_id": "1150570",
+    "dependency": "afterany:1149764",
+    "resources": "1 DCU, 16 CPU / 60 GB, 1 h",
+    "expected_card_hours": 0.3,
+    "worst_card_hours": 1.0,
+    "scope": "E-VPC I/L only; reuse the existing residual0.25 test WAV views and skip W-NT.",
+    "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/eval_user/ntecres025_20261117_il",
+    "actual_elapsed": "00:03:26",
+    "platform_state": "FAILED_after_valid_evpc_missing_wnt_summary",
+    "result": {
+      "evpc_i_percent": 47.006,
+      "evpc_l_percent": 48.58,
+      "evpc_metrics_sha256": "4029def5df2c783ad0da1343eccc4941caf5caf6db6664c9b05788c3f99e7964",
+      "privacy_il_metrics_sha256": "182c54975fe5b9ad0aca0afd128562456fdcb01015de1fefef6b596ba714bd8c"
+    }
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog failure",
+    "missing train or test suffix view",
+    "incomplete six-row VPC results",
+    "non-finite S metrics",
+    "wall-clock expiry"
+  ]
+}

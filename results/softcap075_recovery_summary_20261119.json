@@ -1,0 +1,16 @@
+{
+  "anon_jsonl_sha256": "ef547eacc04de3500d30e013b74837fa82a6208c7f2ce2a13e339bab0fc39251",
+  "duration_extrapolation": 0.5,
+  "duration_soft_cap_frames": 0.75,
+  "preserve_predicted_total": true,
+  "quality": {
+    "UTMOS": 3.6297727518762155,
+    "WER": 7.705039666685692,
+    "WhiSQA": 3.622378650994927
+  },
+  "wnt_L": {
+    "female_eer_percent": 39.596518874168396,
+    "male_eer_percent": 43.63023489713669,
+    "mean_eer_percent": 41.61337688565254
+  }
+}

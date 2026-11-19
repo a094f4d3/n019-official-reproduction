@@ -46,6 +46,9 @@ GRAD_CLIP_NORM="${N019_VOCODER_GRAD_CLIP_NORM:-0.0}"
 BF16="${N019_VOCODER_BF16:-1}"
 VOCODER_TYPE="${N019_VOCODER_TYPE:-nt}"
 EMBEDDING_LEVEL="${N019_VOCODER_EMBEDDING_LEVEL:-speaker}"
+SPEAKER_EMBEDDING_SCALE="${N019_VOCODER_SPEAKER_EMBEDDING_SCALE:-1.0}"
+SPEAKER_SWAP_PROBABILITY="${N019_VOCODER_SPEAKER_SWAP_PROBABILITY:-0.0}"
+SPEAKER_SWAP_EMBEDDINGS="${N019_VOCODER_SPEAKER_SWAP_EMBEDDINGS:-}"
 case "$VOCODER_TYPE" in
   nt)
     DEFAULT_SPEAKER_DIM=250
@@ -103,6 +106,25 @@ fi
 if [[ "$EMBEDDING_LEVEL" != "speaker" && "$EMBEDDING_LEVEL" != "utterance" ]]; then
   echo "N019_VOCODER_EMBEDDING_LEVEL must be speaker or utterance" >&2
   exit 1
+fi
+if ! awk -v value="$SPEAKER_EMBEDDING_SCALE" 'BEGIN { exit !(value > 0) }'; then
+  echo "N019_VOCODER_SPEAKER_EMBEDDING_SCALE must be positive" >&2
+  exit 1
+fi
+if ! awk -v value="$SPEAKER_SWAP_PROBABILITY" \
+  'BEGIN { exit !(value >= 0 && value <= 1) }'; then
+  echo "N019_VOCODER_SPEAKER_SWAP_PROBABILITY must be in [0, 1]" >&2
+  exit 1
+fi
+SPEAKER_SWAP_ARGS=()
+if [[ -n "$SPEAKER_SWAP_EMBEDDINGS" ]]; then
+  if [[ ! -f "$SPEAKER_SWAP_EMBEDDINGS" ]]; then
+    echo "Missing speaker swap embeddings: $SPEAKER_SWAP_EMBEDDINGS" >&2
+    exit 1
+  fi
+  SPEAKER_SWAP_ARGS=(
+    --speaker-swap-embeddings "$SPEAKER_SWAP_EMBEDDINGS"
+  )
 fi
 if [[ "$OPTIMIZER" != "adam" && "$OPTIMIZER" != "adamw" ]]; then
   echo "N019_VOCODER_OPTIMIZER must be adam or adamw" >&2
@@ -185,6 +207,9 @@ bash "$ROOT/scripts/preflight_dcu_remote.sh"
   printf 'N019_VOCODER_EARLY_STOP_MIN_DELTA=%s\n' "$EARLY_STOP_MIN_DELTA"
   printf 'N019_VOCODER_TYPE=%s\n' "$VOCODER_TYPE"
   printf 'N019_VOCODER_EMBEDDING_LEVEL=%s\n' "$EMBEDDING_LEVEL"
+  printf 'N019_VOCODER_SPEAKER_EMBEDDING_SCALE=%s\n' "$SPEAKER_EMBEDDING_SCALE"
+  printf 'N019_VOCODER_SPEAKER_SWAP_PROBABILITY=%s\n' "$SPEAKER_SWAP_PROBABILITY"
+  printf 'N019_VOCODER_SPEAKER_SWAP_EMBEDDINGS=%s\n' "${SPEAKER_SWAP_EMBEDDINGS:-same-archive}"
   printf 'N019_VOCODER_SPEAKER_DIM=%s\n' "$SPEAKER_DIM"
   printf 'N019_VOCODER_RECORDS=%s\n' "$RECORDS"
   printf 'N019_VOCODER_EMBEDDINGS=%s\n' "$EMBEDDINGS"
@@ -198,6 +223,10 @@ bash "$ROOT/scripts/preflight_dcu_remote.sh"
 RESUME_CONVERGED_ARGS=()
 if [[ "${N019_VOCODER_RESUME_CONVERGED:-0}" == "1" ]]; then
   RESUME_CONVERGED_ARGS=(--resume-converged)
+fi
+ALLOW_RECIPE_CHANGE_ARGS=()
+if [[ "${N019_VOCODER_ALLOW_RECIPE_CHANGE:-0}" == "1" ]]; then
+  ALLOW_RECIPE_CHANGE_ARGS=(--allow-recipe-change)
 fi
 INIT_GENERATOR_ARGS=()
 if [[ -n "${N019_VOCODER_INIT_GENERATOR:-}" ]]; then
@@ -230,6 +259,9 @@ python -m torch.distributed.run \
   "${VALIDATION_ARGS[@]}" \
   --speaker-dim "$SPEAKER_DIM" \
   --embedding-level "$EMBEDDING_LEVEL" \
+  --speaker-embedding-scale "$SPEAKER_EMBEDDING_SCALE" \
+  --speaker-swap-probability "$SPEAKER_SWAP_PROBABILITY" \
+  "${SPEAKER_SWAP_ARGS[@]}" \
   --out "$OUT" \
   --steps "$STEPS" \
   --lr "$LR" \
@@ -247,6 +279,7 @@ python -m torch.distributed.run \
   --early-stop-patience "$EARLY_STOP_PATIENCE" \
   --early-stop-min-delta "$EARLY_STOP_MIN_DELTA" \
   "${RESUME_CONVERGED_ARGS[@]}" \
+  "${ALLOW_RECIPE_CHANGE_ARGS[@]}" \
   "${INIT_GENERATOR_ARGS[@]}" \
   "${PRECISION_ARGS[@]}" \
   --device cuda

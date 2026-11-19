@@ -73,6 +73,7 @@ class PaperAlignmentTests(unittest.TestCase):
         self.assertEqual(choices["vocoder_optimizer"], "AdamW")
         self.assertEqual(vocoder.optimizer, "adamw")
         self.assertEqual(vocoder.grad_clip_norm, 0.0)
+        self.assertEqual(vocoder.speaker_swap_probability, 0.0)
 
     def test_vocoder_launcher_supports_utterance_conditioning(self) -> None:
         launcher = (
@@ -84,6 +85,18 @@ class PaperAlignmentTests(unittest.TestCase):
         )
         self.assertIn(
             '--embedding-level "$EMBEDDING_LEVEL"',
+            launcher,
+        )
+        self.assertIn(
+            "N019_VOCODER_SPEAKER_SWAP_PROBABILITY",
+            launcher,
+        )
+        self.assertIn(
+            '--speaker-swap-probability "$SPEAKER_SWAP_PROBABILITY"',
+            launcher,
+        )
+        self.assertIn(
+            "N019_VOCODER_SPEAKER_SWAP_EMBEDDINGS",
             launcher,
         )
         self.assertNotIn("--embedding-level speaker", launcher)

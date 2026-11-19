@@ -1,0 +1,10 @@
+{
+  "attacks": {
+    "L": {
+      "female_eer_percent": 39.596518874168396,
+      "male_eer_percent": 43.63023489713669,
+      "mean_eer_percent": 41.61337688565254
+    }
+  },
+  "suffix": "_n019_softcap075_recovery_20261119"
+}

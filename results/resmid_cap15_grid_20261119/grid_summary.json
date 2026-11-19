@@ -1,0 +1,92 @@
+{
+  "results": [
+    {
+      "duration_extrapolation": 0.5,
+      "duration_soft_cap_frames": 1.5,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.624622079677641,
+        "WER": 7.998972661377775,
+        "WhiSQA": 3.6268571733411368
+      },
+      "residual_strength": 0.55,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_mid_20261119/residual_0p55.npz",
+      "target_embeddings_sha256": "855974455b79a3e699d595a36526ac39c9e469449c37d216de3978139fb9801f",
+      "wnt_I": 41.91257506608963,
+      "wnt_L": 41.67686700820923
+    },
+    {
+      "duration_extrapolation": 0.5,
+      "duration_soft_cap_frames": 1.5,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.6356041495531275,
+        "WER": 8.038924718908738,
+        "WhiSQA": 3.6402699328966692
+      },
+      "residual_strength": 0.6,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_mid_20261119/residual_0p6.npz",
+      "target_embeddings_sha256": "51e0da9794310ab09b91f99923f60512db1de6f75557f877cda06c8ee4a580f3",
+      "wnt_I": 42.035751044750214,
+      "wnt_L": 41.050947457551956
+    },
+    {
+      "duration_extrapolation": 0.5,
+      "duration_soft_cap_frames": 1.5,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.6488455860666553,
+        "WER": 8.081730494834769,
+        "WhiSQA": 3.650908358279527
+      },
+      "residual_strength": 0.65,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_mid_20261119/residual_0p65.npz",
+      "target_embeddings_sha256": "e5d141ded74e13c4bfe77ebf7fb22af88184152d36541d3dc771e2eb5380f37d",
+      "wnt_I": 42.132729291915894,
+      "wnt_L": 40.773823857307434
+    },
+    {
+      "duration_extrapolation": 0.6,
+      "duration_soft_cap_frames": 1.5,
+      "paper": {
+        "UTMOS": 3.63,
+        "W-NT_I": 39.9,
+        "W-NT_L": 42.3,
+        "WER": 7.41,
+        "WhiSQA": 3.69
+      },
+      "preserve_predicted_total": true,
+      "quality": {
+        "UTMOS": 3.6326838283035845,
+        "WER": 8.232977569773414,
+        "WhiSQA": 3.640970378158751
+      },
+      "residual_strength": 0.65,
+      "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_mid_20261119/residual_0p65.npz",
+      "target_embeddings_sha256": "e5d141ded74e13c4bfe77ebf7fb22af88184152d36541d3dc771e2eb5380f37d",
+      "wnt_I": 42.2729454934597,
+      "wnt_L": 41.80651232600212
+    }
+  ]
+}

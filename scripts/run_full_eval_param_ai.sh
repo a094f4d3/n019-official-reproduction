@@ -8,17 +8,22 @@ cd "$ROOT"
 bash "$ROOT/scripts/gpu_tiny_matmul_watchdog.sh"
 
 LABEL="${N019_EVAL_LABEL:?Set N019_EVAL_LABEL (e.g. ft14k_long20k)}"
+SYSTEM="${N019_EVAL_SYSTEM:-DU-pred-nt-$LABEL}"
 VOCAB="${N019_EVAL_VOCODER:?Set N019_EVAL_VOCODER}"
 EXPECTED_VOCAB_SHA="${N019_EVAL_VOC_SHA:?Set N019_EVAL_VOC_SHA}"
 STEPS="${N019_EVAL_STEPS:-0}"
 TARGET_EMBEDDINGS="${N019_EVAL_TARGET_EMBEDDINGS:-$N019_OFFICIAL_DATA/processed/embeddings/libri_test_target_nt_speaker_mean_l2_paperfix/nt_target_speaker_embeddings.npz}"
 TARGET_EMBEDDING_KEY="${N019_EVAL_TARGET_EMBEDDING_KEY:-target_speaker}"
 TARGET_EMBEDDING_MODE="${N019_EVAL_TARGET_EMBEDDING_MODE:-speaker_mean_l2}"
+DURATION_MODE="${N019_EVAL_DURATION_MODE:-pred}"
+DURATION_MODEL="${N019_EVAL_DURATION_MODEL:-$N019_OFFICIAL_RUNS/duration_pred_paperfix/best.pt}"
+DURATION_EMBEDDINGS="${N019_EVAL_DURATION_EMBEDDINGS:-}"
+DURATION_EMBEDDING_KEY="${N019_EVAL_DURATION_EMBEDDING_KEY:-target_id}"
 
 SUFFIX="_n019_${LABEL}"
 RUN_NAME="du_pred_nt_${LABEL}"
 ANON="${N019_EVAL_ANON_OUT:-$N019_OFFICIAL_DATA/anonymised/libri_test/DU-pred-nt-${LABEL}}"
-VPC_ROOT="$N019_OFFICIAL_DATA/vpc/data"
+VPC_ROOT="${N019_EVAL_VPC_DATA:-$N019_OFFICIAL_DATA/vpc/data}"
 OUT="${N019_EVAL_OUT:-$N019_OFFICIAL_RUNS/eval/$RUN_NAME}"
 WHISPER_SMALL_PATH="$N019_VOICE_ROOT/hf_cache/n019_official/hub/models--openai--whisper-small/snapshots/973afd24965f72e36ca33b3055d56a652f456b4d"
 UTMOS_OVERLAY="$N019_VOICE_ROOT/envs/n019_utmos_overlay"
@@ -26,7 +31,7 @@ export N019_WHISPER_SMALL_PATH="$WHISPER_SMALL_PATH"
 
 for required in \
   "$VOCAB" \
-  "$N019_OFFICIAL_RUNS/duration_pred_paperfix/best.pt" \
+  "$DURATION_MODEL" \
   "$TARGET_EMBEDDINGS" \
   "$N019_OFFICIAL_MODELS/mos/UTMOS22-mirror/model.ckpt" \
   "$N019_OFFICIAL_MODELS/mos/WhiSQA_single_head.pt" \
@@ -39,11 +44,22 @@ for required in \
     exit 1
   }
 done
+if [[ "$DURATION_MODE" == "nt" || "$DURATION_MODE" == "ecapa" ]]; then
+  test -f "$DURATION_EMBEDDINGS" || {
+    echo "Missing duration embeddings: $DURATION_EMBEDDINGS" >&2
+    exit 1
+  }
+fi
 test "$(sha256sum "$VOCAB" | awk '{print $1}')" = "$EXPECTED_VOCAB_SHA"
 
 export N019_LIBRI_TEST_TARGET_EMBEDDINGS="$TARGET_EMBEDDINGS"
 export N019_LIBRI_TEST_TARGET_EMBEDDING_KEY="$TARGET_EMBEDDING_KEY"
 export N019_LIBRI_TEST_TARGET_EMBEDDING_MODE="$TARGET_EMBEDDING_MODE"
+export N019_LIBRI_TEST_VPC_DATA="$VPC_ROOT"
+export N019_LIBRI_TEST_DURATION_MODE="$DURATION_MODE"
+export N019_LIBRI_TEST_DURATION_MODEL="$DURATION_MODEL"
+export N019_LIBRI_TEST_DURATION_EMBEDDINGS="$DURATION_EMBEDDINGS"
+export N019_LIBRI_TEST_DURATION_EMBEDDING_KEY="$DURATION_EMBEDDING_KEY"
 export N019_LIBRI_TEST_VOCODER="$VOCAB"
 export N019_LIBRI_TEST_EXPECTED_VOCODER_SHA="$EXPECTED_VOCAB_SHA"
 export N019_LIBRI_TEST_ANON_OUT="$ANON"
@@ -141,13 +157,13 @@ if [[ ! -f "$OUT/mos/WhiSQA.json" ]]; then
     2>&1 | tee "$OUT/mos/WhiSQA.log"
 fi
 
-python - "$OUT" "$LABEL" "$STEPS" "$EXPECTED_VOCAB_SHA" <<'PY'
+python - "$OUT" "$SYSTEM" "$STEPS" "$EXPECTED_VOCAB_SHA" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 out = Path(sys.argv[1])
-label, steps, vocoder_sha = sys.argv[2], int(sys.argv[3]), sys.argv[4]
+system, steps, vocoder_sha = sys.argv[2], int(sys.argv[3]), sys.argv[4]
 wer = json.loads((out / "WER.json").read_text(encoding="utf-8"))
 utmos = json.loads((out / "mos" / "UTMOS.json").read_text(encoding="utf-8"))
 whisqa = json.loads((out / "mos" / "WhiSQA.json").read_text(encoding="utf-8"))
@@ -172,7 +188,7 @@ for name in ("WER", "UTMOS", "WhiSQA"):
         "relative_difference_percent": absolute / paper[name] * 100.0,
     }
 summary = {
-    "system": f"DU-pred-nt-{label}",
+    "system": system,
     "vocoder_steps": steps,
     "vocoder_sha256": vocoder_sha,
     "values": values,

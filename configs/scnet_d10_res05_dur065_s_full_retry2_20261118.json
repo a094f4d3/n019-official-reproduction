@@ -1,0 +1,64 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1159966",
+  "name": "n019_res05_dur065_s2",
+  "status": "completed_rejected",
+  "actual_elapsed": "02:37:30",
+  "exit_code": "0:0",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0,
+    "expected_card_hours": 3.2,
+    "worst_card_hours": 4.0
+  },
+  "purpose": "Clean full rerun of the residual0.5 duration0.65 official E-VPC S with the BatchNorm terminal-batch fix applied from the start.",
+  "repair": {
+    "cause": "The original run failed because ECAPA BatchNorm received a final train batch of one sample.",
+    "implementation": "Copy the 17 MB code tree into /dev/shm, patch the copied VPC trainer to set train_loader_kwargs.drop_last=True, and redirect MIOpen cache to /dev/shm.",
+    "scope": "Only terminal one-sample training batches are dropped. Architecture, labels, epochs, optimizer, data, and AA evaluation remain unchanged."
+  },
+  "recipe": {
+    "residual_strength": 0.5,
+    "duration_extrapolation": 0.65,
+    "preserve_predicted_total": true,
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "target_embeddings_test_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "target_embeddings_all1158_sha256": "117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2"
+  },
+  "storage": {
+    "work": "/dev/shm/n019_res05_dur065_s_1159966",
+    "public_home": "not used for disposable output"
+  },
+  "script": "scripts/n019_res05_dur065_full_s_shm.sh",
+  "expected_outputs": {
+    "test_rows": 1934,
+    "ls360_rows": 104014,
+    "s_metrics": "/dev/shm/n019_res05_dur065_s_1159966/s_eval/s_metrics.json"
+  },
+  "result": {
+    "E_VPC_S": 30.8555,
+    "female": 31.175,
+    "male": 30.536,
+    "delta_vs_paper_pp": -3.9445,
+    "delta_vs_formal_pp": 1.113,
+    "delta_vs_residual05_duration05_pp": -2.3995,
+    "s_metrics_sha256": "1c33cf171713b1117eb002dddb942a4de6f5bd05a44b20434073a56d880f795c",
+    "summary_sha256": "02f71756eeacc3fcf2315932fd6c0fbfd2568dd3679f319a9ffa8eca54ac9ddf",
+    "local_summary": "results/res05_dur065_full_s_summary.json",
+    "local_metrics": "results/res05_dur065_full_s_metrics.json"
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input row or hash mismatch",
+    "VPC export failure",
+    "non-finite S loss",
+    "incomplete six-row result",
+    "4 hour wall clock"
+  ],
+  "decision_rule": "Use the resulting S together with the already measured duration0.65 quality and W-NT metrics. Do not splice metrics from another suffix.",
+  "decision": "Rejected. Duration0.65 lowers E-VPC S from 33.255% to 30.8555% while raising WER from 8.267% to 9.058%. Matching W-NT L does not compensate for the loss in timbral privacy and ASR quality."
+}

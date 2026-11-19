@@ -1,0 +1,52 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1147969",
+  "name": "n019_scl15ft",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_speaker_scale_ft_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.5
+  },
+  "expected_card_hours": 0.7,
+  "worst_card_hours": 2.5,
+  "purpose": "Adapt the formal Unit HiFi-GAN to an amplified but now in-distribution target-speaker conditioning scale, then screen the 1k and 2k calibrated generators on full test quality and W-NT I/L.",
+  "training": {
+    "init_generator": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt",
+    "init_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "records": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/libritts_train_clean_100/unit_records.jsonl",
+    "embeddings_sha256": "698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866",
+    "speaker_embedding_scale": 1.5,
+    "lr": 0.00005,
+    "steps": 2000,
+    "batch_size": 16,
+    "optimizer": "adamw",
+    "bf16": true
+  },
+  "outputs": {
+    "training": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_speaker_scale15_ft_20261117",
+    "step_1000": "/public/home/a094f4d10/voice_projects/runs/n019_official/speaker_scale15_ft_test_20261117/step_1000",
+    "step_2000": "/public/home/a094f4d10/voice_projects/runs/n019_official/speaker_scale15_ft_test_20261117/step_2000"
+  },
+  "status": "cancelled_after_step_1000_quality_rejection_do_not_resubmit",
+  "step_1000_result": {
+    "WER": 6.372353176188573,
+    "UTMOS": 2.8758425451237266,
+    "WhiSQA": 2.996428741802844,
+    "vocoder_sha256": "016e0254744955ad0f6d5a90297b3836f85050a4738464a3e4bd859b32fe2bf5"
+  },
+  "failure": "The 1k calibrated checkpoint worsened UTMOS and WhiSQA despite finite training and improving mel-L1. The 2k checkpoint and W-NT evaluations were stopped; this hypothesis is rejected.",
+  "stop_conditions": [
+    "missing formal-soup initialization or training records",
+    "tiny-matmul watchdog failure",
+    "non-finite vocoder loss",
+    "missing 1k or 2k generator snapshot",
+    "counts differ from WER 1496 or UTMOS/WhiSQA 1934",
+    "W-NT I/L incomplete",
+    "2.5 hour wall clock"
+  ],
+  "decision_rule": "Do not resubmit 1147969. Direct speaker-scale amplification and short amplitude calibration are both rejected by the quality gate."
+}

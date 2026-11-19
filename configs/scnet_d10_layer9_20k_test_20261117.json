@@ -1,0 +1,41 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1143327",
+  "submitted_at": "2026-11-17T09:59:00+08:00",
+  "submit_state": "submitted_pending_allocation",
+  "name": "n019_layer9_20k_test",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_layer9_20k_test_pipeline_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0
+  },
+  "expected_card_hours": 0.35,
+  "worst_card_hours": 3.0,
+  "purpose": "First full-test quality and W-NT I/L evaluation of the fixed-dev-selected layer-9 step 20000 checkpoint. This is not a duplicate of the completed 8k diagnostic or the DU-ecapa-nt row.",
+  "inputs": {
+    "vocoder": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116/snapshots/generator_step00020000.pt",
+    "vocoder_sha256": "34f4c46b2e85373585340e0d9b6fc04e72fc9b2d0398edf2181c4b3d233d6b84",
+    "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_layer9_aligned_20261116/best.pt",
+    "test_units": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/units/layer9_eval_20261116/test/unit_records.jsonl",
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step8k_test_20261117/target_speaker_mean32_shrink01_843.npz"
+  },
+  "outputs": {
+    "root": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117",
+    "quality": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117/eval",
+    "wnt": "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_step20k_test_20261117/wnt_il"
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "source/unit/target-map count is not 1934",
+    "anonymised or VPC count is not 1934",
+    "WER count is not 1496 or MOS counts are not 1934",
+    "W-NT I/L incomplete",
+    "3 hour Slurm wall clock",
+    "node failure"
+  ],
+  "decision_rule": "Only consider a full LS360 E-VPC S run if this checkpoint preserves quality competitively and improves W-NT L; do not infer E-VPC S from W-NT."
+}

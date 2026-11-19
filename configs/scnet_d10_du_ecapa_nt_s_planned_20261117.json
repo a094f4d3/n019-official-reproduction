@@ -1,0 +1,37 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "name": "n019_du_ecapa_nt_s",
+  "status": "submitted_running",
+  "job_id": "1143733",
+  "submitted_at": "2026-11-17T10:55:00+08:00",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0
+  },
+  "expected_card_hours": 3.0,
+  "worst_card_hours": 4.0,
+  "purpose": "Official 104,014-row LS360 E-VPC S retraining for DU-ecapa-nt.",
+  "prerequisite": "The repaired DU-ecapa-nt test completed with WER 6.383768%, UTMOS 3.510845, WhiSQA 3.489686, W-NT I 39.095412% and W-NT L 39.454734%. The S run is now an independent diagnostic of the paper row's 36.6% E-VPC target; it is not yet a formal replacement because W-NT L did not improve.",
+  "inputs": {
+    "source_manifest": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/manifests/librispeech_train_clean_360_d10paths_20261117.jsonl",
+    "unit_records": "/public/home/a094f4d6/voice_projects/data/n019_official/processed/units/librispeech_train_clean_360/unit_records.jsonl",
+    "target_map": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/targets/librispeech_train_clean_360_target_map_utterance.jsonl",
+    "nt_target_embeddings": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/target_speaker_mean32_all1158_shrink01.npz",
+    "ecapa_target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_ecapa_all1158_20261117/ecapa_speaker_embeddings.npz",
+    "duration_model": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_ecapa_main_20261117/best.pt",
+    "vocoder": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/generator_soup2.pt"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/du_ecapa_nt_20261117_s/s_eval/s_metrics.json",
+  "stop_conditions": [
+    "prerequisite test gate did not pass",
+    "watchdog failure",
+    "LS360 anonymisation or VPC count is not 104014",
+    "official S retraining fails",
+    "4 hour wall clock",
+    "node failure"
+  ]
+}

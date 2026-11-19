@@ -1,0 +1,79 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "status": "prepared_not_submitted",
+  "selection_dependency": "1149763",
+  "selection_outcome": "All four cross-speaker snapshots failed the predeclared dev UTMOS gate. Step 1000 was the least degraded at 3.407218 versus 3.588335 baseline; 2000/3000/4000 were 2.944706/3.223899/3.310119. The selector retained the formal baseline. The branch is not promoted, but step 1000 receives a full test and W-NT diagnostic before final rejection.",
+  "full_test_job": "1150821",
+  "full_test_result": {
+    "status": "completed_rejected",
+    "actual_elapsed": "00:11:43",
+    "checkpoint": "generator_step00001000.pt",
+    "wer_percent": 6.340962273842817,
+    "utmos": 3.424324272583781,
+    "whisqa": 3.3026590075771467,
+    "wnt_i_percent": 38.05181533098221,
+    "wnt_l_percent": 39.632292091846466,
+    "quality_metrics_sha256": "9a5037d760a8f0e6263446f326a798e74d8b80d3eb53db3aded9c3eba9acdad1",
+    "cross_speaker_summary_sha256": "9ae5ee429fdc5f8d81702f1df595d8fd432af39249c4875e344a46e1eff9541d",
+    "decision": "The cross-speaker 1k snapshot regresses quality, W-NT I and W-NT L versus formal/residual0.25. Do not run LS360 S or promote it."
+  },
+  "full_test_eval": {
+    "script": "hpc/n019_cross_speaker_full_eval_d10_hpc.slurm",
+    "resources": "1 DCU, 16 CPU / 60 GB, 1.5 h",
+    "expected_card_hours": 0.3,
+    "worst_card_hours": 1.5,
+    "inputs": [
+      "selected cross-speaker checkpoint and SHA256",
+      "residual0.25 843-key test target embeddings",
+      "formal unconditional duration predictor",
+      "official libri_test VPC views"
+    ],
+    "outputs": [
+      "WER.json",
+      "mos/UTMOS.json",
+      "mos/WhiSQA.json",
+      "quality_metrics.json",
+      "cross_speaker_summary.json",
+      "W-NT I/L summary.json"
+    ],
+    "stop_conditions": [
+      "watchdog failure",
+      "checkpoint SHA mismatch",
+      "anonymisation count is not 1934",
+      "WER count is not 1496",
+      "UTMOS or WhiSQA count is not 1934",
+      "wall-clock expiry"
+    ]
+  },
+  "ls360_s": {
+    "script": "hpc/n019_cross_speaker_ls360_s_d10_hpc.slurm",
+    "resources": "1 DCU, 16 CPU / 60 GB, 4 h",
+    "expected_card_hours": 3.0,
+    "worst_card_hours": 4.0,
+    "gate": "Only run after full test quality and W-NT I/L are competitive with the formal result.",
+    "outputs": [
+      "104014-row anonymisation and VPC train view",
+      "official 10-epoch ECAPA S result"
+    ]
+  },
+  "notes": [
+    "Both scripts are deployed and syntax-checked but are not submitted.",
+    "The full test eval must run before LS360 S so its suffix views exist.",
+    "Do not reuse the cross-speaker training or selector JobIDs."
+  ],
+  "cross_speaker_training": {
+    "job_id": "1149762",
+    "actual_elapsed": "00:45:35",
+    "snapshots": {
+      "generator_step00001000.pt": "c792c686834711258f184e82455c4f48fb2aa91d878c0d96996af80fafb7013e",
+      "generator_step00002000.pt": "b3a860b544bf1b3f493b07ce9105fc7dab1ab66f0430e97be23a7e9cd0b2d355",
+      "generator_step00003000.pt": "5ade3d409e03b6f62013ca72a691d426b68d679b79d28ff42b0acb65375201d1",
+      "generator_step00004000.pt": "a06e513c7e0ae765f0586a8e587d2e3981e011e60c529fafbd9334f7052251e4"
+    },
+    "validation_mel_l1": {
+      "1000": 0.7713440657,
+      "4000": 0.7874043584
+    }
+  }
+}

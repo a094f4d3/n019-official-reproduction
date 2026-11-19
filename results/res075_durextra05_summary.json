@@ -1,0 +1,20 @@
+{
+  "duration_extrapolation": 0.5,
+  "paper_quality": {
+    "UTMOS": 3.63,
+    "WER": 7.41,
+    "WhiSQA": 3.69
+  },
+  "paper_wnt_I": 39.9,
+  "paper_wnt_L": 42.3,
+  "preserve_predicted_total": true,
+  "quality": {
+    "UTMOS": 3.6557353510605144,
+    "WER": 8.115975115575594,
+    "WhiSQA": 3.6629782521552112
+  },
+  "residual_strength": 0.75,
+  "target_embeddings": "/dev/shm/n019_res075_durextra05_1158175/assets/residual_0p75.npz",
+  "wnt_I": 42.38711893558502,
+  "wnt_L": 41.067905724048615
+}

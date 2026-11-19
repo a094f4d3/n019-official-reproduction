@@ -11,7 +11,8 @@ cd "$ROOT"
 
 SUFFIX="${N019_DATA_SUFFIX:-_n019}"
 RUN_NAME="${N019_WNT_S_RUN_NAME:-wnt_s}"
-DATA="$N019_OFFICIAL_DATA/vpc/data/train-clean-360$SUFFIX"
+VPC_DATA="${N019_VPC_DATA:-$N019_OFFICIAL_DATA/vpc/data}"
+DATA="$VPC_DATA/train-clean-360$SUFFIX"
 BASE_MODEL="${N019_WNT_BASE_MODEL:-$N019_OFFICIAL_MODELS/wpro}"
 OUT="${N019_WNT_S_OUT:-$N019_OFFICIAL_RUNS/$RUN_NAME}"
 EPOCHS="${N019_WNT_S_EPOCHS:-20}"
@@ -68,6 +69,9 @@ mkdir -p "$OUT"
 EXTRA_ARGS=()
 if [[ "$FREEZE_WAVLM" == "1" ]]; then
   EXTRA_ARGS+=(--freeze-wavlm)
+fi
+if [[ "${N019_WNT_S_RESET_SCHEDULER:-0}" == "1" ]]; then
+  EXTRA_ARGS+=(--reset-scheduler)
 fi
 
 python -m torch.distributed.run \

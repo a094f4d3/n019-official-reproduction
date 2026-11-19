@@ -1,0 +1,22 @@
+{
+  "duration_extrapolation": 0.5,
+  "duration_soft_cap_frames": 1.5,
+  "paper": {
+    "UTMOS": 3.63,
+    "W-NT_I": 39.9,
+    "W-NT_L": 42.3,
+    "WER": 7.41,
+    "WhiSQA": 3.69
+  },
+  "preserve_predicted_total": true,
+  "quality": {
+    "UTMOS": 3.6356041495531275,
+    "WER": 8.038924718908738,
+    "WhiSQA": 3.6402699328966692
+  },
+  "residual_strength": 0.6,
+  "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_test_mid_20261119/residual_0p6.npz",
+  "target_embeddings_sha256": "51e0da9794310ab09b91f99923f60512db1de6f75557f877cda06c8ee4a580f3",
+  "wnt_I": 42.035751044750214,
+  "wnt_L": 41.050947457551956
+}

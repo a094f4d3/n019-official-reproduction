@@ -1,0 +1,40 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123245816554721281",
+  "name": "n019_sc075_fullr3_20261119_104335",
+  "status": "submitted_running_r3_20261119",
+  "purpose": "Measure matching E-VPC S and W-NT S for the exact residual0.5 + duration0.5 + soft-cap0.75 condition.",
+  "recipe": {
+    "residual_strength": 0.5,
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true,
+    "duration_soft_cap_frames": 0.75,
+    "suffix": "_n019_softcap075_recovery_20261119"
+  },
+  "resources": {
+    "dcu": 1,
+    "cpu": 15,
+    "memory_gb": 59,
+    "wall_hours": 6.0,
+    "expected_card_hours": 4.0,
+    "worst_card_hours": 6.0
+  },
+  "inputs": {
+    "ls360_units_tar": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/ls360_units_d10_20261119.tar",
+    "ls360_units_tar_sha256": "3c97c807cce1a6655dabbf31238c20ac1ad7dde41f9ee73180e4ab9a5c8d1404"
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_wnts_20261119",
+  "failed_predecessors": [
+    {
+      "task_id": "2123243353116418050",
+      "name": "n019_sc075_full_20261119_103348",
+      "reason": "missing copied train-clean-360 metadata"
+    },
+    {
+      "task_id": "2123243603213565954",
+      "name": "n019_sc075_fullr2_20261119_103447",
+      "reason": "copy path was corrected, but the process-substitution log lost the terminal error; r3 uses direct log redirection and set -x"
+    }
+  ]
+}

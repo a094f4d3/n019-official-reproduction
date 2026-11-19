@@ -158,6 +158,10 @@ python -u -m n019.anonymize \
   --vocoder-embeddings "$TARGET_EMBEDDINGS" \
   --target-embedding-key "$TARGET_EMBEDDING_KEY" \
   --target-embedding-mode "$TARGET_EMBEDDING_MODE" \
+  --speaker-embedding-scale "${N019_SPEAKER_EMBEDDING_SCALE:-1.0}" \
+  --duration-extrapolation "${N019_DURATION_EXTRAPOLATION:-0.0}" \
+  ${N019_DURATION_PRESERVE_TOTAL:+--duration-preserve-total} \
+  --duration-soft-cap-frames "${N019_DURATION_SOFT_CAP_FRAMES:-0.0}" \
   --out-dir "$OUT" \
   --device cuda \
   "${RESUME_FLAG[@]}"

@@ -1,0 +1,15 @@
+{
+  "attacks": {
+    "I": {
+      "female_eer_percent": 41.06331616640091,
+      "male_eer_percent": 42.76183396577835,
+      "mean_eer_percent": 41.91257506608963
+    },
+    "L": {
+      "female_eer_percent": 40.14712572097778,
+      "male_eer_percent": 43.206608295440674,
+      "mean_eer_percent": 41.67686700820923
+    }
+  },
+  "suffix": "_n019_n019_res055_dur05_cap15_20261119"
+}

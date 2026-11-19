@@ -1,0 +1,54 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1143063",
+  "previous_job_ids": [
+    "1142673"
+  ],
+  "submitted_at": "2026-11-17T09:20:30+08:00",
+  "dependency": "released_by_canceling_rejected_1142507",
+  "submit_state": "resubmitted_pending_cpu_limit_after_old_script_failure",
+  "balance_before_submit_card_hours": 49.5833333334,
+  "script_sha256": "253e60b73f744dbd7bb48ad194bc561994cb916190dc03eeb87b07f4739d70d2",
+  "preflight_report": "/public/home/a094f4d10/voice_projects/runs/n019_official/audit/du_ecapa_nt_preflight_cy20261117.json",
+  "preflight_sha256": "3d4bd92e5e0004d8533ef2310d7d99ad816f7c7983cd98fc2f867ea8dba2bc8b",
+  "name": "n019_du_ecapa_nt",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0
+  },
+  "expected_card_hours": 2.5,
+  "worst_card_hours": 4.0,
+  "purpose": "Paper-aligned DU-ecapa-nt full test screen: ECAPA-conditioned duration predictor, formal NT vocoder, full 1,934 test quality plus W-NT I/L.",
+  "new_assets": {
+    "source_ecapa": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/librispeech_train_clean_100_ecapa_20261117/ecapa_speaker_embeddings.npz",
+    "target_ecapa": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/target_speaker_mean32_ecapa_all1158_20261117/ecapa_speaker_embeddings.npz",
+    "duration_ecapa": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_ecapa_main_20261117/best.pt"
+  },
+  "reused_assets": {
+    "vocoder": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/generator_soup2.pt",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "nt_target_embeddings": "/public/home/a094f4d6/voice_projects/tmp/n019_privacy_fix_20261111/target_speaker_mean32_all1158_shrink01.npz",
+    "test_bundle": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117",
+    "ecapa_encoder": "/public/home/a094f4d10/voice_projects/models/n019_official/vpc/exp/asv_orig"
+  },
+  "outputs": {
+    "anonymised": "/public/home/a094f4d10/voice_projects/data/n019_official/anonymised/libri_test/DU-ecapa-nt-20261117",
+    "quality": "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/du_ecapa_nt_20261117",
+    "wnt": "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/du_ecapa_nt_20261117_wnt"
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "source ECAPA speakers are not 251 or dimensions are not 192",
+    "duration predictor training fails or produces no best.pt",
+    "target ECAPA coverage does not include every test and LS360 target speaker",
+    "anonymised or VPC count is not 1934",
+    "WER count is not 1496 or MOS counts are not 1934",
+    "4 hour Slurm wall clock",
+    "node failure"
+  ],
+  "selection_rule": "Do not replace the formal result unless the full test improves W-NT L and E-VPC quality is defensible. A full LS360 E-VPC S run is a separate follow-up."
+}

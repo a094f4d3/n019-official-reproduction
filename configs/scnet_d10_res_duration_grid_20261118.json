@@ -1,0 +1,81 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1159005",
+  "name": "n019_resdur_grid",
+  "status": "completed_rejected",
+  "actual_elapsed": "00:34:11",
+  "exit_code": "0:0",
+  "partition": "hx1hdnormal",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 2.0,
+    "expected_card_hours": 0.75,
+    "worst_card_hours": 2.0
+  },
+  "purpose": "Non-duplicate two-axis screen around the first complete nine-metric candidate. Test whether a higher rhythm extrapolation can recover W-NT L while keeping WER under control, and whether residual0.75 with the same higher rhythm improves the trade-off.",
+  "combinations": [
+    {
+      "residual_strength": 0.5,
+      "duration_extrapolation": 0.6
+    },
+    {
+      "residual_strength": 0.5,
+      "duration_extrapolation": 0.65
+    },
+    {
+      "residual_strength": 0.75,
+      "duration_extrapolation": 0.6
+    }
+  ],
+  "fixed_inputs": {
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "residual_0p5_test_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "source_rows": 1934,
+    "unit_rows": 1934,
+    "target_map_rows": 1934,
+    "preserve_predicted_total": true
+  },
+  "storage": {
+    "work": "/dev/shm/n019_res_duration_grid_1159005",
+    "public_home": "not used for disposable WAV/VPC output because d10 /public/home reports zero bytes free"
+  },
+  "result": {
+    "res0.5_dur0.6": {
+      "WER": 8.695279949774557,
+      "UTMOS": 3.594514130929633,
+      "WhiSQA": 3.5962076814924178,
+      "W-NT_I": 43.195243924856186,
+      "W-NT_L": 41.7880617082119
+    },
+    "res0.5_dur0.65": {
+      "WER": 9.05770218594829,
+      "UTMOS": 3.5840092891251287,
+      "WhiSQA": 3.5853618774042997,
+      "W-NT_I": 43.251288682222366,
+      "W-NT_L": 42.26260483264923
+    },
+    "res0.75_dur0.6": {
+      "WER": 8.755208036071,
+      "UTMOS": 3.64007993284401,
+      "WhiSQA": 3.650945243661628,
+      "W-NT_I": 43.174633383750916,
+      "W-NT_L": 41.38288274407387
+    }
+  },
+  "summary_sha256": "d292f962ae0bbc2ebc1633f40fe8c116770a44876f79b5472f2d928b1088788d",
+  "local_summary": "results/res_duration_grid_1159005.json",
+  "script": "scripts/n019_res_duration_grid_shm.sh",
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input row count or hash mismatch",
+    "failed VPC export",
+    "non-finite or missing quality metric",
+    "2 hour wall clock"
+  ],
+  "decision_rule": "Do not promote from this screen alone. A combination must improve W-NT L relative to 41.801279 without pushing WER above 8.5, then must receive a matching LS360 E-VPC S evaluation before any formal replacement.",
+  "decision": "Rejected the tested neighborhood. res0.5/dur0.6 does not improve W-NT L; res0.5/dur0.65 reaches W-NT L 42.263% but raises WER to 9.058%; res0.75/dur0.6 lowers W-NT L to 41.383%. The residual0.5+duration0.5 candidate remains the best balance."
+}

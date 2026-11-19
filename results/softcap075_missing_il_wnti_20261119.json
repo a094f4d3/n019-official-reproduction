@@ -1,0 +1,55 @@
+{
+  "condition": "residual0.5_duration0.5_softcap0.75",
+  "suffix": "_n019_softcap075_recovery_20261119",
+  "status": "partial_metrics_complete_wnt_s_pending",
+  "job": {
+    "job_id": "1165727",
+    "mode": "HPC/Slurm",
+    "state": "FAILED",
+    "elapsed": "00:06:16",
+    "exit_code": "1:0",
+    "failure_stage": "summary_write",
+    "failure_reason": "The AI-created public output directory was root-owned, so the final Python summary write raised PermissionError. E-VPC and W-NT metrics had already completed."
+  },
+  "values": {
+    "E-VPC I": 47.4375,
+    "E-VPC L": 48.98,
+    "E-VPC S": 32.412,
+    "W-NT I": 41.46505370736122,
+    "WER": 7.705039666685692,
+    "UTMOS": 3.6297727518762155,
+    "WhiSQA": 3.622378650994927,
+    "W-NT L": 41.61337688565254
+  },
+  "paper": {
+    "E-VPC I": 47.2,
+    "E-VPC L": 47.9,
+    "E-VPC S": 34.8,
+    "W-NT I": 39.9,
+    "WER": 7.41,
+    "UTMOS": 3.63,
+    "WhiSQA": 3.69,
+    "W-NT L": 42.3
+  },
+  "delta_vs_paper": {
+    "E-VPC I": 0.2375,
+    "E-VPC L": 1.08,
+    "E-VPC S": -2.388,
+    "W-NT I": 1.56505370736122,
+    "WER": 0.295039666685692,
+    "UTMOS": -0.0002272481237845,
+    "WhiSQA": -0.067621349005073,
+    "W-NT L": -0.68662311434746
+  },
+  "missing": ["W-NT S"],
+  "source_log": "/public/home/a094f4d10/voice_projects/logs/n019_official/n019_sc075_missing_1165727.out",
+  "source_log_sha256": "f20f6bcba5af1a840f8cbd2b544a06cced0213c714b984b381b9dede33c66250",
+  "e_vpc_s_source": {
+    "job_id": "1166106",
+    "state": "COMPLETED",
+    "elapsed": "02:47:12",
+    "metrics_path": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/softcap075_full_s_hpc_20261119/s_metrics.json",
+    "metrics_sha256": "7d1d1c1394686bc2c97e5c2cc92ef9de6edd4832470f0a8447e7f42b894cf931",
+    "summary_sha256": "5027f4f08b9e0314364e31e54bd05a8f4304a9c0931f4632bb60beeaac561d8e"
+  }
+}

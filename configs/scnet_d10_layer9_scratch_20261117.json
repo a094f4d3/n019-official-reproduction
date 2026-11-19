@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "status": "cancelled_after_24s_to_run_decisive_s_do_not_resubmit_same_job",
+  "job_id": "1148888",
+  "previous_ai_task_ids": [
+    "2122566914658443266",
+    "2122567216179675138"
+  ],
+  "name": "n019_l9scratch",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_layer9_scratch_d10_hpc.slurm",
+  "script_sha256": "dd1441416e0a76b7ff3806ce479559e8d03fc92b4485495c6a2832f3538d5981",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 20.0
+  },
+  "expected_card_hours": 19.5,
+  "worst_card_hours": 20.0,
+  "purpose": "Train a layer-9 Unit HiFi-GAN independently from scratch, matching the paper statement that the two vocoders are trained independently. The existing layer-9 branch was initialized from the layer-6 model and is therefore only an adaptation, not the paper-aligned training path.",
+  "inputs": {
+    "records": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/units/librispeech_train_clean_100_layer9_aligned/unit_records.jsonl",
+    "records_expected_rows": 33236,
+    "embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/libritts_train_clean_100_nt/nt_speaker_embeddings.npz",
+    "embeddings_sha256": "698d128292e8abbdb0db5d39301539cfc80184b8982133566ba3bf8b6492a866"
+  },
+  "recipe": {
+    "optimizer": "AdamW",
+    "learning_rate": 0.0002,
+    "total_batch": 16,
+    "precision": "BF16",
+    "segment_frames": 28,
+    "feature_matching_scale": 2,
+    "snapshot_interval": 10000,
+    "validation_interval": 2000,
+    "early_stop_disabled_until_step": 200000
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_scratch_20261117",
+  "decision_gate": "After training, run the fixed 40-speaker dev selector over 20k-198k snapshots. Only proceed to full test/LS360 evaluation if UTMOS and WhiSQA recover toward the formal layer-6 model while WER regression is <= 0.25 pp; W-NT L must also remain near paper level.",
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "records count is not 33236",
+    "non-finite loss",
+    "no training progress",
+    "20 hour wall clock",
+    "insufficient remaining HPC allowance",
+    "node failure"
+  ],
+  "dependency_plan": "The AI path failed before training on cross-account record paths. HPC Job 1148888 launched correctly but was cancelled after 24 seconds to prioritize the decisive residual0.25 S run. Do not resubmit 1148888; resume scratch training later in a new Job after S result."
+}

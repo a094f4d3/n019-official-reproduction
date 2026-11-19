@@ -1,0 +1,57 @@
+{
+  "system": "DU-pred-nt residual0.5 duration0.5",
+  "status": "complete_candidate_not_promoted",
+  "suffix": "_n019_ntecres0p5_durextra0p5_20261118",
+  "recipe": {
+    "vocoder": "layer6_soup_84_88_92_96_w40_30_20_10",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "target_embedding": "nt_ecapa_orthogonal_residual_0.5",
+    "target_embedding_full_sha256": "117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2",
+    "target_embedding_test_sha256": "7a015304bebdcd12bcb4deda5792ea1941159650eff4c97367716b0748e690ef",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "values": {
+    "E-VPC I": 46.771,
+    "E-VPC L": 49.235,
+    "E-VPC S": 33.255,
+    "W-NT I": 42.72392690181732,
+    "W-NT L": 41.80127903819084,
+    "W-NT S": 27.53579393029213,
+    "WER": 8.26722219051424,
+    "UTMOS": 3.608841322447176,
+    "WhiSQA": 3.606528712527089
+  },
+  "paper": {
+    "E-VPC I": 47.2,
+    "E-VPC L": 47.9,
+    "E-VPC S": 34.8,
+    "W-NT I": 39.9,
+    "W-NT L": 42.3,
+    "W-NT S": 24.6,
+    "WER": 7.41,
+    "UTMOS": 3.63,
+    "WhiSQA": 3.69
+  },
+  "delta_vs_paper": {
+    "E-VPC I": -0.429,
+    "E-VPC L": 1.335,
+    "E-VPC S": -1.545,
+    "W-NT I": 2.8239269018173188,
+    "W-NT L": -0.4987209618091605,
+    "W-NT S": 2.93579393029213,
+    "WER": 0.8572221905142395,
+    "UTMOS": -0.0211586775528236,
+    "WhiSQA": -0.0834712874729112
+  },
+  "source_sha256": {
+    "evpc_s": "eb9a4253f8f76cf49d661b5736f0ed705f4aeae1b4a0b299753080cd2bd82c87",
+    "evpc_il": "748efdc50a5908bf0ba4ca6106f5ebeb3697937b5ecf65976cb29821d616d864",
+    "quality": "d79f9344e6ac9fb381940bfe566acca50cef2c8b8b6525736e26a0a38c8c1ff7",
+    "wnt_il": "7b60ce488c2f27b2c53abd338019eab8bc89b8151fd2ca02b556cc57aa1cfccd",
+    "wnt_s": "97bd5fdc81ece40eb67360396000a18360b3dd8536c0ecfbd0dd2db2d4140894",
+    "pre_s_summary": "04d27323b2531b8c456af1b55f6ae2d9c6c5e68dd235c8f049f469b4d0cc33b8"
+  },
+  "decision": "Complete nine-metric candidate. It closes E-VPC S to -1.545 pp and W-NT L to -0.498721 pp while keeping UTMOS/WhiSQA near paper, but WER is +0.857222 pp. The long-standing formal row remains authoritative until this trade-off is explicitly accepted or WER is reduced."
+}

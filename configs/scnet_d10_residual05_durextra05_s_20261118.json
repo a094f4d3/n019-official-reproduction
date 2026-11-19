@@ -1,0 +1,125 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1152554",
+  "name": "n019_res05_de05_s",
+  "status": "first_attempt_failed_on_full_archive_sha_guard",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0,
+    "expected_card_hours": 3.0,
+    "worst_card_hours": 4.0
+  },
+  "first_attempt": {
+    "job_id": "1152554",
+    "actual_elapsed": "00:00:01",
+    "exit_code": "1:0",
+    "failure": "The target SHA guard incorrectly used the 843-key test residual0.5 hash for the 1,158-key LS360 archive. Correct full-archive SHA256 is 117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2; no output was produced."
+  },
+  "retry": {
+    "job_id": "1152779",
+    "name": "n019_res05_de05_s",
+    "status": "completed",
+    "actual_elapsed": "03:06:47",
+    "exit_code": "0:0",
+    "script_sha256": "1cf620484b69016a50d9d1d8410f05998d7449a9031cb90c501e701d4341d501",
+    "reuse": "Same 104,014-row source/units/target map and residual0.5+duration0.5 recipe; only the full-archive SHA guard was corrected."
+  },
+  "s_result": {
+    "female_eer_percent": 32.84,
+    "male_eer_percent": 33.67,
+    "mean_eer_percent": 33.255,
+    "OO_mean_eer_percent": 21.616999999999997,
+    "OA_mean_eer_percent": 35.94,
+    "paper_eer_percent": 34.8,
+    "delta_vs_paper_pp": -1.545,
+    "delta_vs_formal_pp": 3.5125,
+    "s_metrics_sha256": "eb9a4253f8f76cf49d661b5736f0ed705f4aeae1b4a0b299753080cd2bd82c87",
+    "results_anon_sha256": "9f98a7f5d662eb818c5ffbfcf780d2e707d797228fb5c81281f7d0b299023bb4",
+    "anon_jsonl_sha256": "e6eb1ae5cda6c67a94cead721dfbdb1c3c478a6030a4fe9122b6dea86c84e8cb",
+    "verification_sha256": "c752d42b79620f41a6aea158e5176f031b13c6a7f3e9db545b6411c3c04ad6e0",
+    "train_wav_scp_sha256": "16c883d5b6f37eefae77a5ca5ed485d89c3b91b8db69c1eb258cf3cb192ab361"
+  },
+  "evpc_il": {
+    "job_id": "1155368",
+    "actual_elapsed": "00:03:28",
+    "exit_code": "0:0",
+    "E_VPC_I": 46.771,
+    "E_VPC_L": 49.235,
+    "privacy_il_metrics_sha256": "748efdc50a5908bf0ba4ca6106f5ebeb3697937b5ecf65976cb29821d616d864",
+    "evpc_metrics_sha256": "f79af1bbe5583eaa96aeae09231e10bb3f5b0b24fa5cc39e33e68e634c2501ef"
+  },
+  "wnt_s": {
+    "job_id": "1158175",
+    "name": "n019_wnt_stable_shm",
+    "status": "cancelled_after_metrics_and_model_delta_backup",
+    "resources": "1 DCU, 16 CPU / 60 GB, 2 h",
+    "expected_card_hours": 1.0,
+    "worst_card_hours": 3.0,
+    "epochs": 4,
+    "freeze_wavlm": true,
+    "model_output": "/dev/shm/n019_res05_wnt_stable_1158175/run/model",
+    "local_metadata": "artifacts/wnt_s_1158175_model",
+    "local_model_delta": "artifacts/wnt_s_1158175_model/model_delta.pt",
+    "model_delta_sha256": "f54ddd518896ff0b1372e56aa0747f6ebb19ee2e9d75e77cd89e76ebd82ed20c",
+    "model_delta_bytes": 2361989,
+    "actual_elapsed": "02:02:28",
+    "exit_code": "0:0",
+    "cancellation": "The job slept to preserve /dev/shm after evaluation. It was cancelled after the summary, configuration, training log and 2.36 MB frozen-base weight delta were copied locally.",
+    "summary_output": "/dev/shm/n019_res05_wnt_stable_1158175/summary.json",
+    "local_summary_copy": "results/wnt_s_1158175_summary.json",
+    "model_safetensors_sha256": "67602b0d9e64e463b9103896ce83740de2f080ec665b54abf514601fd3c2264a",
+    "summary_sha256": "97bd5fdc81ece40eb67360396000a18360b3dd8536c0ecfbd0dd2db2d4140894",
+    "training_log_last_epoch": {
+      "epoch": 4,
+      "step": 26000,
+      "loss": 5.850030022107638,
+      "accuracy": 0.03880769230769231,
+      "elapsed_hours": 1.0075597688886855
+    },
+    "wnt_s_eer_percent": {
+      "female": 27.00847238302231,
+      "male": 28.06311547756195,
+      "mean": 27.53579393029213
+    },
+    "delta_vs_paper_pp": 2.93579393029213,
+    "delta_vs_formal_pp": 3.01193693029213,
+    "interpretation": "The matching four-epoch stable attacker completed on the residual0.5+duration0.5 suffix. W-NT S is more private than both the paper and the formal layer-6 result, so the same-suffix nine-metric tuple is complete. The job is sleeping to preserve /dev/shm outputs because d10 /public was temporarily full.",
+    "first_attempt": {
+      "job_id": "1155473",
+      "status": "completed_six_epochs",
+      "actual_elapsed": "01:31:20",
+      "exit_code": "0:0",
+      "model_safetensors_sha256": "93cf7883fb8b6aca09f935a1ad5f3f2a8f3bda3857ff0f974b459f4d622907cf",
+      "wnt_s_eval_job_id": "1156482",
+      "wnt_s_eer_percent": 41.18867591023445,
+      "interpretation": "The six-epoch frozen-WavLM attacker was underfit and produced EER 41.189%, far above the paper 24.6% target and not comparable to the formal W-NT S result. Resume training rather than splice the formal attacker."
+    }
+  },
+  "purpose": "Official 104,014-row LS360 anonymisation, VPC export and ECAPA S retraining for residual0.5 plus duration extrapolation 0.5.",
+  "prerequisite": "Job 1152520 completed with WER 8.267222%, UTMOS 3.608841, WhiSQA 3.606529, W-NT I 42.723927% and W-NT L 41.801279%.",
+  "inputs": {
+    "source_rows": 104014,
+    "units_rows": 104014,
+    "target_map_rows": 104014,
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_all1158_20261117/residual_0p5.npz",
+    "target_embeddings_sha256": "117fb0f1fc2fc9593e7668dbcad46abcbe22a0fa363bab803f68e8f1a612b9f2",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "suffix": "_n019_ntecres0p5_durextra0p5_20261118",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres0p5_durextra0p5_20261118_s/s_eval/s_metrics.json",
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input hash or row-count mismatch",
+    "incomplete 104014-row anonymisation or VPC export",
+    "incomplete six-row VPC S result",
+    "wall-clock expiry"
+  ],
+  "decision_rule": "Promote only if the same suffix has a complete nine-metric tuple and materially closes the paper E-VPC S and W-NT L gaps. Do not splice metrics from another suffix."
+}

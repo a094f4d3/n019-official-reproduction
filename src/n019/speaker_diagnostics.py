@@ -34,6 +34,10 @@ def main() -> int:
     parser.add_argument("--anon", required=True)
     parser.add_argument("--target-embeddings", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument(
+        "--model",
+        default=str(Path.home() / "voice_projects/models/n019/wpro"),
+    )
     parser.add_argument("--device", default="cuda")
     args = parser.parse_args()
     device = torch.device(args.device)
@@ -43,7 +47,7 @@ def main() -> int:
         raise ValueError("source and anonymized manifests must be aligned")
     targets = np.load(args.target_embeddings)
     model = load_wpro(
-        Path.home() / "voice_projects/models/n019/wpro",
+        Path(args.model),
         device,
     )
     source_vectors = embed(source_rows, model, device)

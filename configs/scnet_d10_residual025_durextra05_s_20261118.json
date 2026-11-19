@@ -1,0 +1,109 @@
+{
+  "account": "a094f4d10",
+  "mode": "hpc_slurm",
+  "job_id": "1151369",
+  "name": "n019_res_de05_s",
+  "status": "anonymisation_completed_s_only_retry_submitted",
+  "resources": {
+    "partition": "hx1hdnormal",
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 4.0,
+    "expected_card_hours": 3.0,
+    "worst_card_hours": 4.0
+  },
+  "purpose": "Close the E-VPC S metric for the best new candidate: residual0.25 target conditioning plus duration extrapolation 0.5 with predicted total duration preserved.",
+  "test_result_before_s": {
+    "WER": 8.104560241995319,
+    "UTMOS": 3.5450128725544006,
+    "WhiSQA": 3.5338041414395978,
+    "W-NT I": 42.52897650003433,
+    "W-NT L": 41.9388510286808,
+    "paper_W-NT_I": 39.9,
+    "paper_W-NT_L": 42.3
+  },
+  "fixed_inputs": {
+    "source_rows": 104014,
+    "units_rows": 104014,
+    "target_map_rows": 104014,
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/nt_ecapa_residual_all1158_20261117/residual_0p25.npz",
+    "duration_model": "/public/home/a094f4d6/voice_projects/runs/n019_official/duration_pred_paperfix/best.pt",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6",
+    "duration_extrapolation": 0.5,
+    "preserve_predicted_total": true
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_durextra0p5_20261118_s/s_eval/s_metrics.json",
+  "pipeline_job": {
+    "job_id": "1151369",
+    "status": "failed_after_anonymisation_and_vpc_complete",
+    "actual_elapsed": "01:40:10",
+    "failure": "Missing test-suffix aliases under vpc/data.",
+    "verified_outputs": {
+      "anon_rows": 104014,
+      "vpc_rows": 104014,
+      "anon_jsonl_sha256": "177f15c62b115ee2b9602283fe113e39777a0881d5a196bcfbd0a115ed89c01a",
+      "verification_sha256": "cd76a7b116fe788129b96e86d155d66ae396076cca392e2fe0ea813585690bd1",
+      "vpc_wav_scp_sha256": "c31fbbdfea7261dabb0bf23c26c39c33bf4e3a101049e73972be7a4e815d77de"
+    }
+  },
+  "s_only_retry": {
+    "job_id": "1152061",
+    "name": "n019_resde05_sonly",
+    "status": "failed_bad_dcu_node",
+    "actual_elapsed": "00:00:16",
+    "exit_code": "124:0",
+    "failure": "f11r2n12 returned hipErrorInvalidDeviceFunction in the 300-second tiny-matmul watchdog; no S training started.",
+    "resources": "1 DCU, 16 CPU / 60 GB, 3 h",
+    "expected_card_hours": 1.5,
+    "worst_card_hours": 3.0,
+    "reuse": "Existing 104014-row train view and aliased residual duration-extrapolation test views; no audio recomputation."
+  },
+  "s_only_retry_2": {
+    "job_id": "1152161",
+    "name": "n019_resde05_sonly_r1",
+    "status": "failed_after_s_training_at_original_test_view_preflight",
+    "actual_elapsed": "01:29:08",
+    "exit_code": "1:0",
+    "failure": "The ECAPA S model trained all 10 epochs and saved CKPT+10. Evaluation then failed while opening the original-test enroll view because vpc/data/libri_test/wav was absent and the enroll wav.scp used the relative path data/libri_test/wav/*.wav.",
+    "resources": "1 DCU, 16 CPU / 60 GB, 3 h",
+    "expected_card_hours": 1.5,
+    "worst_card_hours": 3.0,
+    "exclude_nodes": ["f11r2n12", "f11r1n01", "f11r2n13"],
+    "reuse": "Same verified 104014-row train and test suffix views; no data recomputation.",
+    "trained_checkpoint": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/ntecres025_durextra0p5_20261118_s/s_eval/exp/asv_anon_n019_ntecres025_durextra0p5_20261118/CKPT+10"
+  },
+  "s_evaluation_only_retry": {
+    "job_id": "1152488",
+    "name": "n019_resde05_evalonly",
+    "status": "completed",
+    "actual_elapsed": "00:05:01",
+    "exit_code": "0:0",
+    "resources": "1 DCU, 16 CPU / 60 GB, 0.5 h",
+    "expected_card_hours": 0.05,
+    "worst_card_hours": 0.5,
+    "reuse": "Reused CKPT+10 from 1152161; no retraining and no WAV regeneration.",
+    "fix": "Restored the original-test audio view through vpc/data/libri_test/wav -> the existing d7 original WAV directory, then reran evaluation with retrain=false."
+  },
+  "s_result": {
+    "female_eer_percent": 30.84,
+    "male_eer_percent": 30.287,
+    "mean_eer_percent": 30.5635,
+    "OO_mean_eer_percent": 18.6245,
+    "OA_mean_eer_percent": 31.4165,
+    "paper_eer_percent": 34.8,
+    "delta_vs_paper_pp": -4.2365,
+    "delta_vs_formal_pp": 0.821,
+    "delta_vs_residual025_pp": -0.572,
+    "s_metrics_sha256": "dee9d39ea88145ee7fed205fc09babb7d165956406dcf070e7b0cc0c7fe06286",
+    "results_anon_sha256": "3433e0ad057c42be7d7fdcd004034f85e116efa31c642fd010a10e05ce73e14e"
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input hash/count mismatch",
+    "incomplete 104014-row anonymisation or VPC export",
+    "incomplete six-row VPC S results",
+    "wall-clock expiry"
+  ],
+  "decision_rule": "Closed: duration extrapolation 0.5 improved W-NT but did not solve timbral S. Its E-VPC S is 30.5635%, below residual0.25's 31.1355%, so it is not promoted. Do not rerun this suffix."
+}

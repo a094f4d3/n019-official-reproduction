@@ -1,0 +1,126 @@
+{
+  "browser": {
+    "channel": "msedge",
+    "headless": true,
+    "slow_mo_ms": 80,
+    "profile_root": "~/.scnet-browser-profiles",
+    "persist_session_state": true,
+    "session_state_filename": "n019_browser_state.json",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "base_url": "https://www.scnet.cn/ui/console/index.html",
+    "model_training_url": "https://www.scnet.cn/ui/console/index.html#/model-training/add-train",
+    "task_list_page_url": "https://www.scnet.cn/ui/console/index.html#/model-training",
+    "timeout_ms": 180000,
+    "password_prompt": false,
+    "manual_login_timeout_seconds": 120,
+    "password_env_prefix": "SCNET_PASSWORD_",
+    "shared_password_env": "SCNET_PASSWORD",
+    "ui": {
+      "login_ready_selector": "#instanceName, #username",
+      "username_selector": "#username",
+      "password_selector": "#password",
+      "captcha_selector": "#captcha",
+      "login_button_name": "登录",
+      "login_url_fragment": "/sso/login",
+      "task_name_selector": "#instanceName",
+      "form_item_xpath": "xpath=ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' el-form-item ')][1]",
+      "refresh_button_name": "刷新",
+      "resource_row_selector": "tr",
+      "task_row_selector": "tr",
+      "cards_label": "每实例加速卡数量",
+      "instances_label": "实例数",
+      "auto_fault_label": "自动容错",
+      "visible_popper_selector": ".el-popper:visible",
+      "cascader_node_selector": ".el-cascader-node:not(.is-disabled)",
+      "image_placeholder": "请选择基础镜像",
+      "image_value_separator": " / ",
+      "startup_editor_selector": ".CodeMirror",
+      "terms_label": "我已阅读并同意",
+      "create_button_name": "创建",
+      "task_list_url": "**/#/model-training",
+      "task_id_regex": "ID\\s*[：:]?\\s*(\\d{10,})",
+      "status_regex": "状态\\s*[：:]?\\s*([^\\s]+)"
+    }
+  },
+  "output_root": "runs/scnet_browser_submissions",
+  "dry_run": true,
+  "max_tasks_per_run": 1,
+  "defaults": {
+    "region": "华中一区【A区】",
+    "accelerator": "异构加速卡BW",
+    "resource_group": "113 组",
+    "cards": 1,
+    "instances": 1,
+    "auto_fault": false,
+    "auto_fault_retry_limit": 3,
+    "accept_terms": true,
+    "cpu_per_card": 15,
+    "memory_gb_per_card": 59,
+    "expected_resource_text": [
+      "异构加速卡BW",
+      "内存59GB",
+      "CPU型号：15核",
+      "DTK 26.04"
+    ],
+    "allowed_start_prefixes": [
+      "bash ",
+      "python ",
+      "torchrun ",
+      "timeout "
+    ],
+    "image": {
+      "framework": "PyTorch",
+      "version": "2.9.0",
+      "python": "py3.11-Ubuntu22.04",
+      "dtk": "dtk26.04"
+    },
+    "wall_hours": 1.0,
+    "expected_card_hours": 0.35,
+    "worst_card_hours": 1.0
+  },
+  "tasks": [
+    {
+      "id": "d10-layer9-ecapa-hybrid",
+      "enabled": true,
+      "submit": false,
+      "status": "stopped_quality_rejected_20261117_124017",
+      "submitted_task_id": "2122527539681730562",
+      "submitted_name": "n019_l9ecapa_20261117_110926",
+      "stopped_reason": "Quality was decisively rejected (WER 11.118087%, UTMOS 3.251377, WhiSQA 3.058096). W-NT I was 41.987921%; male L had not finished when the job was stopped because the duration predictor was trained on layer-6 units and was mismatched to layer-9 sequences.",
+      "name": "n019_l9ecapa_{timestamp}",
+      "account": "a094f4d10",
+      "cards": 1,
+      "instances": 1,
+      "wall_hours": 1.0,
+      "expected_card_hours": 0.35,
+      "worst_card_hours": 1.0,
+      "input_paths": [
+        "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117",
+        "/public/home/a094f4d10/voice_projects/data/n019_official/processed/units/layer9_eval_20261116/test",
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/vocoder_nt_layer9_aligned_pilot_20261116/snapshots/generator_step00020000.pt",
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_ecapa_main_20261117/best.pt",
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/du_ecapa_nt_20261117/test_assets",
+        "/public/home/a094f4d10/voice_projects/models/n019_official",
+        "/public/home/a094f4d10/voice_projects/hf_cache/n019_official"
+      ],
+      "output_paths": [
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/layer9_ecapa_hybrid_20261117",
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/layer9_ecapa_hybrid_20261117",
+        "/public/home/a094f4d10/voice_projects/runs/n019_official/eval/layer9_ecapa_hybrid_20261117_wnt"
+      ],
+      "stop_conditions": [
+        "300 second tiny-matmul watchdog fails",
+        "hybrid bundle is not 1,934 records",
+        "layer-9 code paths or target subsets are incomplete",
+        "anonymised or VPC count is not 1,934",
+        "WER count is not 1,496 or MOS counts are not 1,934",
+        "W-NT I/L incomplete",
+        "1 hour wall clock"
+      ],
+      "startup_script": "bash /public/home/{account}/voice_projects/code/n019_official/scripts/run_layer9_ecapa_hybrid_ai.sh > /public/home/{account}/voice_projects/code/n019_official/audit/layer9_ecapa_hybrid_{timestamp}.log 2>&1"
+    }
+  ]
+}

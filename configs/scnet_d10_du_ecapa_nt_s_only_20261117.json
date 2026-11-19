@@ -1,0 +1,47 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1144335",
+  "submitted_at": "2026-11-17T12:42:00+08:00",
+  "submit_state": "completed",
+  "name": "n019_du_ecapa_nt_s2",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_du_ecapa_nt_s_only_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 3.0
+  },
+  "expected_card_hours": 1.5,
+  "worst_card_hours": 3.0,
+  "purpose": "Run only the official 10-epoch ECAPA S retraining after the parent job completed all 104,014 anonymised WAVs and VPC export. The parent failed only because test VPC suffix symlinks were missing.",
+  "completed_parent": {
+    "job_id": "1143733",
+    "anonymised_rows": 104014,
+    "vpc_rows": 104014,
+    "anon_jsonl_sha256": "2c64880d696334a4aaa293fd3a9408eb63310c1b0fcf3caf6ed9e9d4e7d46e5e",
+    "vpc_wav_scp_sha256": "6dcd3a9a51cef7217a9a606c3acbcb7b6324b7a813f2d3769b7635b1f3e4e228"
+  },
+  "repair": "Expose the existing four test VPC suffix directories from vpc_ai/data under vpc/data with read-only symlinks; no audio is regenerated.",
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/privacy/du_ecapa_nt_20261117_s/s_metrics.json",
+  "completed": {
+    "elapsed": "01:33:11",
+    "exit_code": "0:0",
+    "female_eer_percent": 31.233,
+    "male_eer_percent": 31.15,
+    "mean_eer_percent": 31.1915,
+    "paper_du_ecapa_nt_eer_percent": 36.6,
+    "paper_du_pred_nt_eer_percent": 34.8,
+    "formal_du_pred_nt_eer_percent": 29.7425,
+    "delta_vs_formal_pp": 1.448999999999998,
+    "s_metrics_sha256": "92b7bde62a8411cb7d71e1292ba6f99060413740f0f3ab6a97b9c4f438317b2b"
+  },
+  "stop_conditions": [
+    "300 second tiny-matmul watchdog fails",
+    "train/test VPC counts differ",
+    "official S retraining fails",
+    "3 hour wall clock",
+    "node failure"
+  ]
+}

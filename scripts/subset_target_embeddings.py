@@ -17,6 +17,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--embeddings", required=True)
     parser.add_argument("--key", default="target_id")
     parser.add_argument("--dimension", type=int, default=250)
+    parser.add_argument(
+        "--allow-nonunit",
+        action="store_true",
+        help=(
+            "Preserve finite non-unit vectors. Required for raw ECAPA speaker "
+            "means, which the ECAPA duration model consumes without inference "
+            "normalization."
+        ),
+    )
     parser.add_argument("--out", required=True)
     parser.add_argument("--summary", required=True)
     return parser.parse_args()
@@ -46,7 +55,7 @@ def main() -> int:
             if not np.isfinite(value).all():
                 raise ValueError(f"{key} contains non-finite values")
             norm = float(np.linalg.norm(value))
-            if abs(norm - 1.0) > 1e-4:
+            if not args.allow_nonunit and abs(norm - 1.0) > 1e-4:
                 raise ValueError(f"{key} has norm {norm}")
             output[key] = value
     finally:
@@ -62,7 +71,7 @@ def main() -> int:
         "keys": len(output),
         "dimension": args.dimension,
         "finite": True,
-        "unit_norm": True,
+        "unit_norm": None if args.allow_nonunit else True,
         "out": str(out_path.resolve()),
         "out_sha256": hashlib.sha256(out_path.read_bytes()).hexdigest(),
     }

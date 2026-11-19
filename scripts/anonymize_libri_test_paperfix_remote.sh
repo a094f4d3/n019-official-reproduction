@@ -20,7 +20,7 @@ DURATION_MODE="${N019_LIBRI_TEST_DURATION_MODE:-pred}"
 DURATION_EMBEDDING_KEY="${N019_LIBRI_TEST_DURATION_EMBEDDING_KEY:-target_id}"
 VOCODER="${N019_LIBRI_TEST_VOCODER:-$N019_OFFICIAL_RUNS/vocoder_nt_paperfix/best.pt}"
 OUT="${N019_LIBRI_TEST_ANON_OUT:-$N019_OFFICIAL_DATA/anonymised/libri_test/DU-pred-nt-paperfix}"
-VPC_ROOT="$N019_OFFICIAL_DATA/vpc/data"
+VPC_ROOT="${N019_LIBRI_TEST_VPC_DATA:-${N019_VPC_DATA:-$N019_OFFICIAL_DATA/vpc/data}}"
 SUFFIX="${N019_LIBRI_TEST_SUFFIX:-_n019_paperfix}"
 VERIFY="${N019_LIBRI_TEST_VERIFY:-$ROOT/audit/verify_libri_test_du_pred_nt_paperfix.json}"
 
@@ -201,14 +201,20 @@ print(
 PY
 
 if [[ ${#DURATION_EMBEDDING_ARGS[@]} -gt 0 ]]; then
+  DURATION_EMBEDDING_DIM=250
+  if [[ "$DURATION_MODE" == "ecapa" ]]; then
+    DURATION_EMBEDDING_DIM=192
+  fi
   python - "$TARGET_MAP" "$DURATION_EMBEDDINGS" \
-    "$DURATION_EMBEDDING_KEY" "$TARGET_EMBEDDING_MODE" <<'PY'
+    "$DURATION_EMBEDDING_KEY" "$TARGET_EMBEDDING_MODE" \
+    "$DURATION_EMBEDDING_DIM" <<'PY'
 import json
 import sys
 
 import numpy as np
 
-map_path, embeddings_path, key_name, embedding_mode = sys.argv[1:]
+map_path, embeddings_path, key_name, embedding_mode, dimension = sys.argv[1:]
+dimension = int(dimension)
 required = set()
 with open(map_path, encoding="utf-8") as handle:
     for line in handle:
@@ -223,18 +229,15 @@ try:
         )
     for key in sorted(required):
         value = archive[key]
-        if value.shape != (250,):
+        if value.shape != (dimension,):
             raise SystemExit(f"bad duration embedding shape for {key}: {value.shape}")
         if not np.isfinite(value).all():
             raise SystemExit(f"non-finite duration embedding for {key}")
-        norm = float(np.linalg.norm(value))
-        if abs(norm - 1.0) > 1e-4:
-            raise SystemExit(f"bad duration embedding norm for {key}: {norm}")
 finally:
     archive.close()
 print(
     f"DURATION_INPUTS_OK keys={len(required)} key={key_name} "
-    f"mode={embedding_mode}"
+    f"mode={embedding_mode} dim={dimension}"
 )
 PY
 fi
@@ -276,6 +279,10 @@ python -u -m n019.anonymize \
   --vocoder-embeddings "$TARGET_EMBEDDINGS" \
   --target-embedding-key "$TARGET_EMBEDDING_KEY" \
   --target-embedding-mode "$TARGET_EMBEDDING_MODE" \
+  --speaker-embedding-scale "${N019_SPEAKER_EMBEDDING_SCALE:-1.0}" \
+  --duration-extrapolation "${N019_DURATION_EXTRAPOLATION:-0.0}" \
+  ${N019_DURATION_PRESERVE_TOTAL:+--duration-preserve-total} \
+  --duration-soft-cap-frames "${N019_DURATION_SOFT_CAP_FRAMES:-0.0}" \
   --out-dir "$OUT" \
   --device cuda \
   "${RESUME_FLAG[@]}"

@@ -1,0 +1,56 @@
+{
+  "account": "a094f4d10",
+  "mode": "ai_model_training",
+  "task_id": "2123212663813480450",
+  "name_prefix": "n019_spkuni",
+  "status": "submitted_pending_20261119",
+  "purpose": "Use the self-contained test bundle to test the paper-aligned independent speaker-uniform target map with residual0.5 + duration0.5, with and without soft-cap1.5, before spending the remaining HPC hours on a full S run.",
+  "resources": {
+    "dcu": 1,
+    "cpu": 15,
+    "memory_gb": 59,
+    "wall_hours": 1.25,
+    "expected_card_hours": 0.55,
+    "worst_card_hours": 1.25
+  },
+  "inputs": {
+    "bundle": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117",
+    "target_map": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/targets/libri_test_spkuniform1158_seed20261119.jsonl",
+    "target_map_sha256": "824cbc419855abecf4dee2cc4c52d0dc883e5b94c110dfc11dd2184889481f89",
+    "target_embeddings": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/embeddings/libri_test_spkuniform1158_residual0p5_seed20261119.npz",
+    "target_embeddings_sha256": "adf72f800099d6d436511d1ec977e13e68173383f53bac1162fbb0e06205dbd5",
+    "duration_model": "/public/home/a094f4d10/voice_projects/data/n019_official/processed/selection_bundles/du_nt_nt_utt_test_20261117/assets/duration_pred_paperfix_best.pt",
+    "duration_model_sha256": "8d5153c920058204fe13ebb75b0744703bc0523e70f3a83fbd8b194245a3ba1c",
+    "vocoder_sha256": "ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6"
+  },
+  "conditions": [
+    {
+      "tag": "spkuniform_dur05_nocap",
+      "duration_soft_cap_frames": 0.0
+    },
+    {
+      "tag": "spkuniform_dur05_cap15",
+      "duration_soft_cap_frames": 1.5
+    }
+  ],
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/spkuniform_bundle_screen_20261119",
+  "submission": {
+    "submitted_at": "2026-11-19T08:31:51+08:00",
+    "startup_script_sha256": "e14f5146cb9a3d804b19a124ccabdf8599d097bc45f3b0aa9503b8127a55f855",
+    "edge_results": "runs/scnet_browser_submissions/20261119_083151/results.json"
+  },
+  "promotion_gate": {
+    "WER_percent_max": 8.5,
+    "UTMOS_min": 3.58,
+    "WhiSQA_min": 3.58,
+    "W_NT_L_percent_min": 42.0,
+    "then": "Run the matching full LS360 S with the same speaker-uniform sampling policy."
+  },
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "input hash or row-count mismatch",
+    "non-finite loss or metric",
+    "10 minutes without progress",
+    "wall-clock expiry"
+  ]
+}

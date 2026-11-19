@@ -1,4 +1,13 @@
 category,experiment,metric,paper,reproduced,absolute_difference,relative_difference_percent,count,status,notes
+selected_softcap075,DU-pred-nt,E-VPC I,47.2,47.4375,0.2375,0.5031779661,,outside_internal_tolerance,Higher is better
+selected_softcap075,DU-pred-nt,E-VPC L,47.9,48.98,1.08,2.2546972860,,outside_internal_tolerance,Higher is better
+selected_softcap075,DU-pred-nt,E-VPC S,34.8,32.412,-2.388,-6.8620689655,,outside_internal_tolerance,Largest remaining privacy gap
+selected_softcap075,DU-pred-nt,W-NT I,39.9,41.4650537074,1.5650537074,3.9224403694,,outside_internal_tolerance,Higher is better
+selected_softcap075,DU-pred-nt,W-NT L,42.3,41.6133768857,-0.6866231143,-1.6232224925,,outside_internal_tolerance,Second remaining privacy gap
+selected_softcap075,DU-pred-nt,W-NT S,24.6,27.6945129037,3.0945129037,12.5793207460,,outside_internal_tolerance,Higher is better
+selected_softcap075,DU-pred-nt,WER,7.41,7.7050396667,0.2950396667,3.9816419256,1496,within_internal_tolerance,Lower is better; close to paper
+selected_softcap075,DU-pred-nt,UTMOS,3.63,3.6297727519,-0.0002272481,-0.0062602789,1934,within_internal_tolerance,Nearly exact
+selected_softcap075,DU-pred-nt,WhiSQA,3.69,3.6223786510,-0.0676213490,-1.8325568836,1934,outside_internal_tolerance,Higher is better
 formal,DU-pred-nt,E-VPC I,47.2,48.0285,0.8285,1.7552966102,,outside_internal_tolerance,Higher is better
 formal,DU-pred-nt,E-VPC L,47.9,47.754,-0.146,-0.3048016701,,within_internal_tolerance,Higher is better
 formal,DU-pred-nt,E-VPC S,34.8,29.7425,-5.0575,-14.5330459770,,outside_internal_tolerance,Main remaining privacy gap

@@ -8,11 +8,43 @@ Reproduction of:
 
 This repository contains the runnable implementation, experiment
 configuration, tests, implementation audit, and compact result evidence
-for the paper-aligned `DU-pred-nt` system. It does not contain raw
-corpora, model checkpoints, generated WAV files, or third-party model
+for the `DU-pred-nt` speaker-anonymisation systems. It does not contain
+raw corpora, model checkpoints, generated WAV files, or third-party model
 weights.
 
-## Current formal result
+## v0.4.0 selected candidate
+
+The v0.4.0 release closes all nine metrics for the same-suffix
+soft-cap 0.75 candidate:
+
+- Base vocoder: four-point soup 84k / 88k / 92k / 96k =
+  `40:30:20:10`
+- Target embedding: NT + ECAPA orthogonal residual `0.5`
+- Duration extrapolation: `0.5`, preserving total predicted duration
+- Duration soft cap: `0.75`
+- Vocoder SHA256:
+  `ada6e5e3cf8727f86fa7444c62a68914a9859c951558dad786527c47ab1a65b6`
+
+| Metric | Paper | Reproduced | Difference |
+|---|---:|---:|---:|
+| E-VPC I | 47.2% | **47.4375%** | +0.2375 pp |
+| E-VPC L | 47.9% | **48.9800%** | +1.0800 pp |
+| E-VPC S | 34.8% | **32.4120%** | -2.3880 pp |
+| W-NT I | 39.9% | **41.4650537074%** | +1.5650537074 pp |
+| W-NT L | 42.3% | **41.6133768857%** | -0.6866231143 pp |
+| W-NT S | 24.6% | **27.6945129037%** | +3.0945129037 pp |
+| WER | 7.41% | **7.7050396667%** | +0.2950396667 pp |
+| UTMOS | 3.63 | **3.6297727519** | -0.0002272481 |
+| WhiSQA | 3.69 | **3.6223786510** | -0.0676213490 |
+
+WER uses 1,496 de-duplicated enroll/trial utterances. UTMOS and
+WhiSQA each use all 1,934 official `libri_test` utterances.
+
+This candidate gives the best WER/UTMOS alignment so far, but it is not
+a strict Pareto improvement over the no-cap privacy candidate: E-VPC S
+and W-NT L are higher in the no-cap version.
+
+## Previous formal reference
 
 System: `DU-pred-nt`
 
@@ -95,10 +127,13 @@ SCNet DTK environment.
 ## Reproduction status
 
 - Formal `DU-pred-nt` result: complete for all nine Table 1 metrics.
+- v0.4.0 soft-cap 0.75 candidate: complete for all nine Table 1
+  metrics with the same audio suffix.
 - E-VPC I, E-VPC L, W-NT S, and WER are close to or better than the
   paper.
 - E-VPC S and W-NT L remain below the paper.
-- `DTU-X-Y` system sweeps are not claimed as complete.
+- `DU-X-Y` system sweeps are not claimed as complete. See
+  `docs/N019_SYSTEM_STATUS_20261119.md`.
 - The model soup, target shrink, and several unpublished
   hyperparameter choices are reproduction enhancements, not
   author-confirmed settings.

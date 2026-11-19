@@ -3,6 +3,11 @@
 论文 Table 1 的机器可读副本固定在 `configs/paper_table1.json`，不得在
 代码里另抄一份或临时修正 B4、`DU-pred-nt` W-NT L 等公开不一致。
 
+The long-standing formal row remains the layer-6 soup baseline. A newer
+same-suffix nine-metric candidate is recorded separately in
+`docs/N019_COMPLETE_CANDIDATE_20261118.md`; it is a candidate, not a silent
+replacement of the formal table.
+
 每次完成一个系统后，写一个只含实测值的 JSON：
 
 ```json

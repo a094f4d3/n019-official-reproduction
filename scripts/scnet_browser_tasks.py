@@ -61,6 +61,10 @@ def parse_args() -> argparse.Namespace:
         help="Read-only inspect a task by its exact display name.",
     )
     parser.add_argument(
+        "--stop-job",
+        help="Stop a task by its exact display name.",
+    )
+    parser.add_argument(
         "--list-jobs",
         action="store_true",
         help="Read-only list task rows for --account.",
@@ -536,20 +540,21 @@ def _login(page: Any, task: dict[str, Any], config: dict[str, Any]) -> None:
     if _visible(page, ui["task_name_selector"]):
         _save_browser_state(page, browser_cfg, str(task["account"]))
         return
-    page.locator(ui["username_selector"]).wait_for(
-        state="visible", timeout=timeout
-    )
-    page.locator(ui["username_selector"]).fill(task["account"])
+    username = page.locator(ui["username_selector"])
+    username.wait_for(state="visible", timeout=timeout)
+    _fill_controlled_input(username, str(task["account"]))
     print(f"Logging in as {task['account']}...", flush=True)
-    page.locator(ui["password_selector"]).fill(
+    password = page.locator(ui["password_selector"])
+    _fill_controlled_input(
+        password,
         _password_for(
             task["account"],
             browser_cfg,
-            allow_prompt=bool(
-                browser_cfg.get("password_prompt", True)
-            ),
-        )
+            allow_prompt=bool(browser_cfg.get("password_prompt", True)),
+        ),
     )
+    if username.input_value().strip() != str(task["account"]):
+        raise LoginRequired("SCNet username input did not retain its value")
     if _visible(page, ui["captcha_selector"]):
         if browser_cfg.get("headless", False):
             raise LoginRequired(
@@ -594,6 +599,29 @@ def _login(page: Any, task: dict[str, Any], config: dict[str, Any]) -> None:
         state="visible", timeout=timeout
     )
     _save_browser_state(page, browser_cfg, str(task["account"]))
+
+
+def _fill_controlled_input(locator: Any, value: str) -> None:
+    """Fill Vue-controlled inputs and emit the events their model expects."""
+    locator.click()
+    locator.fill("")
+    locator.press_sequentially(value, delay=35)
+    locator.evaluate(
+        """element => {
+            element.dispatchEvent(new Event('input', { bubbles: true }));
+            element.dispatchEvent(new Event('change', { bubbles: true }));
+            element.blur();
+        }"""
+    )
+    if locator.input_value() != value:
+        locator.fill(value)
+        locator.evaluate(
+            """element => {
+                element.dispatchEvent(new Event('input', { bubbles: true }));
+                element.dispatchEvent(new Event('change', { bubbles: true }));
+                element.blur();
+            }"""
+        )
 
 
 def _form_item(page: Any, label: str, ui: dict[str, Any]) -> Any:
@@ -1343,9 +1371,103 @@ def list_jobs(config: dict[str, Any], account: str) -> list[dict[str, Any]]:
     return values
 
 
+def stop_job(config: dict[str, Any], account: str, job_name: str) -> dict[str, Any]:
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise RuntimeError(
+            "Playwright is not installed. Run: "
+            "python -m pip install 'playwright>=1.50,<2'"
+        ) from exc
+
+    browser_cfg = config["browser"]
+    timeout = int(browser_cfg.get("timeout_ms", 60000))
+    run_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    artifact_dir = Path(config.get("output_root", "runs/scnet_browser_submissions"))
+    artifact_dir = (PROJECT_ROOT / artifact_dir).resolve() / run_stamp
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    profile_dir = Path(
+        os.path.expandvars(os.path.expanduser(browser_cfg["profile_root"]))
+    ) / account
+    profile_dir.mkdir(parents=True, exist_ok=True)
+
+    with sync_playwright() as playwright:
+        context = playwright.chromium.launch_persistent_context(
+            str(profile_dir),
+            channel=browser_cfg.get("channel", "msedge"),
+            headless=bool(browser_cfg.get("headless", False)),
+            slow_mo=int(browser_cfg.get("slow_mo_ms", 0)),
+            viewport=_browser_viewport(browser_cfg),
+        )
+        try:
+            page = context.pages[0] if context.pages else context.new_page()
+            _login(page, {"account": account}, config)
+            page.goto(
+                browser_cfg["task_list_page_url"],
+                wait_until="domcontentloaded",
+                timeout=timeout,
+            )
+            page.wait_for_timeout(2500)
+            row = _first_visible(
+                page.locator("tr").filter(has_text=job_name)
+            )
+            if row.count() == 0:
+                raise RuntimeError(f"Task row not found: {job_name}")
+            fixed_name = page.locator(".el-table__fixed").get_by_text(
+                job_name, exact=False
+            )
+            if fixed_name.count():
+                _first_visible(fixed_name).click(timeout=5_000, force=True)
+            else:
+                row.locator("td").nth(1).click(force=True)
+            page.wait_for_timeout(2500)
+            if len(context.pages) > 1:
+                page = context.pages[-1]
+            stop = page.get_by_text("停止", exact=True)
+            if stop.count() == 0:
+                raise RuntimeError(f"Stop control not found for task: {job_name}")
+            stop.last.click()
+            page.wait_for_timeout(500)
+            for label in ("确定", "确认", "是"):
+                button = page.get_by_role("button", name=label, exact=True)
+                if button.count():
+                    button.last.click()
+                    break
+            page.wait_for_timeout(5000)
+            body_text = page.locator("body").inner_text()
+            screenshot = artifact_dir / f"{job_name}_stopped.png"
+            page.screenshot(path=str(screenshot), full_page=True)
+        finally:
+            context.close()
+
+    result = {
+        "account": account,
+        "job_name": job_name,
+        "body_text": body_text,
+        "screenshot": str(screenshot),
+    }
+    (artifact_dir / f"{job_name}_stopped.json").write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return result
+
+
 def main() -> int:
     args = parse_args()
     config = load_config(Path(args.config))
+    if args.stop_job:
+        if not args.account:
+            raise ConfigError("--stop-job requires --account")
+        if args.headed:
+            config["browser"]["headless"] = False
+        if args.headless:
+            config["browser"]["headless"] = True
+        if args.no_prompt:
+            config["browser"]["password_prompt"] = False
+        stop_job(config, args.account, args.stop_job)
+        return 0
     if args.list_jobs:
         if not args.account:
             raise ConfigError("--list-jobs requires --account")

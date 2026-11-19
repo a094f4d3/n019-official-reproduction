@@ -1,0 +1,33 @@
+{
+  "account": "a094f4d10",
+  "mode": "HPC/Slurm",
+  "job_id": "1147640",
+  "submitted_at": "2026-11-17T18:45:00+08:00",
+  "name": "n019_durstrong",
+  "partition": "hx1hdnormal",
+  "script": "hpc/n019_duration_pred_strong_d10_hpc.slurm",
+  "resources": {
+    "dcu": 1,
+    "cpu": 16,
+    "memory_gb": 60,
+    "wall_hours": 1.0
+  },
+  "expected_card_hours": 0.2,
+  "worst_card_hours": 1.0,
+  "purpose": "Paper-architecture unconditional duration predictor retrained with the DISSC-derived optimizer scale, to test whether average-rhythm underfitting explains the remaining W-NT L gap.",
+  "inputs": {
+    "records": "/public/home/a094f4d4/voice_projects/data/n019_official/processed/units/librispeech_train_clean_100/unit_records.jsonl",
+    "embedding_kind": "pred",
+    "lr": 0.0008,
+    "batch_size": 64,
+    "epochs": 60
+  },
+  "output": "/public/home/a094f4d10/voice_projects/runs/n019_official/duration_pred_strong_20261117",
+  "stop_conditions": [
+    "tiny-matmul watchdog failure",
+    "non-finite duration loss",
+    "missing best.pt",
+    "1 hour Slurm wall clock"
+  ],
+  "decision_rule": "Only run a full test on this duration model if it improves the fixed dev W-NT L result without a UTMOS/WhiSQA/WER regression beyond the predeclared gate."
+}

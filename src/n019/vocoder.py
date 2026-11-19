@@ -50,6 +50,9 @@ class UnitVocoderConfig:
     unit_embedding_dim: int = 128
     speaker_dim: int = 250
     speaker_projection_dim: int | None = None
+    speaker_embedding_scale: float = 1.0
+    speaker_swap_probability: float = 0.0
+    speaker_swap_embeddings: str | None = None
     segment_frames: int = 28
     batch_size: int = 16
     learning_rate: float = 2e-4
@@ -87,6 +90,9 @@ class UnitVocoderDataset(Dataset):
         segment_frames: int,
         padding_unit_id: int,
         embedding_level: str,
+        speaker_embedding_scale: float,
+        speaker_swap_probability: float,
+        speaker_swap_embeddings_path: str | Path | None,
         random_crop: bool,
         seed: int,
         limit: int = 0,
@@ -105,6 +111,60 @@ class UnitVocoderDataset(Dataset):
         self.segment_frames = segment_frames
         self.padding_unit_id = padding_unit_id
         self.embedding_level = embedding_level
+        if not math.isfinite(speaker_embedding_scale):
+            raise ValueError("speaker_embedding_scale must be finite")
+        if speaker_embedding_scale <= 0.0:
+            raise ValueError("speaker_embedding_scale must be positive")
+        self.speaker_embedding_scale = speaker_embedding_scale
+        if not math.isfinite(speaker_swap_probability):
+            raise ValueError("speaker_swap_probability must be finite")
+        if not 0.0 <= speaker_swap_probability <= 1.0:
+            raise ValueError("speaker_swap_probability must be in [0, 1]")
+        if speaker_swap_probability > 0.0 and len(self.embeddings) < 2:
+            if not speaker_swap_embeddings_path:
+                raise ValueError(
+                    "speaker swapping requires at least two embedding keys "
+                    "or an external swap archive"
+                )
+        self.speaker_swap_probability = speaker_swap_probability
+        self.embedding_keys = tuple(sorted(self.embeddings))
+        self.swap_embeddings: dict[str, torch.Tensor] | None = None
+        self.swap_embedding_keys: tuple[str, ...] = ()
+        if speaker_swap_probability > 0.0 and speaker_swap_embeddings_path:
+            swap_archive = np.load(speaker_swap_embeddings_path)
+            self.swap_embeddings = {
+                key: torch.from_numpy(
+                    swap_archive[key].astype(np.float32)
+                )
+                for key in swap_archive.files
+            }
+            swap_archive.close()
+            if not self.swap_embeddings:
+                raise ValueError("Speaker swap archive is empty")
+            dimensions = {
+                int(value.numel())
+                for value in self.swap_embeddings.values()
+            }
+            original_dimensions = {
+                int(value.numel()) for value in self.embeddings.values()
+            }
+            if dimensions != original_dimensions:
+                raise ValueError(
+                    "Speaker swap archive dimension differs from source "
+                    "embeddings"
+                )
+            for key, value in self.swap_embeddings.items():
+                if not bool(torch.isfinite(value).all()):
+                    raise ValueError(
+                        f"Speaker swap embedding is non-finite: {key}"
+                    )
+                norm = float(torch.linalg.vector_norm(value))
+                if not math.isclose(norm, 1.0, rel_tol=1e-4, abs_tol=1e-4):
+                    raise ValueError(
+                        f"Speaker swap embedding is not unit-normalized: "
+                        f"{key} norm={norm}"
+                    )
+            self.swap_embedding_keys = tuple(sorted(self.swap_embeddings))
         self.random_crop = random_crop
         self.seed = seed
         self.epoch = 0
@@ -152,10 +212,38 @@ class UnitVocoderDataset(Dataset):
         key = speaker_id(row) if self.embedding_level == "speaker" else utterance_id(row)
         if key not in self.embeddings:
             raise KeyError(f"Missing speaker embedding key: {key}")
+        speaker_embedding = self.embeddings[key]
+        if (
+            self.random_crop
+            and self.speaker_swap_probability > 0.0
+        ):
+            generator = np.random.default_rng(
+                self.seed
+                + self.epoch * 2_000_003
+                + index
+                + 7919
+            )
+            should_swap = (
+                generator.random() < self.speaker_swap_probability
+            )
+            if should_swap:
+                if self.swap_embeddings is not None:
+                    swap_embeddings = self.swap_embeddings
+                    swap_keys = self.swap_embedding_keys
+                else:
+                    swap_embeddings = self.embeddings
+                    swap_keys = self.embedding_keys
+                alternate = key
+                while alternate == key:
+                    alternate_index = int(
+                        generator.integers(0, len(swap_keys))
+                    )
+                    alternate = swap_keys[alternate_index]
+                speaker_embedding = swap_embeddings[alternate]
         return (
             codes,
             torch.from_numpy(waveform.astype(np.float32)),
-            self.embeddings[key],
+            speaker_embedding * self.speaker_embedding_scale,
         )
 
 
@@ -356,6 +444,33 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--validation-embeddings", default=None)
     parser.add_argument("--out", required=True)
     parser.add_argument("--speaker-dim", type=int, choices=[192, 250], required=True)
+    parser.add_argument(
+        "--speaker-embedding-scale",
+        type=float,
+        default=1.0,
+        help=(
+            "Scale training speaker embeddings before vocoder conditioning. "
+            "The paper-faithful default is 1.0."
+        ),
+    )
+    parser.add_argument(
+        "--speaker-swap-probability",
+        type=float,
+        default=0.0,
+        help=(
+            "Probability of replacing a training source-speaker embedding "
+            "with another speaker's embedding. Zero is the paper-faithful "
+            "same-speaker reconstruction default."
+        ),
+    )
+    parser.add_argument(
+        "--speaker-swap-embeddings",
+        default=None,
+        help=(
+            "Optional external embedding archive used for cross-speaker "
+            "training. If omitted, another source-corpus speaker is used."
+        ),
+    )
     parser.add_argument("--embedding-level", choices=["speaker", "utterance"], default="speaker")
     parser.add_argument("--segment-frames", type=int, default=28)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -476,6 +591,13 @@ def main() -> int:
         raise ValueError("--segment-frames must be positive")
     if args.lr <= 0.0:
         raise ValueError("--lr must be positive")
+    if not math.isfinite(args.speaker_swap_probability):
+        raise ValueError("--speaker-swap-probability must be finite")
+    if not 0.0 <= args.speaker_swap_probability <= 1.0:
+        raise ValueError("--speaker-swap-probability must be in [0, 1]")
+    if args.speaker_swap_probability > 0.0 and args.speaker_swap_embeddings:
+        if not Path(args.speaker_swap_embeddings).is_file():
+            raise FileNotFoundError(args.speaker_swap_embeddings)
     if args.grad_clip_norm < 0.0:
         raise ValueError("--grad-clip-norm must be non-negative")
     if args.checkpoint_interval <= 0 or args.validation_interval <= 0:
@@ -525,6 +647,9 @@ def main() -> int:
     stage(f"distributed_ready:{device}:{world_size}")
     config = UnitVocoderConfig(
         speaker_dim=args.speaker_dim,
+        speaker_embedding_scale=args.speaker_embedding_scale,
+        speaker_swap_probability=args.speaker_swap_probability,
+        speaker_swap_embeddings=args.speaker_swap_embeddings,
         segment_frames=args.segment_frames,
         batch_size=args.batch_size,
         learning_rate=args.lr,
@@ -552,6 +677,9 @@ def main() -> int:
         segment_frames=config.segment_frames,
         padding_unit_id=config.padding_unit_id,
         embedding_level=config.embedding_level,
+        speaker_embedding_scale=config.speaker_embedding_scale,
+        speaker_swap_probability=config.speaker_swap_probability,
+        speaker_swap_embeddings_path=config.speaker_swap_embeddings,
         random_crop=True,
         seed=config.seed,
     )
@@ -564,6 +692,9 @@ def main() -> int:
         segment_frames=config.segment_frames,
         padding_unit_id=config.padding_unit_id,
         embedding_level=config.embedding_level,
+        speaker_embedding_scale=config.speaker_embedding_scale,
+        speaker_swap_probability=0.0,
+        speaker_swap_embeddings_path=None,
         random_crop=False,
         seed=config.seed + 1,
         limit=config.validation_limit,
@@ -777,6 +908,15 @@ def main() -> int:
                 "input_sha256": {
                     "records": sha256_file(args.records),
                     "embeddings": sha256_file(args.embeddings),
+                    **(
+                        {
+                            "speaker_swap_embeddings": sha256_file(
+                                args.speaker_swap_embeddings
+                            )
+                        }
+                        if args.speaker_swap_embeddings
+                        else {}
+                    ),
                     **(
                         {
                             "validation_records": sha256_file(
